@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/space"
+    android:fitsSystemWindows="true">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/space"
+    android:layout_height="match_parent"
+    android:weightSum="23.5"
+    tools:context="com.example.shanir.cookingappofshanir.Register">
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:id="@+id/tvheadregister"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textSize="40sp"
+        android:text="רישום "
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+        android:id="@+id/tvheadregister2"
+        android:textColor="#f1ebeb"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:text="* יש למלא את כל שדות החובה המצוינים בכוכבית
+ "
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:textColorHint="#f2eded"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="0dp"
+        android:drawableLeft="@drawable/email"
+        android:drawablePadding="3dp"
+        android:id="@+id/etEmail"
+        android:textStyle="bold"
+
+        android:hint="Email  *"
+        android:textColor="#ffffff"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:textColorHint="#ece8e8"
+        android:inputType="textPassword"
+        android:paddingLeft="0dp"
+        android:drawableLeft="@drawable/password"
+        android:drawablePadding="5dp"
+        android:id="@+id/etpasswardregister"
+        android:hint="*  סיסמה"
+        android:textStyle="bold"
+
+        android:textColor="#ffffff"
+
+        />
+
+    <EditText
+        android:id="@+id/etconfirmPassword"
+        android:textColorHint="#ece1e1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:drawableLeft="@drawable/confirm_password"
+        android:paddingLeft="0dp"
+        android:drawablePadding="5dp"
+android:textStyle="bold"
+        android:hint=" *  אשר סיסמא"
+        android:inputType="textPassword"
+        android:textColor="#ffffff"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:inputType="text"
+        android:layout_weight="2"
+        android:textColorHint="#ffffff"
+        android:textColor="#ffffff"
+        android:drawableLeft="@drawable/user"
+        android:paddingLeft="0dp"
+        android:drawablePadding="5dp"
+        android:id="@+id/etfirstname"
+        android:hint="שם פרטי"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:inputType="text"
+        android:textColorHint="#ffffff"
+        android:drawableLeft="@drawable/user"
+        android:paddingLeft="0dp"
+        android:drawablePadding="5dp"
+        android:id="@+id/etlastname"
+        android:hint="שם משפחה"
+        android:textColor="#ffffff"
+
+        />
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:paddingLeft="0dp"
+        android:id="@+id/etid"
+        android:inputType="number"
+        android:hint="תעודת זהות"
+        android:textColorHint="#ffffff"
+        android:textColor="#ffffff"
+
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:inputType="number"
+        android:paddingLeft="0dp"
+        android:drawablePadding="5dp"
+        android:id="@+id/etPhone"
+        android:hint="מספר טלפון"
+        android:textColorHint="#ffffff"
+        android:textColor="#ffffff"
+        />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:id="@+id/progressbarregister"
+
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:layout_gravity="center"
+        android:weightSum="8"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:id="@+id/bthaveuserregister"
+            android:background="@color/colorPrimary"
+            android:text="יש לך כבר משתמש"
+            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_weight="0.8"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_weight="0.8"
+            android:layout_height="wrap_content">
+        </LinearLayout>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:id="@+id/btSaveregister"
+            android:background="@color/colorPrimary"
+            android:textStyle="bold"
+            android:text="שמור"
+            />
+
+
+
+</LinearLayout>
+</LinearLayout>
+</ScrollView>

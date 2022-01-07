@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+    android:id="@+id/menuLogout"
+    android:title="התנתקות"
+    />
+    <item android:id="@+id/mnItemConsumers"
+    android:title="המצרכים שלי" />
+
+    <item android:id="@+id/mnItemListOfRecipes"
+    android:title="רשימת מתכונים " />
+
+    <item android:id="@+id/mnItemListofsaverecipes"
+    android:title="רשימת מתכונים שמורים" />
+
+    <item android:id="@+id/mnItemProfile"
+        android:title="הפרופיל שלי" />
+
+
+
+
+</menu>

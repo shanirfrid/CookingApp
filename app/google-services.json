@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "985221774395",
+    "firebase_url": "https://cookingappofshanir.firebaseio.com",
+    "project_id": "cookingappofshanir",
+    "storage_bucket": "cookingappofshanir.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985221774395:android:8f4706bc752f7869",
+        "android_client_info": {
+          "package_name": "com.example.shanir.cookingappofshanir"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "985221774395-3vcne2o6fa3h6nnknovugvvpet4kck2p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shanir.cookingappofshanir",
+            "certificate_hash": "703bb959762231608cbcb13bdf552ce04bdd4ece"
+          }
+        },
+        {
+          "client_id": "985221774395-hdpgo51c4097u7sevcl7fkui0fj6iah9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjwibtzRU779V4OG7x7oCSDHAQS_3h6t8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "985221774395-hdpgo51c4097u7sevcl7fkui0fj6iah9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:weightSum="11"
+    android:background="#afafb1"
+    android:layout_height="match_parent"
+    tools:context="com.example.shanir.cookingappofshanir.Timerrun">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:text="טיימר"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:textSize="50sp"
+        android:id="@+id/tvheadruntime"
+        android:layout_gravity="center"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_height="0dp">
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:text="00:00"
+        android:textColor="#121111"
+        android:textStyle="bold"
+        android:textSize="40sp"
+        android:id="@+id/tvtime1"
+        android:layout_gravity="center"
+        />
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:textDirection="ltr"
+        android:layout_weight="1.5"
+        android:layout_height="0dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="3"
+        android:orientation="horizontal"
+        android:weightSum="3.5"
+        android:layout_height="0dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="20sp"
+        android:background="@color/colorPrimary"
+        android:id="@+id/btstop1"
+        android:text="עצור"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/colorPrimary"
+        android:textSize="20sp"
+        android:id="@+id/btstart1"
+        android:text="התחל"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>

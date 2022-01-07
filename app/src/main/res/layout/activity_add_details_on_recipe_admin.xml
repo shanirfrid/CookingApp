@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    android:background="#d9d2d2"
+    android:id="@+id/mainLayoutaddingredient"
+    tools:context="com.example.shanir.cookingappofshanir.Admin.AddDetailsOnRecipeAdmin">
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:orientation="horizontal"
+android:layout_gravity="center"
+    android:gravity="center"
+    android:layout_height="50dp">
+
+    <TextView
+        android:id="@+id/tvheadadminname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:text="הוספת מתכון"
+        android:textSize="30sp" />
+    <LinearLayout
+        android:layout_width="50dp"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:background="#2749a6"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textColor="#f9f5f5"
+        android:textSize="20sp"
+        android:id="@+id/btsaverecipeee"
+        android:text="שמור "
+        />
+
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+</LinearLayout>
+
+    <LinearLayout
+     android:layout_width="match_parent"
+     android:orientation="horizontal"
+     android:layout_height="wrap_content">
+
+
+     <LinearLayout
+    android:layout_width="wrap_content"
+    android:orientation="vertical"
+         android:layout_marginTop="20dp"
+    android:layout_height="wrap_content"
+         >
+
+
+
+    <EditText
+
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:id="@+id/etnameofrecipeadddetails"
+        android:hint=" הכנס שם מתכון"
+        android:background="#fff"
+        />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:textSize="20sp"
+
+        android:id="@+id/etkindofrecipe"
+        android:hint="הכנס סוג מתכון"
+        android:background="#fff"
+        />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:id="@+id/ettimeadddetailsadmin"
+        android:hint="הכנס זמן (דקות)"
+        android:inputType="number"
+        android:background="#fff"
+        />
+</LinearLayout>
+        <LinearLayout
+            android:layout_width="50dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/ivadmindetails"
+            android:layout_width="80dp"
+            android:layout_marginTop="20dp"
+            android:layout_height="100dp"
+            android:src="@drawable/cemera"
+
+            />
+
+
+
+
+ </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvdifi"
+        android:text=" קושי"
+        android:textSize="25dp"
+        android:textColor="#1e1d1d"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_gravity="right"
+        android:layout_height="wrap_content"
+        />
+
+        <RadioGroup
+            android:id="@+id/rgDiff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbEasy"
+                android:textSize="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="קל" />
+
+            <RadioButton
+                android:id="@+id/rbMedium"
+                android:textSize="15dp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="בינוני" />
+
+            <RadioButton
+                android:id="@+id/rbHard"
+                android:textSize="15dp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:text="קשה" />
+        </RadioGroup>
+
+ <TextView
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:gravity="center"
+     android:textColor="#31378b"
+     android:textStyle="bold"
+     android:textSize="30sp"
+     android:id="@+id/tvheadingredients"
+     android:text="מרכיבים"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/pluus"
+            android:id="@+id/ivconsumersaddaa"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="תכתוב כאן "
+            android:id="@+id/etwriteconsumersa"
+
+            />
+
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:id="@+id/listviewconsumersa"
+        android:layout_gravity="center"
+
+        android:layout_height="match_parent">
+
+
+    </ListView>
+
+
+
+</LinearLayout>

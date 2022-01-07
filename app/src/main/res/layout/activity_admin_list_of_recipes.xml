@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/recipelayout"
+    android:weightSum="10"
+    android:orientation="vertical"
+    tools:context="com.example.shanir.cookingappofshanir.Admin.AdminListOfRecipes">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/tvheadaminlist"
+        android:layout_gravity="center"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:textAlignment="center"
+        android:text=" רשימה של מתכונים "/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/tvheadaminnumrecipe"
+         android:gravity="right"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:text="  מספר מתכונים"/>
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/pbadminlistofrecipes"
+        android:layout_gravity="center_horizontal"
+
+        />
+    <ListView
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="7"
+        android:id="@+id/listviewlistofallrecipe"
+        >
+
+    </ListView>
+</LinearLayout>
