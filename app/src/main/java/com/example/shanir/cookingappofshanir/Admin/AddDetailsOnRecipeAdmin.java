@@ -334,25 +334,6 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
         storageReference.putFile(imageUri);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_back, menu);
-        return true;
-    }
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_back:
-
-                Intent intent = new Intent(getApplicationContext(), Adminchose.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                break;
-
-        }
-        return true;
-    }
-
-
 
 }
 

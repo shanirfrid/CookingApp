@@ -1,45 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayoutlistofrecipe"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/mainLayoutlistofrecipe"
-    android:weightSum="9"
     android:background="#d9d2d2"
+    android:orientation="vertical"
+    android:weightSum="9"
     tools:context="com.example.shanir.cookingappofshanir.ListOfRecipe">
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:id="@+id/tvheadrecipelist"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:textSize="40sp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="רשימת מתכונים"
-        />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/tvnumrecipe"
-        android:textColor="#333b83"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        android:gravity="center"
-        android:text="נמצאו  X מתכונים"
-        />
-    <ListView
-        android:layout_width="match_parent"
-        android:id="@+id/listviewOfRecipes"
-        android:layout_weight="6"
-        android:layout_height="0dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    </ListView>
+            <ImageView
+                android:id="@+id/right_arrow_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:src="@drawable/arrow_right"></ImageView>
+
+            <TextView
+                android:id="@+id/tvheadrecipelist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="List of Recipes"
+                android:textColor="@color/colorPrimary"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tvnumrecipe"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="נמצאו  X מתכונים"
+            android:textColor="#333b83"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <ListView
+            android:id="@+id/listviewOfRecipes"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6">
+
+        </ListView>
+
+
+    </LinearLayout>
+
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navigation_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/menu">
+
+    </android.support.design.widget.NavigationView>
+
+</android.support.v4.widget.DrawerLayout>
+

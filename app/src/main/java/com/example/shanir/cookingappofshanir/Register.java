@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shanir.cookingappofshanir.Admin.General;
@@ -33,90 +34,81 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
-    EditText etpass, etfirstname, etemail,etlastname,etphone,etid,etconfirmpass;
-    Button btsave,bthaveuser;
+    EditText etpass, etfirstname, etemail, etlastname, etphone, etid, etconfirmpass;
+    TextView tvBack;
+    Button btsave;
     Uri imageUri;
     String namebitmap;
 
     ProgressBar pb;
-  public  static User user;
+    public static User user;
     private FirebaseAuth mAuth;
-    Context context=this;
-    int CODEREGISTER=43806;
+    Context context = this;
+    int CODEREGISTER = 43806;
     public static final String TAG = "myapp";
     FirebaseDatabase firebaseDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         etpass = (EditText) findViewById(R.id.etpasswardregister);
-        etconfirmpass=(EditText) findViewById(R.id.etconfirmPassword);
+        etconfirmpass = (EditText) findViewById(R.id.etconfirmPassword);
         etfirstname = (EditText) findViewById(R.id.etfirstname);
         etemail = (EditText) findViewById(R.id.etEmail);
         etid = (EditText) findViewById(R.id.etid);
         etphone = (EditText) findViewById(R.id.etPhone);
         etlastname = (EditText) findViewById(R.id.etlastname);
-        pb=(ProgressBar)findViewById(R.id.progressbarregister);
+        pb = (ProgressBar) findViewById(R.id.progressbarregister);
         mAuth = FirebaseAuth.getInstance();
         btsave = (Button) findViewById(R.id.btSaveregister);
-        bthaveuser = (Button) findViewById(R.id.bthaveuserregister);
+        tvBack = (TextView) findViewById(R.id.tv_back);
         btsave.setOnClickListener(this);
-        bthaveuser.setOnClickListener(this);
+        tvBack.setOnClickListener(this);
 
     }
 
-    public void adduser ()
-    {
-        String firstname=etfirstname.getText().toString();
-        String lastname=etlastname.getText().toString();
-        String pass=etpass.getText().toString();
-        String email=etemail.getText().toString();
-        String phone=etphone.getText().toString();
-        String id=etid.getText().toString();
-        if (namebitmap==null)
-        user=new User(firstname,lastname,id,pass,phone,email,null,"none");
-        else
-        {
-            user=new User(firstname,lastname,id,pass,phone,email,null,namebitmap);
+    public void adduser() {
+        String firstname = etfirstname.getText().toString();
+        String lastname = etlastname.getText().toString();
+        String pass = etpass.getText().toString();
+        String email = etemail.getText().toString();
+        String phone = etphone.getText().toString();
+        String id = etid.getText().toString();
+        if (namebitmap == null)
+            user = new User(firstname, lastname, id, pass, phone, email, null, "none");
+        else {
+            user = new User(firstname, lastname, id, pass, phone, email, null, namebitmap);
         }
-        firebaseDatabase= FirebaseDatabase.getInstance();
-        String uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         user.setIdkey(uid);
         firebaseDatabase.getReference(General.USER_TABLE_NAME).child(uid).push().setValue(user, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReferfinence) {
-                if(databaseError==null)
-                {
+                if (databaseError == null) {
                     General.user = user;
                     General.userKey = user.getIdkey();
                     General.userEmail = user.getEmail();
                     Toast.makeText(Register.this, "פרטי משתמש הוכנסו למערכת ", Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(getApplicationContext(),Consumers.class);
+                    Intent intent = new Intent(getApplicationContext(), Consumers.class);
                     startActivity(intent);
                     finish();
 
-                }
-
-                else
+                } else
                     Toast.makeText(Register.this, "בעייה בקישור לאינטרנט - פרטי משתמש לא נשמרו", Toast.LENGTH_SHORT).show();
             }
 
         });
 
 
-
     }
 
-
-
-
-    private void registerUser()
-    {
+    private void registerUser() {
         String password = etpass.getText().toString().trim();
         String email = etemail.getText().toString().trim();
-        String confirmpass=etconfirmpass.getText().toString().trim();
-        if (!confirmpass.equals(password))
-        {
+        String confirmpass = etconfirmpass.getText().toString().trim();
+        if (!confirmpass.equals(password)) {
             etpass.setError("סיסמא לא תואמת לאישור סיסמא");
             etpass.requestFocus();
             return;
@@ -148,8 +140,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         pb.setVisibility(View.GONE);
-                        if (task.isSuccessful())
-                        {
+                        if (task.isSuccessful()) {
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
                             builder.setTitle("צילום תמונת פרופיל");
@@ -161,17 +152,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                             dialog.show();
 
 
-                        }
-
-
-
-                        else
-                        {
+                        } else {
                             if (task.getException() instanceof FirebaseAuthUserCollisionException)
                                 Toast.makeText(Register.this, "אתה כבר נרשמת",
                                         Toast.LENGTH_SHORT).show();
-                            else
-                            {
+                            else {
                                 Toast.makeText(Register.this, task.getException().getMessage(),
                                         Toast.LENGTH_SHORT).show();
 
@@ -196,11 +181,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        if (v == btsave)
-        {
+        if (v == btsave) {
             registerUser();
-        }
-        else if (v == bthaveuser) {
+        } else if (v == tvBack) {
             finish();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
@@ -209,39 +192,33 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
     public class DialogListener implements DialogInterface.OnClickListener {
 
-            public DialogListener()
-            {
-            }
-
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                if (which == AlertDialog.BUTTON_POSITIVE)
-                {
-
-
-                    Intent i=new Intent(getApplicationContext(),Profile.class);
-                    i.putExtra("comefrom","register");
-                    startActivityForResult(i,CODEREGISTER);
-
-
-
-                }
-                else if (which == AlertDialog.BUTTON_NEGATIVE) {
-                    Toast.makeText(context, "לא הסכמת לצלם תמונה",
-                            Toast.LENGTH_SHORT).show();
-                    adduser();
-
-
-
-                }
-
-            }
+        public DialogListener() {
         }
+
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            if (which == AlertDialog.BUTTON_POSITIVE) {
+
+
+                Intent i = new Intent(getApplicationContext(), Profile.class);
+                i.putExtra("comefrom", "register");
+                startActivityForResult(i, CODEREGISTER);
+
+
+            } else if (which == AlertDialog.BUTTON_NEGATIVE) {
+                Toast.makeText(context, "לא הסכמת לצלם תמונה",
+                        Toast.LENGTH_SHORT).show();
+                adduser();
+
+
+            }
+
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==CODEREGISTER && resultCode==RESULT_OK)
-        {
+        if (requestCode == CODEREGISTER && resultCode == RESULT_OK) {
             String s = data.getStringExtra("uri");
             imageUri = Uri.parse(s);
             String timeStamp = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
@@ -254,12 +231,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
-    private void uploadImage(){
+    private void uploadImage() {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference().child("imagesprofil/").child(namebitmap);
         storageReference.putFile(imageUri);
     }
-
 
 
 }

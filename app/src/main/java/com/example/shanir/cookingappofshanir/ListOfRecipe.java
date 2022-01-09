@@ -1,19 +1,24 @@
 package com.example.shanir.cookingappofshanir;
 
 import android.content.Intent;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shanir.cookingappofshanir.Admin.General;
 import com.example.shanir.cookingappofshanir.classs.Adapter;
+import com.example.shanir.cookingappofshanir.classs.Navigation;
 import com.example.shanir.cookingappofshanir.classs.Recipe;
 import com.example.shanir.cookingappofshanir.classs.UserItems;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,11 +40,14 @@ public class ListOfRecipe extends AppCompatActivity  {
     ArrayList<Recipe> recipes;
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
-   private DatabaseReference postRef,postRefr;;
+    private DatabaseReference postRef,postRefr;;
     ListView listView;
     Adapter adapter;
     private  String tableId;
     ArrayList<String> liststring;
+    private NavigationView navigationView;
+    private DrawerLayout mDrawerLayout;
+    private ImageView mRightArrowImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +55,7 @@ public class ListOfRecipe extends AppCompatActivity  {
         setContentView(R.layout.activity_list_of_recipe);
         tvhowmanyrecipe = (TextView) findViewById(R.id.tvnumrecipe);
         listView = (ListView) findViewById(R.id.listviewOfRecipes);
+        mRightArrowImageView = (ImageView) findViewById(R.id.right_arrow_image_view);
         firebaseAuth = FirebaseAuth.getInstance();
         liststring = new ArrayList<String>();
         adapter = new Adapter(this, 0, liststring);
@@ -61,6 +70,17 @@ public class ListOfRecipe extends AppCompatActivity  {
                 Intent i=new Intent(getApplicationContext(),DetailsOnRecipe.class);
                 i.putExtra("detailsrecipe",lastSelected);
                 startActivity(i);
+            }
+        });
+
+        navigationView = findViewById(R.id.navigation_menu);
+        navigationView.setNavigationItemSelectedListener(new Navigation(this));
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.mainLayoutlistofrecipe);
+        mRightArrowImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawerLayout.openDrawer(Gravity.START);
             }
         });
     }
@@ -165,52 +185,5 @@ public class ListOfRecipe extends AppCompatActivity  {
         tableId  = General.RECIPE_ITEM_NAME+"/"+uid;
         postRef= FirebaseDatabase.getInstance().getReference(tableId);
     }
-
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.menu,menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
-            case R.id.menuLogout:
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                break;
-
-            case R.id.mnItemConsumers:
-                Intent intent2 = new Intent(getBaseContext(), Consumers.class);
-                startActivity(intent2);
-                break;
-
-            case R.id.mnItemListofsaverecipes:
-                Intent intent6=new Intent(getBaseContext(),ListOfSaveRecipes.class);
-                startActivity(intent6);
-                break;
-
-                case R.id.mnItemProfile:
-            Intent intent3=new Intent(getBaseContext(),Profile.class);
-            startActivity(intent3);
-            break;
-            case R.id.mnItemListOfRecipes:
-                Toast.makeText(getApplicationContext(),"אתה נמצא במסך זה" ,Toast.LENGTH_SHORT).show();
-                break;
-
-
-
-
-
-        }
-
-        return true;
-    }
-
 
 }

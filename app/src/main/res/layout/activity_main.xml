@@ -1,114 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/space"
-    android:fitsSystemWindows="true">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/space"
-    android:weightSum="13.6"
+    android:background="#FAFAFA"
+    android:gravity="center"
     android:orientation="vertical">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2.5"
         android:id="@+id/tvheadlogin"
-        android:textColor="#ffffff"
-        android:textStyle="bold"
-        android:textSize="30sp"
-        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="28sp"
         android:gravity="center"
-        android:text="ברוכים הבאים לאפליקצייה של שניר"
+        android:textColor="#F9AC36"
+        android:text="Login"
         />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_weight="1.5"
-        android:layout_height="0dp">
-
-    </LinearLayout>
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:inputType="textEmailAddress"
-        android:hint="Email"
-        android:textColor="#ffffff"
-        android:textColorHint="#ffffff"
-        android:drawableLeft="@drawable/email"
-        android:paddingLeft="0dp"
-        android:drawablePadding="5dp"
         android:id="@+id/etemaillogin"
-        />
-    <EditText
+        android:background="@drawable/edit_text_design"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:textColor="#000000"
+        android:textColorHint="#9C9C9C"
+        android:paddingLeft="15sp"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:drawableLeft="@drawable/password"
-        android:hint="Password"
-        android:textColor="#ffffff"
-        android:textColorHint="#ffffff"
-        android:paddingLeft="0dp"
-        android:drawablePadding="5dp"
+        android:layout_margin="20dp"
+        android:layout_height="60dp"/>
+
+    <EditText
         android:id="@+id/etPasswordlogin"
+        android:background="@drawable/edit_text_design"
+        android:textColor="#000000"
+        android:textColorHint="#9C9C9C"
+        android:hint="Password"
         android:inputType="textPassword"
+        android:paddingLeft="15sp"
+        android:layout_width="match_parent"
+        android:layout_margin="20dp"
+        android:layout_height="60dp"
         />
 
     <ProgressBar
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_gravity="center_horizontal"
         android:id="@+id/progressbarlogin"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_horizontal"
         android:visibility="gone"
+        />
+
+    <Button
+        android:id="@+id/btSignIn"
+        android:background="@drawable/button_design"
+        android:layout_width="match_parent"
+        android:layout_margin="20dp"
+        android:text="Sign In"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+        android:layout_height="60dp"
 
         />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_gravity="center_horizontal"
-        android:textStyle="bold"
-        android:id="@+id/btLogin"
+
+
+    <TextView
+        android:id="@+id/tvSignUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
         android:gravity="center"
-        android:background="@color/colorPrimary"
-        android:textAllCaps="false"
-        android:text="התחבר"
-
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_weight="0.5"
-        android:layout_height="0dp">
-
-    </LinearLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/btSignInlogin"
+        android:layout_margin="10dp"
         android:textStyle="bold"
-        android:background="@color/colorPrimary"
-        android:textAllCaps="false"
-        android:text="הירשם כאן אם אין לך חשבון"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="0dp">
-
-    </LinearLayout>
-
-
+        android:textColor="#F9AC36"
+        android:text="Sign Up"/>
 
 
 </LinearLayout>
-</ScrollView>
 

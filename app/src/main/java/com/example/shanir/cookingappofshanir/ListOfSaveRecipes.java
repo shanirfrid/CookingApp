@@ -1,19 +1,24 @@
 package com.example.shanir.cookingappofshanir;
 
 import android.content.Intent;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.shanir.cookingappofshanir.Admin.General;
 import com.example.shanir.cookingappofshanir.classs.Adapter;
+import com.example.shanir.cookingappofshanir.classs.Navigation;
 import com.example.shanir.cookingappofshanir.classs.UserItems;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +40,9 @@ public class ListOfSaveRecipes extends AppCompatActivity implements AdapterView.
     private UserItems item;
     Button btsave;
     String lastselected;
+    private NavigationView navigationView;
+    private DrawerLayout mDrawerLayout;
+    private ImageView mRightArrowImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +50,8 @@ public class ListOfSaveRecipes extends AppCompatActivity implements AdapterView.
         setContentView(R.layout.activity_list_of_save_recipes);
         btsave=(Button)findViewById(R.id.btsavelistsave) ;
         listView = (ListView) findViewById(R.id.lvsaverecipes);
+        mRightArrowImageView = (ImageView) findViewById(R.id.right_arrow_image_view);
+
         btsave.setOnClickListener(this);;
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser()==null)
@@ -51,6 +61,17 @@ public class ListOfSaveRecipes extends AppCompatActivity implements AdapterView.
         }
         setRefToTables();
         retrieveData();
+
+        navigationView = findViewById(R.id.navigation_menu);
+        navigationView.setNavigationItemSelectedListener(new Navigation(this));
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.mainlayoutsaverecipe);
+        mRightArrowImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawerLayout.openDrawer(Gravity.START);
+            }
+        });
     }
 
     // Get Item list from database
@@ -154,11 +175,6 @@ public class ListOfSaveRecipes extends AppCompatActivity implements AdapterView.
             case R.id.mnItemListofsaverecipes:
                 Toast.makeText(getApplicationContext(),"אתה נמצא במסך זה" ,Toast.LENGTH_SHORT).show();
                 break;
-
-
-
-
-
         }
 
         return true;

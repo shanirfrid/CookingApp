@@ -7,9 +7,12 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,6 +27,7 @@ import android.widget.Toast;
 import com.example.shanir.cookingappofshanir.Admin.General;
 import com.example.shanir.cookingappofshanir.Admin.Picture;
 import com.example.shanir.cookingappofshanir.classs.FileHelper;
+import com.example.shanir.cookingappofshanir.classs.Navigation;
 import com.example.shanir.cookingappofshanir.classs.User;
 import com.example.shanir.cookingappofshanir.classs.UserItems;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -48,7 +52,7 @@ import java.io.IOException;
 import static com.example.shanir.cookingappofshanir.Register.user;
 
 public class Profile extends AppCompatActivity implements View.OnClickListener {
-    ImageView imageViewphone, imageViewcemra, imageView;
+    ImageView imageViewphone, imageViewcemra, imageView, mRightArrowImageView;
     private static final int CHOOSE_IMAGE = 101;
     TextView textView, textViewdetails;
     Button btsave;
@@ -63,6 +67,9 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     int codetakepicutre = 30;
     Bitmap bitmapcemra;
     FirebaseAuth mAuth;
+    private NavigationView navigationView;
+    private DrawerLayout mDrawerLayout;
+
 
 
     @Override
@@ -81,6 +88,8 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         btsave = (Button) findViewById(R.id.btsaveprofile);
         pb = (ProgressBar) findViewById(R.id.pbprofile);
         pbupdate = (ProgressBar) findViewById(R.id.pbprofileupdate);
+        mRightArrowImageView = (ImageView) findViewById(R.id.right_arrow_image_view);
+
         btsave.setOnClickListener(this);
         imageViewcemra.setOnClickListener(this);
         imageViewphone.setOnClickListener(this);
@@ -89,20 +98,26 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         if (i.getExtras() != null) {
             if (i.getExtras().getString("comefrom").equals("register"))
                 loadUserInformation();
+            imageViewcemra.setVisibility(View.VISIBLE);
+            imageViewphone.setVisibility(View.VISIBLE);
 
         } else {
             retrieveData();
             loadUserInformation();
             btsave.setVisibility(View.GONE);
-            imageViewcemra.setVisibility(View.GONE);
-            imageViewphone.setVisibility(View.GONE);
-
-            tvheadprofil.setVisibility(View.GONE);
-            tvheadprofil2.setVisibility(View.GONE);
             textViewdetails.setVisibility(View.VISIBLE);
-
-
         }
+
+        navigationView = findViewById(R.id.navigation_menu);
+        navigationView.setNavigationItemSelectedListener(new Navigation(this));
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.mainLayoutProfile);
+        mRightArrowImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawerLayout.openDrawer(Gravity.START);
+            }
+        });
 
     }
 
@@ -268,49 +283,6 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         startActivityForResult(Intent.createChooser(intent, "תבחר תמונה"), CHOOSE_IMAGE);
 
 
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menuLogout:
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                break;
-
-
-            case R.id.mnItemConsumers:
-                Intent intent2 = new Intent(getBaseContext(), Consumers.class);
-                startActivity(intent2);
-                break;
-            case R.id.mnItemListOfRecipes:
-                Intent intent3 = new Intent(getBaseContext(), ListOfRecipe.class);
-                startActivity(intent3);
-                break;
-
-
-            case R.id.mnItemListofsaverecipes:
-                Intent intent6 = new Intent(getBaseContext(), ListOfSaveRecipes.class);
-                startActivity(intent6);
-                break;
-            case R.id.mnItemProfile:
-                Toast.makeText(getApplicationContext(), "אתה נמצא במסך זה", Toast.LENGTH_SHORT).show();
-                break;
-
-
-        }
-
-        return true;
     }
 
 

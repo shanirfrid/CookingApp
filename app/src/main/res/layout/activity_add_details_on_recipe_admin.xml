@@ -189,7 +189,7 @@ android:layout_gravity="center"
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:background="@drawable/pluus"
+            android:background="@drawable/plus"
             android:id="@+id/ivconsumersaddaa"
             />
 

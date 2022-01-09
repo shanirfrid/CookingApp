@@ -1,80 +1,53 @@
 package com.example.shanir.cookingappofshanir.classs;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.shanir.cookingappofshanir.R;
-import com.example.shanir.cookingappofshanir.classs.Recipe;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Shanir on 02/04/2018.
- */
+public class ProductListAdapter extends ArrayAdapter<String> {
+    List<String> mProducts;
+    private Context mContext;
 
-public class ProductListAdapter extends BaseAdapter {
-    private Context context;
-    private List<Recipe> rProductList;
-    private ArrayList<String> items = new ArrayList<>();
-    public ProductListAdapter()
-    {}
-
-
-    public ProductListAdapter(Context context, List<Recipe> rProductList) {
-        this.context = context;
-        this.rProductList = rProductList;
+    public ProductListAdapter(@NonNull Context context, int resource, List<String> mProducts) {
+        super(context, resource, mProducts);
+        this.mProducts = mProducts;
+        this.mContext = context;
     }
-    public ArrayList<String> getItems() {
-        return items;
-    }
-    public void add(List <Recipe> list)
-    {
-        rProductList = new ArrayList<>();
-        for (Recipe r:list)
-            rProductList.add(r);
-    }
-
 
     @Override
     public int getCount() {
-        return rProductList.size();
+        return mProducts.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return rProductList.get(position);
+    public String getItem(int i) {
+        return mProducts.get(i);
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
+    public long getItemId(int i) {
+        return i;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View v=View.inflate(context, R.layout.item_product_list,null);
-        TextView tvname=(TextView)v.findViewById(R.id.tvnamerecipeitem);
-        TextView tvdifficult=(TextView)v.findViewById(R.id.vdifiitem);
-        TextView tvtime=(TextView)v.findViewById(R.id.tvtimerecipeitem);
-        TextView tvkind=(TextView)v.findViewById(R.id.tvkindrecipeitem);
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        View v =View.inflate(mContext, R.layout.product_item_list,null);
+        ((TextView) v.findViewById(R.id.product_name)).setText(getItem(i));
+        ((ImageView) v.findViewById(R.id.delete_product_image_view)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        tvname.setText("שם:  "+rProductList.get(position).getNameOfrecipe());
-        tvtime.setText("זמן(דקות): "+String.valueOf(rProductList.get(position).getTime())+" דקות ");
-        tvkind.setText("סוג המתכון: "+rProductList.get(position).getKindOfrecipe());
-        tvdifficult.setText("קושי: "+rProductList.get(position).getDifficulty());
-        v.setTag(rProductList.get(position).gettID());
-
+            }
+        });
         return v;
-    }
-
-    @Nullable
-    @Override
-    public CharSequence[] getAutofillOptions() {
-        return new CharSequence[0];
     }
 }

@@ -1,109 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayoutConsumers"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/mainLayout"
-    android:background="#d9d2d2"
     android:layout_height="match_parent"
+    android:background="#FAFAFA"
+    android:orientation="vertical"
     tools:context="com.example.shanir.cookingappofshanir.Consumers">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_gravity="center"
-        android:text="המצרכים שלי"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:id="@+id/tvheadconsumers"
-        android:textAlignment="center"
-        android:textSize="40sp"
-        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center"
-        android:layout_height="50dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-       >
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/pluus"
-            android:id="@+id/ivconsumersadd"
-            android:scaleType="centerCrop"
-            />
-
-        <EditText
+        <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            android:layout_height="50dp"
-            android:hint="הכנס כאן את המצרכים שלך"
-            android:textColor="#0d0c0c"
-            android:inputType="textCapSentences"
-            android:id="@+id/etwriteconsumers"
 
-            />
+            <ImageView
+                android:id="@+id/right_arrow_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:src="@drawable/ic_menu"/>
+
+            <TextView
+
+                android:id="@+id/tvheadconsumers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:layout_gravity="center"
+                android:text="My Products"
+                android:textColor="#F9AC36"
+                android:textSize="32sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etwriteconsumers"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_weight="5"
+                android:background="@drawable/edit_text_design"
+                android:hint="Enter here your products"
+                android:inputType="text"
+                android:textColor="#000000"
+                android:textColorHint="#9C9C9C" />
+
+            <ImageView
+                android:id="@+id/ivconsumersadd"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/plus" />
+
+        </LinearLayout>
+        <ListView
+            android:id="@+id/listviewconsumers"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_gravity="right"
+            android:padding="20dp"
+            android:layout_marginTop="20dp"
+            tools:listitem="@layout/product_item_list">
+
+        </ListView>
+
+
+            <Button
+                android:id="@+id/btsaveconsumers"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/button_design"
+                android:text="Save products"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="25sp" />
+
+            <Button
+                android:id="@+id/btmovetorecipelist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:layout_gravity="center"
+                android:background="@drawable/button_design"
+                android:text="find recipes"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="25sp" />
 
     </LinearLayout>
 
-
-
-    <ListView
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:id="@+id/listviewconsumers"
-        android:layout_gravity="right"
-        android:layout_height="300dp"
-    >
-
-    </ListView>
-
-
-
-
-    <LinearLayout
-     android:layout_width="wrap_content"
-     android:orientation="horizontal"
-     android:layout_gravity="center"
-     android:layout_height="match_parent">
-    <Button
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navigation_menu"
         android:layout_width="wrap_content"
-        android:background="#2749a6"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textColor="#f9f5f5"
-        android:textSize="15sp"
-        android:layout_gravity="center"
-        android:id="@+id/btsaveconsumers"
-        android:text="שמור מצרכים"
-        />
-        <LinearLayout
-            android:layout_width="50dp"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/menu">
 
-        </LinearLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:background="#2749a6"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textColor="#f9f5f5"
-        android:textSize="15sp"
-        android:layout_gravity="center"
-        android:id="@+id/btmovetorecipelist"
-        android:text="מתכונים המתאימים בשבילך"
-        />
-
- </LinearLayout>
-
-
-
-
-</LinearLayout>
+    </android.support.design.widget.NavigationView>
+</android.support.v4.widget.DrawerLayout>
