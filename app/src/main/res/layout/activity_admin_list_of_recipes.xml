@@ -2,63 +2,64 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recipelayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/recipelayout"
-    android:weightSum="10"
     android:orientation="vertical"
+    android:weightSum="10"
+    android:background="#FAFAFA"
     tools:context="com.example.shanir.cookingappofshanir.Admin.AdminListOfRecipes">
 
     <TextView
+        android:id="@+id/tvheadaminlist"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/tvheadaminlist"
         android:layout_gravity="center"
-        android:textSize="35sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorPrimary"
+        android:layout_weight="1"
+        android:text=" רשימה של מתכונים "
         android:textAlignment="center"
-        android:text=" רשימה של מתכונים "/>
+        android:textColor="@color/colorPrimary"
+        android:textSize="35sp"
+        android:textStyle="bold" />
 
     <ImageView
-        android:layout_width="50dp"
         android:id="@+id/admin_logout"
+        android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/logout">
+        android:src="@drawable/logout" />
 
-    </ImageView>
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
         android:id="@+id/tvheadaminnumrecipe"
-         android:gravity="right"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorPrimary"
-        android:text="  מספר מתכונים"/>
-    <ProgressBar
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/pbadminlistofrecipes"
-        android:layout_gravity="center_horizontal"
+        android:gravity="right"
+        android:text="  מספר מתכונים"
+        android:textColor="@color/colorPrimary"
+        android:textSize="25sp"
+        android:textStyle="bold" />
 
-        />
-    <ListView
-        android:layout_height="0dp"
+    <ProgressBar
+        android:id="@+id/pbadminlistofrecipes"
         android:layout_width="match_parent"
-        android:layout_weight="7"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1" />
+
+    <ListView
         android:id="@+id/listviewlistofallrecipe"
-        >
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7">
 
     </ListView>
+
     <Button
         android:id="@+id/add_recipe_btn"
         android:layout_width="wrap_content"
-        android:layout_gravity="center"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_margin="20dp"
         android:background="@drawable/button_design"
         android:text="Add recipe"

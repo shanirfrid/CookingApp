@@ -30,16 +30,23 @@
         <activity
             android:name=".DetailsOnRecipe"
             android:screenOrientation="portrait" />
-        <activity android:name=".ListOfRecipe" />
-        <activity android:name=".ListOfSaveRecipes" />
-        <activity android:name=".Admin.Picture" />
-        <activity android:name=".Timer" />
-        <activity android:name=".Consumers" />
-        <activity android:name=".Admin.AddDetailsOnRecipeAdmin" />
-        <activity android:name=".Forgetpassword" />
-        <activity android:name=".Admin.AdminListOfRecipes" />
-        <activity android:name=".Timerrun"></activity>
-
+        <activity android:name=".ListOfRecipe"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ListOfSaveRecipes"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Admin.Picture"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Timer"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Consumers"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Admin.AddDetailsOnRecipeAdmin"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Admin.AdminListOfRecipes"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Timerrun"
+            android:screenOrientation="portrait" >
+        </activity>
 
     </application>
 

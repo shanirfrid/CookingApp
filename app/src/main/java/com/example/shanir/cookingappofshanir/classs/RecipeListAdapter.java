@@ -62,10 +62,10 @@ public class RecipeListAdapter extends BaseAdapter {
         TextView tvtime=(TextView)v.findViewById(R.id.tvtimerecipeitem);
         TextView tvkind=(TextView)v.findViewById(R.id.tvkindrecipeitem);
 
-        tvname.setText("שם:  "+ recipeList.get(position).getNameOfrecipe());
-        tvtime.setText("זמן(דקות): "+String.valueOf(recipeList.get(position).getTime())+" דקות ");
-        tvkind.setText("סוג המתכון: "+ recipeList.get(position).getKindOfrecipe());
-        tvdifficult.setText("קושי: "+ recipeList.get(position).getDifficulty());
+        tvname.setText(recipeList.get(position).getNameOfrecipe());
+        tvtime.setText(String.valueOf(recipeList.get(position).getTime()));
+        tvkind.setText(recipeList.get(position).getKindOfrecipe());
+        tvdifficult.setText(recipeList.get(position).getDifficulty());
         v.setTag(recipeList.get(position).gettID());
 
         return v;
