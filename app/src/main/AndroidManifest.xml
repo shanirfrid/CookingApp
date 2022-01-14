@@ -33,7 +33,6 @@
         <activity android:name=".ListOfRecipe" />
         <activity android:name=".ListOfSaveRecipes" />
         <activity android:name=".Admin.Picture" />
-        <activity android:name=".Timer" />
         <activity android:name=".Consumers" />
         <activity android:name=".Admin.AddDetailsOnRecipeAdmin" />
         <activity android:name=".Forgetpassword" />
