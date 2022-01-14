@@ -1,9 +1,9 @@
 package com.example.shanir.cookingappofshanir.Admin;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,6 +16,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shanir.cookingappofshanir.MainActivity;
 import com.example.shanir.cookingappofshanir.classs.RecipeListAdapter;
@@ -135,7 +137,7 @@ public class AdminListOfRecipes extends AppCompatActivity implements AdapterView
 
     @Override
     public boolean onItemLongClick(final AdapterView<?> parent, View view, int position, long id) {
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final int pos = position;
         builder.setTitle("מחיקת מתכון                        ");
         builder.setMessage("האם אתה מאשר את מחיקת הפריט?" + "\n" + "בחר פה את תשובתך");
@@ -159,7 +161,7 @@ public class AdminListOfRecipes extends AppCompatActivity implements AdapterView
                 Toast.makeText(context, "בחרת לא למחוק את המתכון", Toast.LENGTH_SHORT).show();
             }
         });
-        android.support.v7.app.AlertDialog dialog = builder.create();
+        AlertDialog dialog = builder.create();
         dialog.show();
         return true;
     }

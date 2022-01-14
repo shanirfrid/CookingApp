@@ -2,11 +2,10 @@ package com.example.shanir.cookingappofshanir.classs;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.example.shanir.cookingappofshanir.Consumers;
 import com.example.shanir.cookingappofshanir.ListOfRecipe;
@@ -14,6 +13,7 @@ import com.example.shanir.cookingappofshanir.ListOfSaveRecipes;
 import com.example.shanir.cookingappofshanir.MainActivity;
 import com.example.shanir.cookingappofshanir.Profile;
 import com.example.shanir.cookingappofshanir.R;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Navigation implements NavigationView.OnNavigationItemSelectedListener {

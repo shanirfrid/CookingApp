@@ -2,17 +2,17 @@ package com.example.shanir.cookingappofshanir.classs;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.arch.lifecycle.ViewModelStoreOwner;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.SupportActivity;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ComponentActivity;
 
 
 @SuppressLint("RestrictedApi")
-public class Permission extends SupportActivity {
+public class Permission extends ComponentActivity {
     private String[] PERMISSIONS;
     private Activity mActivity;
     private Context mContext;

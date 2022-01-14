@@ -1,13 +1,13 @@
 package com.example.shanir.cookingappofshanir.classs;
 
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shanir.cookingappofshanir.Admin.General;
 import com.example.shanir.cookingappofshanir.R;
@@ -65,13 +65,10 @@ public class UpdateProfile extends AppCompatActivity {
                 if (task.getResult().exists()){
                     String nameResult = task.getResult().getString("firstname");
                     etname.setText(nameResult);
-
                 }
                 else{
                     Toast.makeText(UpdateProfile.this,"No profile exist", Toast.LENGTH_SHORT).show();
                 }
-
-
             }
         });
     }
@@ -84,10 +81,8 @@ public class UpdateProfile extends AppCompatActivity {
         db.runTransaction(new Transaction.Function<Void>() {
             @Override
             public Void apply(Transaction transaction) throws FirebaseFirestoreException {
-
                 transaction.update(sDoc, "firstname", firstname);
                 return null;
-
             }
         }).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
