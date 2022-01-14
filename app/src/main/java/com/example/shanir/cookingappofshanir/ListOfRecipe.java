@@ -6,9 +6,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -17,9 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shanir.cookingappofshanir.Admin.General;
-import com.example.shanir.cookingappofshanir.classs.Adapter;
 import com.example.shanir.cookingappofshanir.classs.Navigation;
 import com.example.shanir.cookingappofshanir.classs.Recipe;
+import com.example.shanir.cookingappofshanir.classs.RecipeListAdapter;
 import com.example.shanir.cookingappofshanir.classs.UserItems;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -33,16 +30,16 @@ import java.util.ArrayList;
 public class ListOfRecipe extends AppCompatActivity  {
 
     TextView tvhowmanyrecipe;
-    ArrayList<String> items;
+    ArrayList<String> userIngredients;
     private UserItems item;
-    String lastSelected;
+    Recipe lastSelected;
     ArrayList<Recipe> itemsRecipe;
-    ArrayList<Recipe> recipes;
+    ArrayList<Recipe> suitableRecipes;
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
     private DatabaseReference postRef,postRefr;;
     ListView listView;
-    Adapter adapter;
+    RecipeListAdapter adapter;
     private  String tableId;
     ArrayList<String> liststring;
     private NavigationView navigationView;
@@ -58,7 +55,7 @@ public class ListOfRecipe extends AppCompatActivity  {
         mRightArrowImageView = (ImageView) findViewById(R.id.right_arrow_image_view);
         firebaseAuth = FirebaseAuth.getInstance();
         liststring = new ArrayList<String>();
-        adapter = new Adapter(this, 0, liststring);
+        adapter = new RecipeListAdapter(this, new ArrayList<Recipe>());
         listView.setAdapter(adapter);
         setRefToTables();
         datalistingredientuser();
@@ -66,9 +63,9 @@ public class ListOfRecipe extends AppCompatActivity  {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                lastSelected = (String) adapter.getItem(position);
+                lastSelected = (Recipe) adapter.getItem(position);
                 Intent i=new Intent(getApplicationContext(),DetailsOnRecipe.class);
-                i.putExtra("detailsrecipe",lastSelected);
+                i.putExtra("detailsrecipe", lastSelected.getNameOfrecipe());
                 startActivity(i);
             }
         });
@@ -118,14 +115,14 @@ public class ListOfRecipe extends AppCompatActivity  {
     public void Setlistuser(UserItems list)
     {
         if (list!=null)
-        items = list.getItems();
+        userIngredients = list.getItems();
 
 
     }
 
     public void datatlistingredientrecipe()
     {
-        recipes = new ArrayList<>();
+        suitableRecipes = new ArrayList<>();
         firebaseDatabase= FirebaseDatabase.getInstance();
         String uid=General.UIDUSER;
         String tableIdR  = General.RECIPE_TABLE_NAME+"/"+uid;
@@ -139,11 +136,11 @@ public class ListOfRecipe extends AppCompatActivity  {
                     r = postSnapshot.getValue(Recipe.class);
                     r.settID(firebaseAuth.getCurrentUser().getUid());
                     r.setKey(postSnapshot.getKey());
-                    recipes.add(r);
+                    suitableRecipes.add(r);
 
                 }
-                if (recipes!=null)
-               SetlistRecipe(recipes);
+                if (suitableRecipes !=null)
+               SetlistRecipe(suitableRecipes);
 
             }
             @Override
@@ -153,31 +150,39 @@ public class ListOfRecipe extends AppCompatActivity  {
         });
     }
 
-    public void SetlistRecipe(ArrayList<Recipe> list)
+    public void SetlistRecipe(ArrayList<Recipe> recipes)
     {
-        if( items!=null)
+        if( userIngredients !=null)
         {
-            itemsRecipe = list;
-            int n = 0;
-            for (int i = 0; i < itemsRecipe.size(); i++)
-            {
-                if (items.containsAll(itemsRecipe.get(i).getListNameIngredientOnRecipe())) {
-                    adapter.add(itemsRecipe.get(i).getNameOfrecipe());
-                    n++;
-                    adapter.notifyDataSetChanged();
-                }
-            }
+            itemsRecipe = recipes;
+            suitableRecipes = new ArrayList<Recipe>();
 
-            tvhowmanyrecipe.setText("מספר המתכונים המותאמים בשבילך הוא: " + Integer.toString(n));
+            for (Recipe currentRecipe : recipes)
+                if (userIngredients.containsAll(
+                        currentRecipe.getListNameIngredientOnRecipe()))
+                    suitableRecipes.add(currentRecipe);
+
+            adapter.add(suitableRecipes);
+            adapter.notifyDataSetChanged();
+            tvhowmanyrecipe.setText(
+                    resultsMessageBuilder(suitableRecipes.size()));
         }
         else
         {
-            tvhowmanyrecipe.setText("מספר המתכונים המותאמים בשבילך הוא: " + "0");
+            tvhowmanyrecipe.setText(resultsMessageBuilder(0));
         }
-
-
     }
 
+    private static String resultsMessageBuilder(int recipesAmount) {
+        switch (recipesAmount) {
+            case 0:
+                return "No recipe was found!";
+            case 1:
+                return "1 recipe was found!";
+            default:
+                return recipesAmount + " recipes were found!";
+        }
+    }
 
     private void setRefToTables()
     {
