@@ -100,5 +100,11 @@ public class Timerrun extends AppCompatActivity implements View.OnClickListener 
 
 
     }
+
+    public void letUserRestartTimer() {
+        asTsk1 = null;
+        btstop.setEnabled(false);
+        btstart.setEnabled(true);
     }
+}
 

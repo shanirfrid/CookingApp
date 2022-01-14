@@ -1,21 +1,10 @@
 package com.example.shanir.cookingappofshanir;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Vibrator;
-
-import android.media.AudioAttributes;
-import android.media.AudioManager;
-import android.media.SoundPool;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.VibrationEffect;
-import android.os.Vibrator;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -34,7 +23,7 @@ public class AsTsk1 extends AsyncTask<Integer, Integer, String> {
     private Time timetext;
     private CheakTime cheakTime;
     boolean isRun = true;
-
+    private Timerrun mTimerRunActivity;
     int num;
 
     public AsTsk1(TextView tv,
@@ -43,7 +32,7 @@ public class AsTsk1 extends AsyncTask<Integer, Integer, String> {
         this.progressBar = progressBar;
 
         this.context=context;
-
+        this.mTimerRunActivity = (Timerrun) context;
     }
 
     @Override
@@ -73,7 +62,7 @@ public class AsTsk1 extends AsyncTask<Integer, Integer, String> {
                 publishProgress(sec);
             }
         }
-        return "Timer finished";
+        return "time is up!";
     }
 
     protected void onProgressUpdate(Integer... values) {
@@ -87,8 +76,8 @@ public class AsTsk1 extends AsyncTask<Integer, Integer, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
+        this.mTimerRunActivity.letUserRestartTimer();
         tv.setText(s);
-        tv.setBackgroundColor(Color.RED);
         Vibrator v = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
