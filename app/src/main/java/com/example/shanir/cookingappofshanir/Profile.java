@@ -26,6 +26,7 @@ import com.example.shanir.cookingappofshanir.Admin.General;
 import com.example.shanir.cookingappofshanir.classs.FileHelper;
 import com.example.shanir.cookingappofshanir.classs.Navigation;
 import com.example.shanir.cookingappofshanir.classs.Permission;
+import com.example.shanir.cookingappofshanir.classs.UpdateProfile;
 import com.example.shanir.cookingappofshanir.classs.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -198,16 +199,19 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
             showPictureDialog();
         }
         else if (v == btsave) {
-            final FirebaseUser user = mAuth.getCurrentUser();
-            if (uriProfileImage!= null) {
-                namebitmap = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
-                uploadImage(uriProfileImage);
-                user.updateProfile(uriProfileImage);
-            }
-            if (user.isEmailVerified()) {
-                changeEmailToVerified();
-            }
-            user.reload();
+            Intent intent = new Intent(this, UpdateProfile.class);
+            startActivity(intent);
+
+//            final FirebaseUser user = mAuth.getCurrentUser();
+//            if (uriProfileImage!= null) {
+//                namebitmap = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
+//                uploadImage(uriProfileImage);
+//
+//            }
+//            if (user.isEmailVerified()) {
+//                changeEmailToVerified();
+//            }
+//            user.reload();
         }
     }
 

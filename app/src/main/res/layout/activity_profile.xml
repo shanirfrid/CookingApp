@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="4">
+            android:weightSum="3">
 
             <ImageView
                 android:id="@+id/right_arrow_image_view"
@@ -43,17 +43,15 @@
 
             <Button
                 android:id="@+id/btsaveprofile"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="0dp"
+                android:layout_width="2dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_design"
-                android:text="Update"
-                android:clickable="true"
+                android:layout_weight="0.5"
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:background="@drawable/ic_edit"
                 android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp" />
+                android:textColor="#FFFFFF" />
 
         </LinearLayout>
 
