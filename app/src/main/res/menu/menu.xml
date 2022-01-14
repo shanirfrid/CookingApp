@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-<item
-    android:id="@+id/menuLogout"
-    android:title="התנתקות"
-    />
-    <item android:id="@+id/mnItemConsumers"
-    android:title="המצרכים שלי" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/mnItemProfile"
+        android:icon="@mipmap/account"
+        app:showAsAction="always"
+        android:title="My Profile" />
 
-    <item android:id="@+id/mnItemListOfRecipes"
-    android:title="רשימת מתכונים " />
+    <group android:checkableBehavior="single" />
+    <item
+        android:id="@+id/menuLogout"
+        android:title="Log out" />
+    <item
+        android:id="@+id/mnItemConsumers"
+        android:title="My Products" />
 
-    <item android:id="@+id/mnItemListofsaverecipes"
-    android:title="רשימת מתכונים שמורים" />
+    <item
+        android:id="@+id/mnItemListOfRecipes"
+        android:title="My Recipes" />
 
-    <item android:id="@+id/mnItemProfile"
-        android:title="הפרופיל שלי" />
+    <item
+        android:id="@+id/mnItemListofsaverecipes"
+        android:title="My Saved Recipes" />
 
 
-
+    <group />
 
 </menu>
