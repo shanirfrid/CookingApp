@@ -1,15 +1,19 @@
 package com.example.shanir.cookingappofshanir;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -19,9 +23,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shanir.cookingappofshanir.Admin.General;
+import com.example.shanir.cookingappofshanir.classs.FileHelper;
 import com.example.shanir.cookingappofshanir.classs.Navigation;
+import com.example.shanir.cookingappofshanir.classs.Permission;
 import com.example.shanir.cookingappofshanir.classs.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +40,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Profile extends AppCompatActivity implements View.OnClickListener {
     ImageView ivAccountProfile, mRightArrowImageView;
@@ -44,9 +57,11 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     Uri uriProfileImage;
     ProgressBar pb;
     User userprofil;
+    String namebitmap;
     FirebaseAuth mAuth;
     private NavigationView navigationView;
     private DrawerLayout mDrawerLayout;
+    private int GALLERY = 1, CAMERA = 2;
 
 
     @Override
@@ -55,7 +70,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_profile);
         mAuth = FirebaseAuth.getInstance();
         textViewdetails = (TextView) findViewById(R.id.tvdetailsprofil);
-        ivAccountProfile = (ImageView) findViewById(R.id.iv_account_profile);
+        ivAccountProfile = (ImageView) findViewById(R.id.profile_iv_account_profile);
         textView = (TextView) findViewById(R.id.tvvreified);
         tvHeaderVerficationEmail = (TextView) findViewById(R.id.tv_header_verify_email);
         tvVerficationEmail = (TextView) findViewById(R.id.tv_verigy_email);
@@ -64,6 +79,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         pb = (ProgressBar) findViewById(R.id.pbprofile);
         mRightArrowImageView = (ImageView) findViewById(R.id.right_arrow_image_view);
         btsave.setOnClickListener(this);
+        ivAccountProfile.setOnClickListener(this);
 
         retrieveData();
         loadUserInformation();
@@ -84,6 +100,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onStart() {
         super.onStart();
+        retrieveData();
         if (mAuth.getCurrentUser() == null) {
             finish();
             startActivity(new Intent(this, MainActivity.class));
@@ -93,12 +110,9 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     private void loadUserInformation() {
         final FirebaseUser user = mAuth.getCurrentUser();
         if (user.isEmailVerified()) {
-            textView.setVisibility(View.GONE);
-            tvHeaderVerficationEmail.setText("Verification Success");
-            tvVerficationEmail.setText("Thank you for your support, we have successfully verfied your email");
-            tvIconEmail.setBackground(ContextCompat.getDrawable(getApplicationContext(),
-                    R.drawable.email_verified_successfully));
-        } else {
+            changeEmailToVerified();
+        }
+        else {
             textView.setText("Verify Email");
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -111,8 +125,19 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                     });
                 }
             });
+
         }
     }
+
+    public void changeEmailToVerified(){
+        textView.setVisibility(View.GONE);
+        tvHeaderVerficationEmail.setText("Verification Success");
+        tvVerficationEmail.setText("Thank you for your support, we have successfully verfied your email");
+        tvIconEmail.setBackground(ContextCompat.getDrawable(getApplicationContext(),
+                R.drawable.email_verified_successfully));
+    }
+
+
 
     public void retrieveData() {
         setRefToTables();
@@ -168,24 +193,108 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View v) {
 
         if (v == ivAccountProfile){
-//            RequestMultiplePermissions();
-//            showPictureDialog();
+            Permission permission = new Permission(this, getApplicationContext());
+            permission.requestMultiplePermissions();
+            showPictureDialog();
         }
         else if (v == btsave) {
-            if (ivAccountProfile.getDrawable() == null) {
-
-                Toast.makeText(this, "חסרה תמונה ,צלם שוב בבקשה", Toast.LENGTH_SHORT).show();
-            } else if (ivAccountProfile.getDrawable() != null) {
-
-                Toast.makeText(this, "התמונה נשמרה בהצלחה", Toast.LENGTH_SHORT).show();
-                Intent intent1 = new Intent();
-                intent1.putExtra("uri", uriProfileImage.toString());
-                setResult(RESULT_OK, intent1);
-                finish();
-                btsave.setVisibility(View.GONE);
+            final FirebaseUser user = mAuth.getCurrentUser();
+            if (uriProfileImage!= null) {
+                namebitmap = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
+                uploadImage(uriProfileImage);
+                user.updateProfile(uriProfileImage);
             }
+            if (user.isEmailVerified()) {
+                changeEmailToVerified();
+            }
+            user.reload();
         }
     }
+
+    private void showPictureDialog(){
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+        pictureDialog.setTitle("Add Photo!");
+        String[] pictureDialogItems = {
+                "Select photo from gallery",
+                "Take Photo" };
+        pictureDialog.setItems(pictureDialogItems,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                choosePhotoFromGallary();
+                                break;
+                            case 1:
+                                takePhotoFromCamera();
+                                break;
+                        }
+                    }
+                });
+        pictureDialog.show();
+    }
+
+
+    public void choosePhotoFromGallary() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, GALLERY);
+    }
+
+    private void takePhotoFromCamera() {
+        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, CAMERA);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == this.RESULT_CANCELED) {
+            return;
+        }
+        if (requestCode == GALLERY ) {
+            if (data != null) {
+                uriProfileImage = data.getData();
+                Log.d("dd", "onActivityResult: " + uriProfileImage);
+                try {
+                    Bitmap bitmapGallery = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uriProfileImage);
+                    ivAccountProfile.setImageBitmap(bitmapGallery);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(Profile.this, "Failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        } else if (requestCode == CAMERA) {
+
+            Bitmap bitmapCamera = (Bitmap) data.getExtras().get("data");
+            ivAccountProfile.setImageBitmap(bitmapCamera);
+            FileHelper.saveBitmapToFile(bitmapCamera, Profile.this, PIC_FILE_NAME_PROFIL);
+            File tmpFile = new File(getFilesDir() + "/" + PIC_FILE_NAME_PROFIL);
+            uriProfileImage = Uri.fromFile(tmpFile);
+            Log.d("dd", "onActivityResult: " + uriProfileImage);
+            Toast.makeText(Profile.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void uploadImage(Uri imageUri) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference().child("imagesprofil/").child(namebitmap);
+        storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(Profile.this,"Image Uploaded", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Profile.this," Failed", Toast.LENGTH_SHORT).show();
+
+            }
+        })
+        ;
+    }
+
 
 }
 

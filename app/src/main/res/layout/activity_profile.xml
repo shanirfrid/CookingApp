@@ -12,60 +12,64 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="20"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="20">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="4"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="4">
 
             <ImageView
                 android:id="@+id/right_arrow_image_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:padding="10dp"
                 android:layout_weight="0.5"
+                android:padding="10dp"
                 android:src="@drawable/arrow_right" />
 
             <TextView
                 android:id="@+id/tvhead_my_profile"
                 android:layout_width="wrap_content"
-                android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_weight="2"
                 android:padding="20dp"
                 android:text="Profile"
                 android:textColor="#F9AC36"
                 android:textSize="32sp" />
+
             <Button
-                android:layout_marginTop="10dp"
                 android:id="@+id/btsaveprofile"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginLeft="0dp"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_design"
                 android:text="Update"
+                android:clickable="true"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                />
+                android:textSize="20sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="4"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:weightSum="4">
 
-            <ImageView
-                android:id="@+id/iv_account_profile"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_iv_account_profile"
                 android:layout_width="100dp"
                 android:layout_height="150dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
                 android:layout_gravity="center"
                 android:src="@drawable/account_profile"
                 android:textColor="#F9AC36"
@@ -90,66 +94,64 @@
                     android:id="@+id/tvdetailsprofil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
                     android:textColor="#000000"
-                    android:visibility="gone"
-                    />
+                    android:textSize="20sp"
+                    android:visibility="gone" />
 
                 <ProgressBar
                     android:id="@+id/pbprofile"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone" />
 
             </LinearLayout>
         </ScrollView>
+
         <TextView
             android:id="@+id/tv_icon_email"
             android:layout_width="80dp"
             android:layout_height="70dp"
             android:layout_gravity="center"
-            android:background="@drawable/email_confirm"
             android:layout_marginBottom="10dp"
-            />
+            android:background="@drawable/email_confirm" />
+
         <TextView
             android:id="@+id/tv_header_verify_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Verify your email"
             android:background="@drawable/text_line"
             android:gravity="center"
-            android:textSize="25sp"
+            android:text="Verify your email"
             android:textColor="#000000"
-            />
+            android:textSize="25sp" />
+
         <TextView
             android:id="@+id/tv_verigy_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hi! use the button below to verify your vemail and start enjoying Recipe app"
             android:gravity="center"
-            android:textSize="15sp"
+            android:text="Hi! use the button below to verify your vemail and start enjoying Recipe app"
             android:textColor="#565252"
-            />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tvvreified"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/button_design"
-            android:text="Verify Email"
             android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_design"
             android:clickable="false"
+            android:gravity="center"
+            android:text="Verify Email"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="15sp"/>
+            android:textSize="15sp" />
 
-</LinearLayout>
+    </LinearLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_menu"

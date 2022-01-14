@@ -28,7 +28,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shanir.cookingappofshanir.Admin.General;
+import com.example.shanir.cookingappofshanir.classs.ChooseImageDialog;
 import com.example.shanir.cookingappofshanir.classs.FileHelper;
+import com.example.shanir.cookingappofshanir.classs.Permission;
 import com.example.shanir.cookingappofshanir.classs.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -63,17 +65,16 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     ScrollView scrollView;
     ProgressBar pb;
     public static User user;
-    Uri uriProfileImage;
     private FirebaseAuth mAuth;
-    Context context = this;
     public static final String TAG = "myapp";
     FirebaseDatabase firebaseDatabase;
     StorageReference storageReference;
-    private int cameraPermmision = 0, readPermmision = 1, writePermission = 2;
     ImageView mProfileImage;
+    ChooseImageDialog chooseImageDialog;
+    Uri uriProfileImage;
     private int GALLERY = 1, CAMERA = 2;
-    private String[] PERMISSIONS;
     final String PIC_FILE_NAME_PROFIL = "userpicprofil";
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -96,11 +97,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         btsave.setOnClickListener(this);
         tvBack.setOnClickListener(this);
         mProfileImage.setOnClickListener(this);
-        PERMISSIONS = new String[] {
-                android.Manifest.permission.CAMERA,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-        };
+
+//        chooseImageDialog = new ChooseImageDialog (getApplicationContext(), this, mProfileImage);
+
         storageReference = FirebaseStorage.getInstance().getReference();
 
         scrollView.setOnTouchListener(new View.OnTouchListener() {
@@ -113,52 +112,12 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             }
         });
     }
-    private void requestMultiplePermissions(){
-        if (!hasPermissions(Register.this,PERMISSIONS)) {
-            ActivityCompat.requestPermissions(Register.this,PERMISSIONS,1);
-        }
-    }
-    private boolean hasPermissions(Context context, String... PERMISSIONS) {
-        if (context != null && PERMISSIONS != null) {
-            for (String permission: PERMISSIONS){
-                if (ActivityCompat.checkSelfPermission(context,permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == 1) {
-            if (grantResults[cameraPermmision] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Camera Permission is granted", Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(this, "Camera Permission is denied", Toast.LENGTH_SHORT).show();
-            }
-
-            if (grantResults[readPermmision] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Read Permission is granted", Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(this, "Read Permission is denied", Toast.LENGTH_SHORT).show();
-            }
-
-            if (grantResults[writePermission] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Write Permission is granted", Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(this, "Write Permission is denied", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
 
     @Override
     public void onClick(View v) {
         if (v == mProfileImage){
-            requestMultiplePermissions();
+            Permission permission = new Permission(this, getApplicationContext());
+            permission.requestMultiplePermissions();
             showPictureDialog();
         }
         if (v == btsave) {
@@ -170,24 +129,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
-    }
-
-    private void uploadImage(Uri imageUri) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReference().child("imagesprofil/").child(namebitmap);
-        storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(Register.this,"Image Uploaded", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Register.this," Failed", Toast.LENGTH_SHORT).show();
-
-            }
-        })
-        ;
     }
 
     private void showPictureDialog(){
@@ -257,6 +198,24 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             Toast.makeText(Register.this, "Image Saved!", Toast.LENGTH_SHORT).show();
         }
     }
+    private void uploadImage(Uri imageUri) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference().child("imagesprofil/").child(namebitmap);
+        storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(Register.this,"Image Uploaded", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Register.this," Failed", Toast.LENGTH_SHORT).show();
+            }
+        })
+        ;
+    }
+
+
 
     private void registerUser() {
         String password = etpass.getText().toString().trim();
@@ -297,7 +256,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         pb.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
-                            if (uriProfileImage != null) {
+                            if (uriProfileImage!= null) {
                                 namebitmap = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
                                 uploadImage(uriProfileImage);
                             }
