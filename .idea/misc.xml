@@ -7,6 +7,8 @@
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/drawable/arrow_right.xml" value="0.26614583333333336" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/drawable/button_design.xml" value="0.17447916666666666" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/drawable/buttondesign.xml" value="0.14375" />
+        <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/drawable/ic_baseline_access_time_24.xml" value="0.1265625" />
+        <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.12604166666666666" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/drawable/ic_baseline_arrow_forward_ios_24.xml" value="0.23489583333333333" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/drawable/ic_menu.xml" value="0.15677083333333333" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/drawable/plus.xml" value="0.26614583333333336" />
@@ -14,12 +16,14 @@
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_admin_list_of_recipes.xml" value="0.25" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_adminchose.xml" value="0.25" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_consumers.xml" value="0.264" />
-        <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_list_of_recipe.xml" value="0.19270833333333334" />
+        <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_details_on_recipe.xml" value="0.25" />
+        <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_list_of_recipe.xml" value="0.264" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_list_of_save_recipes.xml" value="0.19270833333333334" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_picture.xml" value="0.19270833333333334" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_profile.xml" value="0.19270833333333334" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_register.xml" value="0.264" />
+        <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_timer.xml" value="0.25" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_timerrun.xml" value="0.19270833333333334" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/cdialogdetailsoningredients.xml" value="0.25" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/custom_layout.xml" value="0.25" />
@@ -27,6 +31,8 @@
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/edit_text_design.xml" value="0.25" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/item_product_list.xml" value="0.25" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/product_item_list.xml" value="0.264" />
+        <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/recipe_item_list.xml" value="0.4" />
+        <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/timerdialog.xml" value="0.25" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/menu/main_menu.xml" value="0.72" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/menu/menu.xml" value="0.15833333333333333" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/menu/menu_back.xml" value="0.21666666666666667" />

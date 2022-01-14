@@ -71,7 +71,6 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     private DrawerLayout mDrawerLayout;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,10 +106,8 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
             btsave.setVisibility(View.GONE);
             textViewdetails.setVisibility(View.VISIBLE);
         }
-
         navigationView = findViewById(R.id.navigation_menu);
         navigationView.setNavigationItemSelectedListener(new Navigation(this));
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.mainLayoutProfile);
         mRightArrowImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +116,27 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
             }
         });
 
+    }
+
+    private void loadUserInformation() {
+        final FirebaseUser user = mAuth.getCurrentUser();
+        if (user.isEmailVerified()) {
+            textView.setText(" המייל  מאומת");
+
+        } else {
+            textView.setText("לחץ כדי לאמת מייל");
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(Profile.this, " אימות אימייל נשלח ", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+        }
     }
 
     public void retrieveData() {
@@ -181,29 +199,6 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
-
-    }
-
-    private void loadUserInformation() {
-        final FirebaseUser user = mAuth.getCurrentUser();
-
-        if (user.isEmailVerified()) {
-            textView.setText(" המייל  מאומת");
-
-        } else {
-            textView.setText("לחץ כדי לאמת מייל");
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(Profile.this, " אימות אימייל נשלח ", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            });
-        }
     }
 
 
@@ -235,8 +230,6 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
             if (imageView.getDrawable() == null) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, codetakepicutre);
-
-
             } else {
                 Toast.makeText(this, "כבר יש תמונה לפרופיל זה", Toast.LENGTH_SHORT).show();
             }
@@ -257,7 +250,6 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uriProfileImage);
                 imageView.setImageBitmap(bitmap);
 
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -269,11 +261,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
             File tmpFile = new File(getFilesDir() + "/" + PIC_FILE_NAME_PROFIL);
             uriProfileImage = Uri.fromFile(tmpFile);
             Log.d("dd", "onActivityResult: " + uriProfileImage);
-
-
         }
-
-
     }
 
     private void showImageChooser() {
@@ -281,10 +269,6 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "תבחר תמונה"), CHOOSE_IMAGE);
-
-
     }
-
-
 }
 

@@ -1,25 +1,38 @@
 package com.example.shanir.cookingappofshanir;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shanir.cookingappofshanir.Admin.General;
+import com.example.shanir.cookingappofshanir.classs.FileHelper;
 import com.example.shanir.cookingappofshanir.classs.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +42,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.DexterError;
+import com.karumi.dexter.listener.PermissionRequestErrorListener;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -37,17 +59,23 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     EditText etpass, etfirstname, etemail, etlastname, etphone, etid, etconfirmpass;
     TextView tvBack;
     Button btsave;
-    Uri imageUri;
     String namebitmap;
-
+    ScrollView scrollView;
     ProgressBar pb;
     public static User user;
+    Uri uriProfileImage;
     private FirebaseAuth mAuth;
     Context context = this;
-    int CODEREGISTER = 43806;
     public static final String TAG = "myapp";
     FirebaseDatabase firebaseDatabase;
+    StorageReference storageReference;
+    private int cameraPermmision = 0, readPermmision = 1, writePermission = 2;
+    ImageView mProfileImage;
+    private int GALLERY = 1, CAMERA = 2;
+    private String[] PERMISSIONS;
+    final String PIC_FILE_NAME_PROFIL = "userpicprofil";
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,10 +90,235 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         pb = (ProgressBar) findViewById(R.id.progressbarregister);
         mAuth = FirebaseAuth.getInstance();
         btsave = (Button) findViewById(R.id.btSaveregister);
+        mProfileImage = (ImageView) findViewById(R.id.iv_account_profile);
         tvBack = (TextView) findViewById(R.id.tv_back);
+        scrollView = (ScrollView) findViewById(R.id.sv_signUp);
         btsave.setOnClickListener(this);
         tvBack.setOnClickListener(this);
+        mProfileImage.setOnClickListener(this);
+        PERMISSIONS = new String[] {
+                android.Manifest.permission.CAMERA,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+        storageReference = FirebaseStorage.getInstance().getReference();
 
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                etemail.clearFocus();
+                etconfirmpass.clearFocus();
+                etpass.clearFocus();
+                return false;
+            }
+        });
+    }
+    private void requestMultiplePermissions(){
+        if (!hasPermissions(Register.this,PERMISSIONS)) {
+            ActivityCompat.requestPermissions(Register.this,PERMISSIONS,1);
+        }
+    }
+    private boolean hasPermissions(Context context, String... PERMISSIONS) {
+        if (context != null && PERMISSIONS != null) {
+            for (String permission: PERMISSIONS){
+                if (ActivityCompat.checkSelfPermission(context,permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 1) {
+            if (grantResults[cameraPermmision] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Camera Permission is granted", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(this, "Camera Permission is denied", Toast.LENGTH_SHORT).show();
+            }
+
+            if (grantResults[readPermmision] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Read Permission is granted", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(this, "Read Permission is denied", Toast.LENGTH_SHORT).show();
+            }
+
+            if (grantResults[writePermission] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Write Permission is granted", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(this, "Write Permission is denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        if (v == mProfileImage){
+            requestMultiplePermissions();
+            showPictureDialog();
+        }
+        if (v == btsave) {
+
+            registerUser();
+
+        } else if (v == tvBack) {
+            finish();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    private void uploadImage(Uri imageUri) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference().child("imagesprofil/").child(namebitmap);
+        storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(Register.this,"Image Uploaded", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Register.this," Failed", Toast.LENGTH_SHORT).show();
+
+            }
+        })
+        ;
+    }
+
+    private void showPictureDialog(){
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+        pictureDialog.setTitle("Add Photo!");
+        String[] pictureDialogItems = {
+                "Select photo from gallery",
+                "Take Photo" };
+        pictureDialog.setItems(pictureDialogItems,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                choosePhotoFromGallary();
+                                break;
+                            case 1:
+                                takePhotoFromCamera();
+                                break;
+                        }
+                    }
+                });
+        pictureDialog.show();
+    }
+
+    public void choosePhotoFromGallary() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, GALLERY);
+    }
+
+    private void takePhotoFromCamera() {
+        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, CAMERA);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == this.RESULT_CANCELED) {
+            return;
+        }
+        if (requestCode == GALLERY ) {
+            if (data != null) {
+                uriProfileImage = data.getData();
+                Log.d("dd", "onActivityResult: " + uriProfileImage);
+                try {
+                    Bitmap bitmapGallery = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uriProfileImage);
+                    mProfileImage.setImageBitmap(bitmapGallery);
+
+                    Toast.makeText(Register.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(Register.this, "Failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        } else if (requestCode == CAMERA) {
+
+            Bitmap bitmapCamera = (Bitmap) data.getExtras().get("data");
+            mProfileImage.setImageBitmap(bitmapCamera);
+            FileHelper.saveBitmapToFile(bitmapCamera, Register.this, PIC_FILE_NAME_PROFIL);
+            File tmpFile = new File(getFilesDir() + "/" + PIC_FILE_NAME_PROFIL);
+            uriProfileImage = Uri.fromFile(tmpFile);
+            Log.d("dd", "onActivityResult: " + uriProfileImage);
+            Toast.makeText(Register.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void registerUser() {
+        String password = etpass.getText().toString().trim();
+        String email = etemail.getText().toString().trim();
+        String confirmspass = etconfirmpass.getText().toString().trim();
+
+        if (!confirmspass.equals(password)) {
+            etpass.setError("Passwords do not match");
+            etpass.requestFocus();
+            return;
+        }
+
+        if (email.isEmpty()) {
+            etemail.setError("Email required");
+            etemail.requestFocus();
+            return;
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            etemail.setError("Please enter a valid email");
+            etemail.requestFocus();
+            return;
+        }
+        if (password.isEmpty()) {
+            etpass.setError("Password required");
+            etpass.requestFocus();
+            return;
+        }
+        if (password.length() < 6) {
+            etpass.setError("Passwords should be a minimum of 6 characters in length ");
+            etpass.requestFocus();
+            return;
+        }
+
+        pb.setVisibility(View.VISIBLE);
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        pb.setVisibility(View.GONE);
+                        if (task.isSuccessful()) {
+                            if (uriProfileImage != null) {
+                                namebitmap = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
+                                uploadImage(uriProfileImage);
+                            }
+                            adduser();
+                            Toast.makeText(Register.this, "Signed in successfully",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (task.getException() instanceof FirebaseAuthUserCollisionException)
+                                Toast.makeText(Register.this, "OOPS! you are already signed in",
+                                        Toast.LENGTH_SHORT).show();
+                            else {
+                                Toast.makeText(Register.this, task.getException().getMessage(),
+                                        Toast.LENGTH_SHORT).show();
+
+                                Toast.makeText(Register.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+                            }
+                        }
+                    }
+                });
     }
 
     public void adduser() {
@@ -90,153 +343,16 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     General.user = user;
                     General.userKey = user.getIdkey();
                     General.userEmail = user.getEmail();
-                    Toast.makeText(Register.this, "פרטי משתמש הוכנסו למערכת ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register.this, "data successfully saved", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), Consumers.class);
                     startActivity(intent);
                     finish();
 
                 } else
-                    Toast.makeText(Register.this, "בעייה בקישור לאינטרנט - פרטי משתמש לא נשמרו", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register.this, "failed to save due to poor network conditions", Toast.LENGTH_SHORT).show();
             }
-
         });
-
-
     }
-
-    private void registerUser() {
-        String password = etpass.getText().toString().trim();
-        String email = etemail.getText().toString().trim();
-        String confirmpass = etconfirmpass.getText().toString().trim();
-        if (!confirmpass.equals(password)) {
-            etpass.setError("סיסמא לא תואמת לאישור סיסמא");
-            etpass.requestFocus();
-            return;
-        }
-
-        if (email.isEmpty()) {
-            etemail.setError("צריך מייל");
-            etemail.requestFocus();
-            return;
-        }
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            etemail.setError("בבקשה תכניס מייל אמיתי");
-            etemail.requestFocus();
-            return;
-        }
-        if (password.isEmpty()) {
-            etpass.setError("צריך סיסמא");
-            etpass.requestFocus();
-            return;
-        }
-        if (password.length() < 6) {
-            etpass.setError("האורך המינימאלי של הסיסמא צריך להיות 6 ");
-            etpass.requestFocus();
-            return;
-        }
-        pb.setVisibility(View.VISIBLE);
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        pb.setVisibility(View.GONE);
-                        if (task.isSuccessful()) {
-
-                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                            builder.setTitle("צילום תמונת פרופיל");
-                            builder.setMessage("האם תרצה לצלם תמונת פרופיל?" + "\n" + "בחר פה את תשובתך");
-                            builder.setCancelable(true);
-                            builder.setNegativeButton("לא מסכים", new Register.DialogListener());
-                            builder.setPositiveButton("מסכים", new Register.DialogListener());
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-
-
-                        } else {
-                            if (task.getException() instanceof FirebaseAuthUserCollisionException)
-                                Toast.makeText(Register.this, "אתה כבר נרשמת",
-                                        Toast.LENGTH_SHORT).show();
-                            else {
-                                Toast.makeText(Register.this, task.getException().getMessage(),
-                                        Toast.LENGTH_SHORT).show();
-
-                                Toast.makeText(Register.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-                                Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
-
-                            }
-
-
-                            // If sign in fails, display a message to the user. If sign in succeeds
-                            // the auth state listener will be notified and logic to handle the
-                            // signed in user can be handled in the listener.
-
-                        }
-
-                        // ...
-                    }
-                });
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        if (v == btsave) {
-            registerUser();
-        } else if (v == tvBack) {
-            finish();
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        }
-    }
-
-    public class DialogListener implements DialogInterface.OnClickListener {
-
-        public DialogListener() {
-        }
-
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            if (which == AlertDialog.BUTTON_POSITIVE) {
-
-
-                Intent i = new Intent(getApplicationContext(), Profile.class);
-                i.putExtra("comefrom", "register");
-                startActivityForResult(i, CODEREGISTER);
-
-
-            } else if (which == AlertDialog.BUTTON_NEGATIVE) {
-                Toast.makeText(context, "לא הסכמת לצלם תמונה",
-                        Toast.LENGTH_SHORT).show();
-                adduser();
-
-
-            }
-
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CODEREGISTER && resultCode == RESULT_OK) {
-            String s = data.getStringExtra("uri");
-            imageUri = Uri.parse(s);
-            String timeStamp = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
-
-            namebitmap = timeStamp;
-            uploadImage();
-            adduser();
-
-
-        }
-    }
-
-    private void uploadImage() {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReference().child("imagesprofil/").child(namebitmap);
-        storageReference.putFile(imageUri);
-    }
-
 
 }
 
