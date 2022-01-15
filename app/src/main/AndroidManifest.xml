@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.shanir.cookingappofshanir">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -14,6 +14,9 @@
         android:label="shanir recipe"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/Theme.Design.NoActionBar">
+        <activity
+            android:name=".classs.UpdateProfile"
+            android:exported="false" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,32 +27,37 @@
         <activity
             android:name=".Register"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Profile"
             android:screenOrientation="portrait" />
         <activity
             android:name=".DetailsOnRecipe"
             android:screenOrientation="portrait" />
-        <activity android:name=".ListOfRecipe"
+        <activity
+            android:name=".ListOfRecipe"
             android:screenOrientation="portrait" />
-        <activity android:name=".ListOfSaveRecipes"
+        <activity
+            android:name=".ListOfSaveRecipes"
             android:screenOrientation="portrait" />
-        <activity android:name=".Admin.Picture"
+        <activity
+            android:name=".Admin.Picture"
             android:screenOrientation="portrait" />
-        <activity android:name=".Timer"
+        <activity
+            android:name=".Timer"
             android:screenOrientation="portrait" />
         <activity android:name=".Consumers"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".Admin.AddDetailsOnRecipeAdmin"
+        <activity
+            android:name=".Admin.AddDetailsOnRecipeAdmin"
             android:screenOrientation="portrait" />
-        <activity android:name=".Admin.AdminListOfRecipes"
+        <activity
+            android:name=".Admin.AdminListOfRecipes"
             android:screenOrientation="portrait" />
-        <activity android:name=".Timerrun"
-            android:screenOrientation="portrait" >
-        </activity>
-
+        <activity
+            android:name=".Timerrun"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
