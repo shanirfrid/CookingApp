@@ -1,89 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:weightSum="11"
-    android:background="#afafb1"
     android:layout_height="match_parent"
+    android:background="#fff"
     tools:context="com.example.shanir.cookingappofshanir.Timerrun">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:text="טיימר"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:textSize="50sp"
         android:id="@+id/tvheadruntime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        />
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_weight="1"
-        android:layout_height="0dp">
-
-    </LinearLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:text="00:00"
-        android:textColor="#121111"
+        android:layout_marginTop="20dp"
+        android:text="Timer"
+        android:textColor="#F9AC36"
+        android:textSize="50sp"
         android:textStyle="bold"
-        android:textSize="40sp"
-        android:id="@+id/tvtime1"
-        android:layout_gravity="center"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/progressBar1"
-        style="?android:attr/progressBarStyleHorizontal"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/timer_layout"
+        android:layout_width="360dp"
+        android:layout_height="360dp"
+        app:layout_constraintBottom_toTopOf="@id/start_stop_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvheadruntime">
+
+        <TextView
+            android:id="@+id/tvtime1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:text="00:00:00"
+            android:textColor="#121111"
+            android:textSize="34sp"
+            app:layout_constraintBottom_toBottomOf="@id/progressBar1"
+            app:layout_constraintEnd_toEndOf="@id/progressBar1"
+            app:layout_constraintStart_toStartOf="@id/progressBar1"
+            app:layout_constraintTop_toTopOf="@id/progressBar1" />
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:indeterminateOnly="false"
+            android:progress="100"
+            android:progressDrawable="@drawable/circular_progress_bar"
+            android:textDirection="ltr"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/start_stop_layout"
         android:layout_width="match_parent"
-        android:layout_gravity="center"
-        android:textDirection="ltr"
-        android:layout_weight="1.5"
-        android:layout_height="0dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_weight="3"
-        android:orientation="horizontal"
-        android:weightSum="3.5"
-        android:layout_height="0dp">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content">
-
-        </LinearLayout>
-    <Button
-        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textSize="20sp"
-        android:background="@color/colorPrimary"
-        android:id="@+id/btstop1"
-        android:text="עצור"/>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content">
+        app:layout_constraintBottom_toBottomOf="@id/cancel_timer_text_view"
+        app:layout_constraintTop_toBottomOf="@id/timer_layout">
 
-        </LinearLayout>
-    <Button
-        android:layout_width="0dp"
+        <Button
+            android:id="@+id/btstop1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#F9AC36"
+            android:text="pause"
+            android:textAllCaps="false"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btstart1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btstart1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#F9AC36"
+            android:text="start"
+            android:textAllCaps="false"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btstop1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/cancel_timer_text_view"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@color/colorPrimary"
-        android:textSize="20sp"
-        android:id="@+id/btstart1"
-        android:text="התחל"/>
-    </LinearLayout>
-
-
-
-</LinearLayout>
+        android:text="cancel"
+        android:textColor="#F9AC36"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/start_stop_layout"/>
+</android.support.constraint.ConstraintLayout>
