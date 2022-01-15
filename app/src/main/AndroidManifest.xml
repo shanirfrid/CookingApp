@@ -52,9 +52,6 @@
             android:exported="true"
             android:name=".Admin.Picture"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".Timer"
-            android:screenOrientation="portrait" />
         <activity android:name=".Consumers"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
