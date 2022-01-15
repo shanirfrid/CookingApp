@@ -225,8 +225,8 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
         Intent m=null;
         if (v==btmakenow)
         {
-            m=new Intent(this,Timer.class);
-             m.putExtra("timedtailsonrecipe",time);
+            m=new Intent(this,Timerrun.class);
+             m.putExtra("timerrun",Integer.parseInt(time));
             startActivity(m);
         }
         else if (v==btsaverecipe)

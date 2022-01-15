@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:background="#FAFAFA">
+    android:layout_height="wrap_content"
+    android:background="#fff"
+    android:padding="10dp" >
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/recipe_image"
@@ -11,16 +13,20 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
-        android:src="@drawable/phone" />
+        android:src="@drawable/cemera"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="20dp"
         android:layout_toEndOf="@id/recipe_image"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/recipe_image"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tvnamerecipeitem"
@@ -50,36 +56,31 @@
 
     </LinearLayout>
 
-    <RelativeLayout
+
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvtimerecipeitem"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_marginEnd="2dp"
+            android:gravity="center"
+            android:text="time"
+            android:textColor="#000" />
 
-            <TextView
-                android:id="@+id/tvtimerecipeitem"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="2dp"
-                android:text="time"
-                android:gravity="center"
-                android:textColor="#000" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_baseline_access_time_24"
-                android:textColor="#000" />
-        </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_baseline_access_time_24"
+            android:textColor="#000" />
+    </LinearLayout>
 
 
-    </RelativeLayout>
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

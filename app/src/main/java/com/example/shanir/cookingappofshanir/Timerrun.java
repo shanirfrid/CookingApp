@@ -52,7 +52,19 @@ public class Timerrun extends AppCompatActivity implements View.OnClickListener 
         Time timertext=new Time(cheakTime.gethour(),cheakTime.getmin(),cheakTime.getsec());
         tv.setText(timertext.toString());
 
+        setCancelButtonClickListener();
     }
+
+    private void setCancelButtonClickListener() {
+        findViewById(R.id.cancel_timer_text_view)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        finish();
+                    }
+                });
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_back, menu);
@@ -101,5 +113,11 @@ public class Timerrun extends AppCompatActivity implements View.OnClickListener 
 
 
     }
+
+    public void letUserRestartTimer() {
+        asTsk1 = null;
+        btstop.setEnabled(false);
+        btstart.setEnabled(true);
     }
+}
 
