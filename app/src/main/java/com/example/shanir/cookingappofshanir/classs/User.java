@@ -126,13 +126,12 @@ public class User {
 
     @Override
     public String toString() {
-        return "פרטי המשתמש הם: " +"\n"+"\n"+
-                "תעודת זהות: " + id + "\n" +
-                "שם פרטי: " + firstname + "\n" +
-                "שם משפחה: " + lastname + "\n" +
-                "פלאפון: " + phone + "\n" +
-                "מייל: " + email + "\n" +
-                "סיסמא: " + pass + "\n"
+        return
+                "Email: " + email + "\n" + "\n"+
+                "First name: " + firstname + "\n" +  "\n"+
+                "Last name: " + lastname + "\n" + "\n"+
+                "id: " + id + "\n" + "\n"+
+                "Phone number: " + phone + "\n"
                ;
     }
 }

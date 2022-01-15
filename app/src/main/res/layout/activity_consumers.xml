@@ -30,7 +30,6 @@
                 android:src="@drawable/ic_menu"/>
 
             <TextView
-
                 android:id="@+id/tvheadconsumers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -56,7 +55,7 @@
                 android:layout_height="48dp"
                 android:layout_weight="5"
                 android:background="@drawable/edit_text_design"
-                android:hint="Enter here your products"
+                android:hint=" Enter here your products"
                 android:inputType="text"
                 android:textColor="#000000"
                 android:textColorHint="#9C9C9C" />
