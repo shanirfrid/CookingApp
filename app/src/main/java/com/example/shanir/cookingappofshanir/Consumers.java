@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -13,7 +12,6 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,10 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shanir.cookingappofshanir.Admin.General;
-import com.example.shanir.cookingappofshanir.classs.Adapter;
 import com.example.shanir.cookingappofshanir.classs.Navigation;
-import com.example.shanir.cookingappofshanir.classs.ProductListAdapter;
-import com.example.shanir.cookingappofshanir.classs.RecipeListAdapter;
 import com.example.shanir.cookingappofshanir.classs.UserItems;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -62,7 +57,7 @@ public class Consumers extends AppCompatActivity implements View.OnClickListener
         btsave = (Button) findViewById(R.id.btsaveconsumers);
         btrecipelist = (Button) findViewById(R.id.btmovetorecipelist);
         imageViewadd = (ImageView) findViewById(R.id.ivconsumersadd);
-        mRightArrowImageView = (ImageView) findViewById(R.id.right_arrow_image_view);
+        mRightArrowImageView = (ImageView) findViewById(R.id.menu_image_view);
         imageViewadd.setOnClickListener(this);
 
         listView = (ListView) findViewById(R.id.listviewconsumers);
