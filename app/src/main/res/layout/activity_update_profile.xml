@@ -6,8 +6,26 @@
     android:layout_height="match_parent"
     android:background="#FAFAFA"
     android:orientation="vertical"
-    android:weightSum="20"
-    >
+    android:weightSum="20">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_update_profile_image"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:src="@drawable/account_profile"
+        android:textColor="#F9AC36" />
+
+    <ProgressBar
+        android:id="@+id/pb_update_profile"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,13 +34,45 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/et_profile"
+            android:id="@+id/et_firstname_update_profile"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_margin="20dp"
             android:background="@drawable/edit_text_design"
-            android:inputType="textEmailAddress"
-            android:text="email"
+            android:hint="First name"
+            android:paddingLeft="15sp"
+            android:textColor="#000000"
+            android:textColorHint="#9C9C9C" />
+
+        <EditText
+            android:id="@+id/et_lastname_update_profile"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/edit_text_design"
+            android:hint="Last name"
+            android:paddingLeft="15sp"
+            android:textColor="#000000"
+            android:textColorHint="#9C9C9C" />
+
+        <EditText
+            android:id="@+id/et_id_update_profile"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/edit_text_design"
+            android:hint="Id"
+            android:paddingLeft="15sp"
+            android:textColor="#000000"
+            android:textColorHint="#9C9C9C" />
+
+        <EditText
+            android:id="@+id/et_phone_update_profile"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/edit_text_design"
+            android:hint="Phone"
             android:paddingLeft="15sp"
             android:textColor="#000000"
             android:textColorHint="#9C9C9C" />
@@ -32,9 +82,9 @@
         android:id="@+id/bt_update_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_margin="20dp"
         android:layout_weight="1"
-        android:layout_gravity="center"
         android:background="@drawable/button_design"
         android:text="Update"
         android:textAllCaps="false"
