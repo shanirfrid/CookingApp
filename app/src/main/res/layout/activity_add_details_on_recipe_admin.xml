@@ -67,40 +67,39 @@ android:layout_gravity="center"
          >
 
 
-
     <EditText
-
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="20sp"
         android:id="@+id/etnameofrecipeadddetails"
-        android:hint=" הכנס שם מתכון"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:hint="recpie name"
+        android:textColorHint="#333"
+        android:textColor="#333"
         android:background="#fff"
         />
 
     <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-
         android:id="@+id/etkindofrecipe"
-        android:hint="הכנס סוג מתכון"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:hint="recipe kind"
+        android:textColorHint="#333"
+        android:textColor="#333"
         android:background="#fff"
         />
 
     <EditText
+        android:id="@+id/ettimeadddetailsadmin"
         android:layout_width="200dp"
-        android:layout_marginTop="10dp"
-        android:textSize="20sp"
-
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:id="@+id/ettimeadddetailsadmin"
-        android:hint="הכנס זמן (דקות)"
-        android:inputType="number"
+        android:textSize="20sp"
+        android:hint="time"
+        android:textColorHint="#333"
+        android:textColor="#333"
         android:background="#fff"
         />
 </LinearLayout>
@@ -197,6 +196,7 @@ android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="תכתוב כאן "
+            android:textColor="#333"
             android:id="@+id/etwriteconsumersa"
 
             />

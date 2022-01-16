@@ -10,8 +10,6 @@ public class UserItems {
 
 
     private ArrayList<String> items = new ArrayList<>();
-    private String uid;
-    private String key;
 
     public UserItems() {
 
@@ -21,22 +19,6 @@ public class UserItems {
         items = new ArrayList<>();
         for (String s:list)
             items.add(s);
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
     }
 
     public void add(String name)

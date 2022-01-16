@@ -11,10 +11,10 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
         android:id="@+id/iv_account_profile"
-        android:layout_width="100dp"
+        android:layout_width="110dp"
         android:layout_height="150dp"
         android:layout_gravity="center"
-        android:src="@drawable/account_profile"
+        android:src="@drawable/profile_icon"
         android:textColor="#F9AC36"
          />
 

@@ -93,7 +93,7 @@
 
         <Button
             android:id="@+id/btsaveconsumers"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="20dp"
@@ -101,14 +101,14 @@
             android:text="Save products"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="25sp"
+            android:textSize="15sp"
             app:layout_constraintBottom_toTopOf="@id/btmovetorecipelist"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/btmovetorecipelist"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="20dp"
@@ -116,7 +116,7 @@
             android:text="find recipes"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="25sp"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

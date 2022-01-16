@@ -2,15 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/mnItemProfile"
-        android:icon="@mipmap/account"
-        app:showAsAction="always"
-        android:title="My Profile" />
-
-    <group android:checkableBehavior="single" />
-    <item
         android:id="@+id/menuLogout"
         android:title="Log out" />
+
+    <group android:checkableBehavior="single" />
+
+    <item
+        android:id="@+id/mnItemProfile"
+        android:title="My Profile" />
     <item
         android:id="@+id/mnItemConsumers"
         android:title="My Products" />
@@ -21,7 +20,7 @@
 
     <item
         android:id="@+id/mnItemListofsaverecipes"
-        android:title="My Saved Recipes" />
+        android:title="My Favorite Recipes" />
 
 
     <group />

@@ -1,6 +1,8 @@
 package com.example.shanir.cookingappofshanir;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -10,7 +12,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.shanir.cookingappofshanir.Admin.General;
@@ -18,6 +22,9 @@ import com.example.shanir.cookingappofshanir.classs.Navigation;
 import com.example.shanir.cookingappofshanir.classs.Recipe;
 import com.example.shanir.cookingappofshanir.classs.RecipeListAdapter;
 import com.example.shanir.cookingappofshanir.classs.UserItems;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +32,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -38,10 +47,10 @@ public class ListOfRecipe extends AppCompatActivity {
     ArrayList<Recipe> suitableRecipes;
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
-    private DatabaseReference postRef,postRefr;;
+    private DatabaseReference postRef, postRefr;
     ListView listView;
     RecipeListAdapter adapter;
-    private  String tableId;
+    private String tableId;
     ArrayList<String> liststring;
     private NavigationView navigationView;
     private DrawerLayout mDrawerLayout;
@@ -65,7 +74,7 @@ public class ListOfRecipe extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 lastSelected = (Recipe) adapter.getItem(position);
-                Intent i=new Intent(getApplicationContext(),DetailsOnRecipe.class);
+                Intent i = new Intent(getApplicationContext(), DetailsOnRecipe.class);
                 i.putExtra("detailsrecipe", lastSelected.getNameOfrecipe());
                 startActivity(i);
             }
@@ -78,34 +87,30 @@ public class ListOfRecipe extends AppCompatActivity {
         mRightArrowImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDrawerLayout.openDrawer(Gravity.START);
+                mDrawerLayout.openDrawer(GravityCompat.START);
             }
         });
     }
 
-    public  void datalistingredientuser()
-    {
+    public void datalistingredientuser() {
 
         postRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     item = postSnapshot.getValue(UserItems.class);
-                    item.setUid(firebaseAuth.getCurrentUser().getUid());
-                    item.setKey(postSnapshot.getKey());
                 }
-                if(item==null) //never get here
+                if (item == null) //never get here
                 {
-                    Toast.makeText(getApplicationContext(),"אין לך שום מצרכים "+"\n"+ "בבקשה הכנס מצרכים" ,Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(getApplicationContext(),Consumers.class);
+                    Toast.makeText(getApplicationContext(),
+                            "אין לך שום מצרכים " + "\n" + "בבקשה הכנס מצרכים", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), Consumers.class);
                     startActivity(intent);
-                }
-                else
-                    {
+                } else {
                     Setlistuser(item);
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -113,37 +118,29 @@ public class ListOfRecipe extends AppCompatActivity {
         });
     }
 
-    public void Setlistuser(UserItems list)
-    {
-        if (list!=null)
-        userIngredients = list.getItems();
-
-
+    public void Setlistuser(UserItems list) {
+        if (list != null)
+            userIngredients = list.getItems();
     }
 
-    public void datatlistingredientrecipe()
-    {
+    public void datatlistingredientrecipe() {
         suitableRecipes = new ArrayList<>();
-        firebaseDatabase= FirebaseDatabase.getInstance();
-        String uid=General.UIDUSER;
-        String tableIdR  = General.RECIPE_TABLE_NAME+"/"+uid;
-        postRefr= FirebaseDatabase.getInstance().getReference(tableIdR);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        String tableIdR = General.RECIPE_TABLE_NAME;
+        postRefr = FirebaseDatabase.getInstance().getReference(tableIdR);
         postRefr.addValueEventListener(new ValueEventListener() {
             Recipe r;
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren())
-                {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     r = postSnapshot.getValue(Recipe.class);
-                    r.settID(firebaseAuth.getCurrentUser().getUid());
-                    r.setKey(postSnapshot.getKey());
                     suitableRecipes.add(r);
-
                 }
-                if (suitableRecipes !=null)
-               SetlistRecipe(suitableRecipes);
-
+                if (suitableRecipes != null)
+                    SetlistRecipe(suitableRecipes);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -151,25 +148,43 @@ public class ListOfRecipe extends AppCompatActivity {
         });
     }
 
-    public void SetlistRecipe(ArrayList<Recipe> recipes)
-    {
-        if( userIngredients !=null)
-        {
+    public void SetlistRecipe(ArrayList<Recipe> recipes) {
+        if (userIngredients != null) {
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            final long ONE_MEGABYTE = 1024 * 1024 * 5;
+
             itemsRecipe = recipes;
             suitableRecipes = new ArrayList<Recipe>();
+            int suituableRecipesAmount = 0;
 
-            for (Recipe currentRecipe : recipes)
+            for (Recipe currentRecipe : recipes) {
                 if (userIngredients.containsAll(
-                        currentRecipe.getListNameIngredientOnRecipe()))
-                    suitableRecipes.add(currentRecipe);
+                        currentRecipe.getListNameIngredientOnRecipe())) {
+                    suituableRecipesAmount++;
+                    StorageReference storageRef = storage.getReferenceFromUrl
+                            ("gs://cookingappofshanir.appspot.com/images/").child(currentRecipe.getBitmap());
 
-            adapter.add(suitableRecipes);
-            adapter.notifyDataSetChanged();
+                    storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            currentRecipe.setNameBitmap(bitmap);
+                        }
+
+                    }).addOnCompleteListener(new OnCompleteListener<byte[]>() {
+                        @Override
+                        public void onComplete(@NonNull Task<byte[]> task) {
+                            suitableRecipes.add(currentRecipe);
+                            adapter.addRecipe(currentRecipe);
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            }
+
             tvhowmanyrecipe.setText(
-                    resultsMessageBuilder(suitableRecipes.size()));
-        }
-        else
-        {
+                    resultsMessageBuilder(suituableRecipesAmount));
+        } else {
             tvhowmanyrecipe.setText(resultsMessageBuilder(0));
         }
     }
@@ -185,11 +200,10 @@ public class ListOfRecipe extends AppCompatActivity {
         }
     }
 
-    private void setRefToTables()
-    {
-        String uid=firebaseAuth.getCurrentUser().getUid();
-        tableId  = General.RECIPE_ITEM_NAME+"/"+uid;
-        postRef= FirebaseDatabase.getInstance().getReference(tableId);
+    private void setRefToTables() {
+        String uid = firebaseAuth.getCurrentUser().getUid();
+        tableId = General.RECIPE_ITEM_NAME + "/" + uid;
+        postRef = FirebaseDatabase.getInstance().getReference(tableId);
     }
 
 }

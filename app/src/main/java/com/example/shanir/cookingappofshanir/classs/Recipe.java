@@ -1,8 +1,12 @@
 package com.example.shanir.cookingappofshanir.classs;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.Exclude;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +18,13 @@ import java.util.Map;
 
 public class Recipe  {
     private ArrayList<Ingredients> list;
+
+    public void setNameBitmap(Bitmap nameBitmap) {
+        this.nameBitmap = nameBitmap;
+    }
+
     private String bitmap;
+    private Bitmap nameBitmap;
     private String kindOfrecipe;
     private String nameOfrecipe;
     private String difficulty;
@@ -108,8 +118,14 @@ public class Recipe  {
 
 
     public String getBitmap() {
-        return bitmap;
+        return this.bitmap;
     }
+
+    public Bitmap getNameBitmap(){
+        return this.nameBitmap;
+    }
+
+
 
     public void setBitmap(String bitmap) {
         this.bitmap = bitmap;

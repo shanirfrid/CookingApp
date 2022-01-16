@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -58,9 +59,10 @@ public class UpdateProfile extends AppCompatActivity implements View.OnClickList
 
     EditText mFirstName, mLastName, mId, mPhone;
     Button button;
+    TextView tvEditProfileImage;
     String tableusers;
     FirebaseAuth mAuth;
-    ImageView mProfileImage;
+    ImageView mProfileImage, mExit;
     private int GALLERY = 1, CAMERA = 2;
     String namebitmap;
     final String PIC_FILE_NAME_PROFIL = "userpicprofil";
@@ -80,10 +82,13 @@ public class UpdateProfile extends AppCompatActivity implements View.OnClickList
         mId = (EditText) findViewById(R.id.et_id_update_profile);
         mProfileImage = (ImageView) findViewById(R.id.iv_update_profile_image);
         mPb = (ProgressBar)findViewById(R.id.pb_update_profile);
+        mExit = (ImageView) findViewById(R.id.close_image_view);
+        tvEditProfileImage= (TextView)findViewById(R.id.tv_edit_profile_image);
 
         mAuth = FirebaseAuth.getInstance();
         button.setOnClickListener(this);
-        mProfileImage.setOnClickListener(this);
+        tvEditProfileImage.setOnClickListener(this);
+        mExit.setOnClickListener(this);
 
     }
 
@@ -94,10 +99,14 @@ public class UpdateProfile extends AppCompatActivity implements View.OnClickList
             Intent intent = new Intent(this, Profile.class);
             startActivity(intent);
         }
-        else if (v == mProfileImage){
+        else if (v == tvEditProfileImage){
             Permission permission = new Permission(this, getApplicationContext());
             permission.requestMultiplePermissions();
             showPictureDialog();
+        }
+        else if (v == mExit){
+            Intent intent = new Intent(this, Profile.class);
+            startActivity(intent);
         }
     }
 
@@ -172,9 +181,7 @@ public class UpdateProfile extends AppCompatActivity implements View.OnClickList
                     namebitmap = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
                     uploadImage(uriProfileImage);
                 }
-
                 map.put("bitmap", namebitmap);
-
 
                 for (DataSnapshot datas : snapshot.getChildren()) {
                     String key = datas.getKey();

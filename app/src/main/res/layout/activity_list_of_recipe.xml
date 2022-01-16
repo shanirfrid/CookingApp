@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
-    android:padding="10dp"
     tools:context="com.example.shanir.cookingappofshanir.ListOfRecipe">
 
     <androidx.constraintlayout.widget.ConstraintLayout

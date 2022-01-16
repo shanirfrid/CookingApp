@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.shanir.cookingappofshanir.Admin.General;
@@ -80,7 +81,7 @@ public class Consumers extends AppCompatActivity implements View.OnClickListener
         mRightArrowImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDrawerLayout.openDrawer(Gravity.START);
+                mDrawerLayout.openDrawer(GravityCompat.START);
             }
         });
 
@@ -94,13 +95,9 @@ public class Consumers extends AppCompatActivity implements View.OnClickListener
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     item = postSnapshot.getValue(UserItems.class);
-                    item.setUid(firebaseAuth.getCurrentUser().getUid());
-                    item.setKey(postSnapshot.getKey());
                 }
                 if (item == null) {
                     item = new UserItems();
-                    item.setUid(firebaseAuth.getCurrentUser().getUid());
-                    item.setKey(dataSnapshot.getKey());
                 }
                 setAdapter(item);
             }
@@ -171,7 +168,7 @@ public class Consumers extends AppCompatActivity implements View.OnClickListener
 
     private void updateItemsList() {
         item.add(productList);
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference(tableId + "/" + item.getKey());
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference(tableId);
         database.setValue(item);
 
     }
