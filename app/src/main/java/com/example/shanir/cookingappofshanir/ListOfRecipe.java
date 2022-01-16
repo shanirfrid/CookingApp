@@ -48,7 +48,6 @@ public class ListOfRecipe extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
     private DatabaseReference postRef, postRefr;
-    ;
     ListView listView;
     RecipeListAdapter adapter;
     private String tableId;
@@ -100,12 +99,11 @@ public class ListOfRecipe extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     item = postSnapshot.getValue(UserItems.class);
-                    item.setUid(firebaseAuth.getCurrentUser().getUid());
-                    item.setKey(postSnapshot.getKey());
                 }
                 if (item == null) //never get here
                 {
-                    Toast.makeText(getApplicationContext(), "אין לך שום מצרכים " + "\n" + "בבקשה הכנס מצרכים", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            "אין לך שום מצרכים " + "\n" + "בבקשה הכנס מצרכים", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), Consumers.class);
                     startActivity(intent);
                 } else {
@@ -123,15 +121,12 @@ public class ListOfRecipe extends AppCompatActivity {
     public void Setlistuser(UserItems list) {
         if (list != null)
             userIngredients = list.getItems();
-
-
     }
 
     public void datatlistingredientrecipe() {
         suitableRecipes = new ArrayList<>();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        String uid = General.UIDUSER;
-        String tableIdR = General.RECIPE_TABLE_NAME + "/" + uid;
+        String tableIdR = General.RECIPE_TABLE_NAME;
         postRefr = FirebaseDatabase.getInstance().getReference(tableIdR);
         postRefr.addValueEventListener(new ValueEventListener() {
             Recipe r;
@@ -140,14 +135,10 @@ public class ListOfRecipe extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     r = postSnapshot.getValue(Recipe.class);
-                    r.settID(firebaseAuth.getCurrentUser().getUid());
-                    r.setKey(postSnapshot.getKey());
                     suitableRecipes.add(r);
-
                 }
                 if (suitableRecipes != null)
                     SetlistRecipe(suitableRecipes);
-
             }
 
             @Override

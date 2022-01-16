@@ -181,9 +181,7 @@ public class UpdateProfile extends AppCompatActivity implements View.OnClickList
                     namebitmap = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
                     uploadImage(uriProfileImage);
                 }
-
                 map.put("bitmap", namebitmap);
-
 
                 for (DataSnapshot datas : snapshot.getChildren()) {
                     String key = datas.getKey();
