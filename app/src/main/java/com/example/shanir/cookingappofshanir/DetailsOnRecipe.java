@@ -22,6 +22,7 @@ import com.example.shanir.cookingappofshanir.Admin.General;
 import com.example.shanir.cookingappofshanir.classs.Adapter;
 import com.example.shanir.cookingappofshanir.classs.Ingredients;
 import com.example.shanir.cookingappofshanir.classs.Recipe;
+import com.example.shanir.cookingappofshanir.classs.TextFormatter;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -117,13 +118,13 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
 
                         if (r.getNameOfrecipe().equals(stname))
                        {
-                           tvname.setText("שם המתכון: "+stname);
+                           tvname.setText(stname);
                            kind=r.getKindOfrecipe();
-                           tvkind.setText(tvkind.getText().toString()+kind);
+                           tvkind.setText(kind);
                            difficulty=r.getDifficulty();
-                           tvdifficulty.setText(tvdifficulty.getText().toString() +difficulty);
+                           tvdifficulty.setText(difficulty);
                            time=Integer.toString(r.getTime());
-                           tvtime.setText(tvtime.getText().toString()+time);
+                           tvtime.setText(TextFormatter.formatRecipeTime(Integer.parseInt(time)));
                            liststring=r.getListNameIngredientOnRecipe();
                            ingredientsArrayList=r.getList();
                            recipe=r;
