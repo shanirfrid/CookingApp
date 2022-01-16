@@ -1,13 +1,25 @@
 package com.example.shanir.cookingappofshanir.classs;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.example.shanir.cookingappofshanir.Profile;
 import com.example.shanir.cookingappofshanir.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.annotations.Nullable;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,24 +32,29 @@ public class RecipeListAdapter extends BaseAdapter {
     private Context context;
     private List<Recipe> recipeList;
     private ArrayList<String> items = new ArrayList<>();
-    public RecipeListAdapter()
-    {}
+
+    public RecipeListAdapter() {
+    }
 
 
     public RecipeListAdapter(Context context, List<Recipe> recipeList) {
         this.context = context;
         this.recipeList = recipeList;
     }
+
     public ArrayList<String> getItems() {
         return items;
     }
-    public void add(List <Recipe> list)
-    {
-        recipeList = new ArrayList<>();
-        for (Recipe r:list)
-            recipeList.add(r);
+
+    public void addRecipe(Recipe recipe) {
+        this.recipeList.add(recipe);
     }
 
+    public void add(List<Recipe> list) {
+        recipeList = new ArrayList<>();
+        for (Recipe r : list)
+            recipeList.add(r);
+    }
 
     @Override
     public int getCount() {
@@ -54,20 +71,25 @@ public class RecipeListAdapter extends BaseAdapter {
         return position;
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v=View.inflate(context, R.layout.recipe_item_list,null);
-        TextView tvname=(TextView)v.findViewById(R.id.tvnamerecipeitem);
-        TextView tvdifficult=(TextView)v.findViewById(R.id.vdifiitem);
-        TextView tvtime=(TextView)v.findViewById(R.id.tvtimerecipeitem);
-        TextView tvkind=(TextView)v.findViewById(R.id.tvkindrecipeitem);
+        View v = View.inflate(context, R.layout.recipe_item_list, null);
+        TextView tvname = (TextView) v.findViewById(R.id.tvnamerecipeitem);
+        TextView tvdifficult = (TextView) v.findViewById(R.id.vdifiitem);
+        TextView tvtime = (TextView) v.findViewById(R.id.tvtimerecipeitem);
+        TextView tvkind = (TextView) v.findViewById(R.id.tvkindrecipeitem);
+        ImageView ivRecipeImage = (ImageView) v.findViewById(R.id.recipe_image);
 
         tvname.setText(recipeList.get(position).getNameOfrecipe());
         tvtime.setText(String.valueOf(recipeList.get(position).getTime()));
         tvkind.setText(recipeList.get(position).getKindOfrecipe());
         tvdifficult.setText(recipeList.get(position).getDifficulty());
-        v.setTag(recipeList.get(position).gettID());
+        Bitmap recipeBitmap = recipeList.get(position).getNameBitmap();
+        if (recipeBitmap != null)
+            ivRecipeImage.setImageBitmap(recipeBitmap);
 
+        v.setTag(recipeList.get(position).gettID());
         return v;
     }
 

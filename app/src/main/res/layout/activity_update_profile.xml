@@ -8,16 +8,64 @@
     android:orientation="vertical"
     android:weightSum="20">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <ImageView
+            android:id="@+id/close_image_view"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.5"
+            android:src="@drawable/ic_close" />
+
+        <TextView
+            android:id="@+id/tvhead_my_update_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1.5"
+            android:padding="20dp"
+            android:text="Edit profile"
+            android:textColor="#333"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/bt_update_profile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.5"
+            android:background="@drawable/ic_check"
+            android:backgroundTint="#F9AC36"
+            android:gravity="left"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_update_profile_image"
-        android:layout_width="100dp"
+        android:layout_width="110dp"
         android:layout_height="150dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="center"
-        android:src="@drawable/account_profile"
+        android:src="@drawable/profile_icon"
         android:textColor="#F9AC36" />
+
+    <TextView
+        android:id="@+id/tv_edit_profile_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Change profile photo"
+        android:textColor="#F9AC36"
+        android:textSize="18sp" />
 
     <ProgressBar
         android:id="@+id/pb_update_profile"
@@ -33,63 +81,117 @@
         android:layout_weight="10"
         android:orientation="vertical">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp">
+
+        <TextView
+            android:id="@+id/edit_profile_first_name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="First name"
+            android:textColor="#333"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
         <EditText
             android:id="@+id/et_firstname_update_profile"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_margin="20dp"
-            android:background="@drawable/edit_text_design"
             android:hint="First name"
-            android:paddingLeft="15sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_lower_border"
             android:textColor="#000000"
-            android:textColorHint="#9C9C9C" />
+            android:textColorHint="#9C9C9C"
+            android:paddingTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/edit_profile_first_name_text_view"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:paddingTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp">
+
+        <TextView
+            android:id="@+id/edit_profile_last_name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Last name"
+            android:textColor="#333"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
         <EditText
             android:id="@+id/et_lastname_update_profile"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_margin="20dp"
-            android:background="@drawable/edit_text_design"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_lower_border"
             android:hint="Last name"
-            android:paddingLeft="15sp"
+            android:paddingTop="10dp"
             android:textColor="#000000"
+            app:layout_constraintTop_toBottomOf="@id/edit_profile_last_name_text_view"
             android:textColorHint="#9C9C9C" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:paddingTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp">
+
+        <TextView
+            android:id="@+id/edit_profile_id_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Id"
+            android:textColor="#333"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
         <EditText
             android:id="@+id/et_id_update_profile"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_margin="20dp"
-            android:background="@drawable/edit_text_design"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_lower_border"
             android:hint="Id"
-            android:paddingLeft="15sp"
+            android:paddingTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/edit_profile_id_text_view"
             android:textColor="#000000"
             android:textColorHint="#9C9C9C" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:paddingTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp">
+
+        <TextView
+            android:id="@+id/edit_profile_phone_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone"
+            android:textColor="#333"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
         <EditText
             android:id="@+id/et_phone_update_profile"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_margin="20dp"
-            android:background="@drawable/edit_text_design"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_lower_border"
             android:hint="Phone"
-            android:paddingLeft="15sp"
+            app:layout_constraintTop_toBottomOf="@id/edit_profile_phone_text_view"
             android:textColor="#000000"
             android:textColorHint="#9C9C9C" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/bt_update_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="20dp"
-        android:layout_weight="1"
-        android:background="@drawable/button_design"
-        android:text="Update"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="25sp" />
-
 
 </LinearLayout>

@@ -28,7 +28,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shanir.cookingappofshanir.Admin.General;
-import com.example.shanir.cookingappofshanir.classs.ChooseImageDialog;
 import com.example.shanir.cookingappofshanir.classs.FileHelper;
 import com.example.shanir.cookingappofshanir.classs.Permission;
 import com.example.shanir.cookingappofshanir.classs.User;
@@ -70,7 +69,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     FirebaseDatabase firebaseDatabase;
     StorageReference storageReference;
     ImageView mProfileImage;
-    ChooseImageDialog chooseImageDialog;
     Uri uriProfileImage;
     private int GALLERY = 1, CAMERA = 2;
     final String PIC_FILE_NAME_PROFIL = "userpicprofil";

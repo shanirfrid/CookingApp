@@ -49,17 +49,20 @@ public class ListOfSaveRecipes extends AppCompatActivity implements AdapterView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_save_recipes);
+
         btsave=(Button)findViewById(R.id.btsavelistsave) ;
         listView = (ListView) findViewById(R.id.lvsaverecipes);
         mRightArrowImageView = (ImageView) findViewById(R.id.right_arrow_image_view);
 
         btsave.setOnClickListener(this);;
         firebaseAuth = FirebaseAuth.getInstance();
+
         if (firebaseAuth.getCurrentUser()==null)
         {
             startActivity(new Intent(this,MainActivity.class));
             finish();
         }
+
         setRefToTables();
         retrieveData();
 
@@ -186,7 +189,6 @@ public class ListOfSaveRecipes extends AppCompatActivity implements AdapterView.
         if (v==btsave)
         {
             updateItemsList();
-            // item.getItems().remove(name);
             adapter.notifyDataSetChanged();
         }
     }
