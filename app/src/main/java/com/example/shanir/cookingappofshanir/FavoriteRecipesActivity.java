@@ -9,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -23,7 +22,7 @@ import com.example.shanir.cookingappofshanir.Admin.General;
 import com.example.shanir.cookingappofshanir.classs.Navigation;
 import com.example.shanir.cookingappofshanir.classs.Recipe;
 import com.example.shanir.cookingappofshanir.classs.RecipeListAdapter;
-import com.example.shanir.cookingappofshanir.classs.UserItems;
+import com.example.shanir.cookingappofshanir.classs.RecipeNames;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -38,9 +37,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class ListOfSaveRecipes extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class FavoriteRecipesActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     ListView mSavedRecipesListView;
     String mNewRecipeName = "";
     FirebaseAuth firebaseAuth;
@@ -48,7 +46,7 @@ public class ListOfSaveRecipes extends AppCompatActivity implements AdapterView.
     DatabaseReference mReferenceToAllRecipes;
     private String mPathToUserSavedRecipes;
     private String mPathToAllRecipes;
-    private UserItems mUserItems;
+    private RecipeNames mFavoriteRecipes;
     RecipeListAdapter mRecipeListAdapter;
     Recipe mSelectedRecipe;
     private NavigationView mNavigationView;
@@ -162,18 +160,19 @@ public class ListOfSaveRecipes extends AppCompatActivity implements AdapterView.
         mReferenceToUserSavedRecipes.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mUserItems = dataSnapshot.getValue(UserItems.class);
+                mFavoriteRecipes = dataSnapshot.getValue(RecipeNames.class);
 
-                if (mUserItems == null)
-                    mUserItems = new UserItems();
+                if (mFavoriteRecipes == null)
+                    mFavoriteRecipes = new RecipeNames();
 
                 Intent intent = getIntent();
                 if (intent.getExtras() != null) {
                     mNewRecipeName = intent.getExtras().getString("nameofrecipedetails");
-                    if (!mUserItems.getItems().contains(mNewRecipeName))
-                        mUserItems.add(mNewRecipeName);
+                    if (!mFavoriteRecipes.getRecipeNames().contains(mNewRecipeName))
+                        mFavoriteRecipes.add(mNewRecipeName);
                 }
-                setEventListenerForGettingRecipes(mUserItems.getItems());
+
+                setEventListenerForGettingRecipes(mFavoriteRecipes.getRecipeNames());
             }
 
             @Override
@@ -184,7 +183,7 @@ public class ListOfSaveRecipes extends AppCompatActivity implements AdapterView.
 
     private void setReferenceToUserSaveRecipes() {
         String uid = firebaseAuth.getCurrentUser().getUid();
-        mPathToUserSavedRecipes = General.SAVE_RECIPES + "/" + uid;
+        mPathToUserSavedRecipes = General.FAVORITE_RECIPES + "/" + uid ;
         mReferenceToUserSavedRecipes = FirebaseDatabase.getInstance().getReference(mPathToUserSavedRecipes);
     }
 
@@ -212,7 +211,7 @@ public class ListOfSaveRecipes extends AppCompatActivity implements AdapterView.
                 break;
 
             case R.id.mnItemConsumers:
-                Intent intent2 = new Intent(getBaseContext(), Consumers.class);
+                Intent intent2 = new Intent(getBaseContext(), MyIngredientsActivity.class);
                 startActivity(intent2);
                 break;
             case R.id.mnItemListOfRecipes:

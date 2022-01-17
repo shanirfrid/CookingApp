@@ -75,7 +75,7 @@ public class Timerrun extends AppCompatActivity implements View.OnClickListener 
             case R.id.item_back:
 
                 asTsk1=null;
-                Intent intent = new Intent(getApplicationContext(), Consumers.class);
+                Intent intent = new Intent(getApplicationContext(), MyIngredientsActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

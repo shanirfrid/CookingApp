@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.shanir.cookingappofshanir.Admin.General;
@@ -85,7 +86,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         mRightArrowImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDrawerLayout.openDrawer(Gravity.START);
+                mDrawerLayout.openDrawer(GravityCompat.START);
             }
         });
 
@@ -137,21 +138,19 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         postRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    userprofil = postSnapshot.getValue(User.class);
-                    userprofil.setIdkey(mAuth.getCurrentUser().getUid());
+                userprofil = dataSnapshot.getValue(User.class);
+                userprofil.setIdkey(mAuth.getCurrentUser().getUid());
+                if (userprofil.getIdkey().equals(mAuth.getCurrentUser().getUid())) {
+                    textViewdetails.setText(userprofil.toString());
 
-                    if (userprofil.getIdkey().equals(mAuth.getCurrentUser().getUid())) {
-                        textViewdetails.setText(userprofil.toString());
-
-                        if (!userprofil.getBitmap().equals("none"))
-                            loadImage(userprofil.getBitmap());
-                        else {
-                            Toast.makeText(getApplicationContext(),
-                                    "You dont have a profile image", Toast.LENGTH_SHORT).show();
-                        }
+                    if (!userprofil.getBitmap().equals("none"))
+                        loadImage(userprofil.getBitmap());
+                    else {
+                        Toast.makeText(getApplicationContext(),
+                                "You dont have a profile image", Toast.LENGTH_SHORT).show();
                     }
                 }
+
             }
 
             @Override
@@ -195,6 +194,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View v) {
         if (v == btsave) {
             Intent intent = new Intent(this, UpdateProfile.class);
+            intent.putExtra("bitmap", userprofil.getBitmap());
             startActivity(intent);
         }
     }

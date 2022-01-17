@@ -18,17 +18,7 @@ public class User {
     private  String pass;
     private ArrayList<String> listIngredient;
 
-    public User(String firstname,String lastname,String id, String pass,
-                String phone, String email, ArrayList<String> listIngredient)
-    {
-        this.firstname=firstname;
-        this.lastname=lastname;
-        this.id=id;
-        this.pass=pass;
-        this.phone=phone;
-        this.email=email;
-        this.listIngredient=listIngredient;
-    }
+
     public User(String firstname,String lastname,String id, String pass,
                 String phone, String email, ArrayList<String> listIngredient,String bitmap)
     {

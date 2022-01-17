@@ -88,13 +88,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     General.userKey = mAuth.getCurrentUser().getUid();
                     General.userEmail = mAuth.getCurrentUser().getEmail();
                     Intent intent=null;
-                    if (General.userEmail.equals(General.Admin_Email))
+                    if (General.userEmail.equals(General.ADMIN_EMAIL))
                     {
                          intent=new Intent(getApplicationContext(), AdminListOfRecipes.class);
                     }
                     else
                     {
-                         intent = new Intent(getApplicationContext(), Consumers.class);
+                         intent = new Intent(getApplicationContext(), MyIngredientsActivity.class);
                     }
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -117,13 +117,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             General.userKey = mAuth.getCurrentUser().getUid();
             General.userEmail = mAuth.getCurrentUser().getEmail();
             Intent intent=null;
-            if (General.userEmail.equals(General.Admin_Email))
+            if (General.userEmail.equals(General.ADMIN_EMAIL))
             {
                 intent=new Intent(getApplicationContext(),AdminListOfRecipes.class);
             }
             else
             {
-                intent = new Intent(getApplicationContext(), Consumers.class);
+                intent = new Intent(getApplicationContext(), MyIngredientsActivity.class);
             }
             startActivity(intent);
             finish();

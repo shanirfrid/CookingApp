@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -21,7 +20,7 @@ import com.example.shanir.cookingappofshanir.Admin.General;
 import com.example.shanir.cookingappofshanir.classs.Navigation;
 import com.example.shanir.cookingappofshanir.classs.Recipe;
 import com.example.shanir.cookingappofshanir.classs.RecipeListAdapter;
-import com.example.shanir.cookingappofshanir.classs.UserItems;
+import com.example.shanir.cookingappofshanir.classs.UserIngredients;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -41,7 +40,7 @@ public class ListOfRecipe extends AppCompatActivity {
 
     TextView tvhowmanyrecipe;
     ArrayList<String> userIngredients;
-    private UserItems item;
+    private UserIngredients item;
     Recipe lastSelected;
     ArrayList<Recipe> itemsRecipe;
     ArrayList<Recipe> suitableRecipes;
@@ -97,14 +96,13 @@ public class ListOfRecipe extends AppCompatActivity {
         postRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    item = postSnapshot.getValue(UserItems.class);
-                }
+                item = dataSnapshot.getValue(UserIngredients.class);
+
                 if (item == null) //never get here
                 {
                     Toast.makeText(getApplicationContext(),
                             "אין לך שום מצרכים " + "\n" + "בבקשה הכנס מצרכים", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), Consumers.class);
+                    Intent intent = new Intent(getApplicationContext(), MyIngredientsActivity.class);
                     startActivity(intent);
                 } else {
                     Setlistuser(item);
@@ -118,9 +116,9 @@ public class ListOfRecipe extends AppCompatActivity {
         });
     }
 
-    public void Setlistuser(UserItems list) {
+    public void Setlistuser(UserIngredients list) {
         if (list != null)
-            userIngredients = list.getItems();
+            userIngredients = list.getIngredients();
     }
 
     public void datatlistingredientrecipe() {
@@ -202,7 +200,7 @@ public class ListOfRecipe extends AppCompatActivity {
 
     private void setRefToTables() {
         String uid = firebaseAuth.getCurrentUser().getUid();
-        tableId = General.RECIPE_ITEM_NAME + "/" + uid;
+        tableId = General.USER_INGREDIENTS_TABLE_NAME + "/" + uid + General.USER_INGREDIENTS_SUB_TABLE;
         postRef = FirebaseDatabase.getInstance().getReference(tableId);
     }
 

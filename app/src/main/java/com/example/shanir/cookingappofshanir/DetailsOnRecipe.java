@@ -24,7 +24,6 @@ import com.example.shanir.cookingappofshanir.classs.Adapter;
 import com.example.shanir.cookingappofshanir.classs.Ingredients;
 import com.example.shanir.cookingappofshanir.classs.Recipe;
 import com.example.shanir.cookingappofshanir.classs.TextFormatter;
-import com.example.shanir.cookingappofshanir.classs.UserItems;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -110,11 +109,8 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     r = postSnapshot.getValue(Recipe.class);
-                    r.settID(firebaseAuth.getCurrentUser().getUid());
-                    r.setKey(postSnapshot.getKey());
 
                     if (r.getNameOfrecipe().equals(stname)) {
                         tvname.setText(stname);
@@ -230,7 +226,7 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
 
     public void addRecipeToSaveRecipes() {
         String uid = firebaseAuth.getCurrentUser().getUid();
-        String mPathToUserSavedRecipes = General.SAVE_RECIPES + "/" + uid +"/items";
+        String mPathToUserSavedRecipes = General.FAVORITE_RECIPES + "/" + uid +"/" + General.RECIPE_FAVORITE_NAMES;
         DatabaseReference mReferenceToUserSavedRecipes
                 = FirebaseDatabase.getInstance().getReference(mPathToUserSavedRecipes);
         HashMap<String, Object> map = new HashMap<>();
@@ -243,7 +239,7 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
                 mReferenceToUserSavedRecipes.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Intent intent = new Intent(DetailsOnRecipe.this, ListOfSaveRecipes.class);
+                        Intent intent = new Intent(DetailsOnRecipe.this, FavoriteRecipesActivity.class);
                         intent.putExtra("nameofrecipedetails", stname);
                         startActivity(intent);
                     }

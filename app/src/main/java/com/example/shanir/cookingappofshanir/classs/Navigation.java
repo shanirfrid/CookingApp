@@ -7,9 +7,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.shanir.cookingappofshanir.Consumers;
+import com.example.shanir.cookingappofshanir.MyIngredientsActivity;
 import com.example.shanir.cookingappofshanir.ListOfRecipe;
-import com.example.shanir.cookingappofshanir.ListOfSaveRecipes;
+import com.example.shanir.cookingappofshanir.FavoriteRecipesActivity;
 import com.example.shanir.cookingappofshanir.MainActivity;
 import com.example.shanir.cookingappofshanir.Profile;
 import com.example.shanir.cookingappofshanir.R;
@@ -39,7 +39,7 @@ public class Navigation implements NavigationView.OnNavigationItemSelectedListen
                 break;
 
             case R.id.mnItemListofsaverecipes:
-                intent = new Intent(activity.getBaseContext(), ListOfSaveRecipes.class);
+                intent = new Intent(activity.getBaseContext(), FavoriteRecipesActivity.class);
                 break;
 
             case R.id.mnItemProfile:
@@ -47,7 +47,7 @@ public class Navigation implements NavigationView.OnNavigationItemSelectedListen
                 break;
 
             case R.id.mnItemConsumers:
-                intent = new Intent(activity.getBaseContext(), Consumers.class);
+                intent = new Intent(activity.getBaseContext(), MyIngredientsActivity.class);
                 break;
             default:
                 return false;

@@ -1,10 +1,7 @@
 package com.example.shanir.cookingappofshanir;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -44,12 +41,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.DexterError;
-import com.karumi.dexter.listener.PermissionRequestErrorListener;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -293,7 +284,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         firebaseDatabase = FirebaseDatabase.getInstance();
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         user.setIdkey(uid);
-        firebaseDatabase.getReference(General.USER_TABLE_NAME).child(uid).push().setValue(user, new DatabaseReference.CompletionListener() {
+        firebaseDatabase.getReference(General.USER_TABLE_NAME).child(uid).setValue(user, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReferfinence) {
                 if (databaseError == null) {
@@ -301,7 +292,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     General.userKey = user.getIdkey();
                     General.userEmail = user.getEmail();
                     Toast.makeText(Register.this, "data successfully saved", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), Consumers.class);
+                    Intent intent = new Intent(getApplicationContext(), MyIngredientsActivity.class);
                     startActivity(intent);
                     finish();
 

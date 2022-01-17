@@ -31,7 +31,6 @@ import java.util.List;
 public class RecipeListAdapter extends BaseAdapter {
     private Context context;
     private List<Recipe> recipeList;
-    private ArrayList<String> items = new ArrayList<>();
 
     public RecipeListAdapter() {
     }
@@ -42,8 +41,12 @@ public class RecipeListAdapter extends BaseAdapter {
         this.recipeList = recipeList;
     }
 
-    public ArrayList<String> getItems() {
-        return items;
+    public List<Recipe> getRecipeList(){
+        return this.recipeList;
+    }
+
+    public void setRecipeList(List<Recipe> recipeList){
+        this.recipeList = recipeList;
     }
 
     public void addRecipe(Recipe recipe) {

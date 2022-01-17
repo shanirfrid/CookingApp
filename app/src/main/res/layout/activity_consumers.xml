@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="#FAFAFA"
     android:orientation="vertical"
-    tools:context="com.example.shanir.cookingappofshanir.Consumers">
+    tools:context="com.example.shanir.cookingappofshanir.MyIngredientsActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

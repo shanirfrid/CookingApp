@@ -3,12 +3,8 @@ package com.example.shanir.cookingappofshanir.Admin;
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -21,11 +17,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.shanir.cookingappofshanir.Consumers;
-import com.example.shanir.cookingappofshanir.ListOfRecipe;
-import com.example.shanir.cookingappofshanir.ListOfSaveRecipes;
-import com.example.shanir.cookingappofshanir.MainActivity;
-import com.example.shanir.cookingappofshanir.Profile;
 import com.example.shanir.cookingappofshanir.R;
 import com.example.shanir.cookingappofshanir.classs.Adapter;
 import com.example.shanir.cookingappofshanir.classs.Ingredients;
@@ -50,15 +41,15 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
     ImageView ivrecipe;
     RadioGroup rg1;
     String namebitmap;
-    int CODE=299;
-    String difficult="";
+    int CODE = 299;
+    String difficult = "";
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference postRef;
     ArrayList<Ingredients> list;
     ArrayList<Recipe> recipes;
     ImageView imageViewadd;
-    EditText etadd,etnamerecipe;
+    EditText etadd, etnamerecipe;
     ListView listView;
     TextView tv;
     Adapter adapter;
@@ -66,9 +57,9 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
     ArrayList<String> liststring;
     String lastSelected;
     Dialog dialogdetaileOnIngredients;
-    EditText etkindofingredients,etamount,etunits,etcalories;
+    EditText etkindofingredients, etamount, etunits, etcalories;
     Button btsaveingredient;
-    String kindingredient,units,amount,calories,nameingredient;
+    String kindingredient, units, amount, calories, nameingredient;
     Uri imageUri;
 
 
@@ -79,10 +70,10 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
         etkind = (EditText) findViewById(R.id.etkindofrecipe);
         ettime = (EditText) findViewById(R.id.ettimeadddetailsadmin);
         ivrecipe = (ImageView) findViewById(R.id.ivadmindetails);
-        etnamerecipe=(EditText)findViewById(R.id.etnameofrecipeadddetails) ;
+        etnamerecipe = (EditText) findViewById(R.id.etnameofrecipeadddetails);
         ivrecipe.setOnClickListener(this);
-        btsaverecipe=(Button)findViewById(R.id.btsaverecipeee) ;
-        rg1=(RadioGroup)findViewById(R.id.rgDiff);
+        btsaverecipe = (Button) findViewById(R.id.btsaverecipeee);
+        rg1 = (RadioGroup) findViewById(R.id.rgDiff);
         recipe = new Recipe();
         firebaseAuth = FirebaseAuth.getInstance();
         retrieveDataR();
@@ -111,77 +102,65 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
     }
 
     // Get Recipe list from database
-    public void retrieveDataR()
-    {
+    public void retrieveDataR() {
         recipes = new ArrayList<>();
-        firebaseDatabase= FirebaseDatabase.getInstance();
-        String uid=firebaseAuth.getCurrentUser().getUid();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        String uid = firebaseAuth.getCurrentUser().getUid();
 
-        String tableIdR  = General.RECIPE_TABLE_NAME+"/"+uid;
-        postRef= FirebaseDatabase.getInstance().getReference(tableIdR);
+        String tableIdR = General.RECIPE_TABLE_NAME + "/" + uid;
+        postRef = FirebaseDatabase.getInstance().getReference(tableIdR);
         postRef.addValueEventListener(new ValueEventListener() {
             Recipe r;
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    r = postSnapshot.getValue(Recipe.class);
-                    r.settID(firebaseAuth.getCurrentUser().getUid());
-                    r.setKey(postSnapshot.getKey());
-                    recipes.add(r);
-                }
-                Log.d("dd", "Num of recipes : "+recipes.size());
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                r = dataSnapshot.getValue(Recipe.class);
+                r.settID(firebaseAuth.getCurrentUser().getUid());
+                r.setKey(dataSnapshot.getKey());
+                recipes.add(r);
+                Log.d("dd","Num of recipes : "+recipes.size());
+        }
+        @Override
+        public void onCancelled (DatabaseError databaseError){
 
-            }
-        });
-    }
+        }
+    });
+}
 
-    private void createDialog()
-    {
-        dialogdetaileOnIngredients=new Dialog(this);
+    private void createDialog() {
+        dialogdetaileOnIngredients = new Dialog(this);
         dialogdetaileOnIngredients.setContentView(R.layout.cdialogdetailsoningredients);
-        dialogdetaileOnIngredients.setTitle("Ingredient" + lastSelected+ "dialog screen");
+        dialogdetaileOnIngredients.setTitle("Ingredient" + lastSelected + "dialog screen");
         dialogdetaileOnIngredients.setCancelable(true);
-        tvheaddialog=(TextView)dialogdetaileOnIngredients.findViewById(R.id.tvheadadmindetailsoningredient) ;
-        tvheaddialog.setText( tvheaddialog.getText()+lastSelected);
-        btsaveingredient=(Button) dialogdetaileOnIngredients.findViewById(R.id.btdetailsoningredient);
+        tvheaddialog = (TextView) dialogdetaileOnIngredients.findViewById(R.id.tvheadadmindetailsoningredient);
+        tvheaddialog.setText(tvheaddialog.getText() + lastSelected);
+        btsaveingredient = (Button) dialogdetaileOnIngredients.findViewById(R.id.btdetailsoningredient);
         btsaveingredient.setOnClickListener(this);
         dialogdetaileOnIngredients.show();
     }
 
 
-
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int i) {
-        if (radioGroup == rg1)
-        {
+        if (radioGroup == rg1) {
             if (i == R.id.rbEasy) {
-                difficult="קל";
-            }
-            else if (i== R.id.rbMedium)
-            {
-                difficult="בינוני";
-            }
-            else if (i== R.id.rbHard)
-            {
-                difficult="קשה";
+                difficult = "קל";
+            } else if (i == R.id.rbMedium) {
+                difficult = "בינוני";
+            } else if (i == R.id.rbHard) {
+                difficult = "קשה";
             }
         }
     }
+
     @Override
     public void onClick(View view) {
 
-        if (view==btsaverecipe)
-        {
+        if (view == btsaverecipe) {
             Addrecipe(list);
-        }
-       else if (view == imageViewadd)
-        {
-            String st=etadd.getText().toString().toLowerCase();
-            if(st.trim().isEmpty())
-            {
+        } else if (view == imageViewadd) {
+            String st = etadd.getText().toString().toLowerCase();
+            if (st.trim().isEmpty()) {
                 etadd.setError("צריך להכניס מצרך");
                 return;
             }
@@ -189,32 +168,26 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
 
                 adapter.add(st);
                 adapter.notifyDataSetChanged();
-            }
-            else
-            {
+            } else {
 
-              Toast.makeText(getApplicationContext(), "מרכיב זה כבר נמצא ברשימה", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "מרכיב זה כבר נמצא ברשימה", Toast.LENGTH_SHORT).show();
 
             }
             etadd.setText("");
-        }
-        else if (view==ivrecipe)
-        {
-            Intent i=new Intent(this,Picture.class);
-            startActivityForResult(i,CODE);
-        }
-        else if(view== btsaveingredient)
-        {
+        } else if (view == ivrecipe) {
+            Intent i = new Intent(this, Picture.class);
+            startActivityForResult(i, CODE);
+        } else if (view == btsaveingredient) {
 
-            etkindofingredients=(EditText)dialogdetaileOnIngredients.findViewById(R.id.etkindofIngredient);
-            etamount =(EditText)dialogdetaileOnIngredients.findViewById(R.id.etamount);
-            etcalories=(EditText)dialogdetaileOnIngredients.findViewById(R.id.etcalories) ;
-            etunits=(EditText)dialogdetaileOnIngredients.findViewById(R.id.etunits);
-            amount=etamount.getText().toString();
-            nameingredient=lastSelected;
-            units=etunits.getText().toString();
-            calories=etcalories.getText().toString();
-            kindingredient=etkindofingredients.getText().toString();
+            etkindofingredients = (EditText) dialogdetaileOnIngredients.findViewById(R.id.etkindofIngredient);
+            etamount = (EditText) dialogdetaileOnIngredients.findViewById(R.id.etamount);
+            etcalories = (EditText) dialogdetaileOnIngredients.findViewById(R.id.etcalories);
+            etunits = (EditText) dialogdetaileOnIngredients.findViewById(R.id.etunits);
+            amount = etamount.getText().toString();
+            nameingredient = lastSelected;
+            units = etunits.getText().toString();
+            calories = etcalories.getText().toString();
+            kindingredient = etkindofingredients.getText().toString();
 
             if (kindingredient.trim().isEmpty()) {
                 etkindofingredients.setError("צריך סוג");
@@ -237,20 +210,17 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
                 etamount.requestFocus();
                 return;
             }
-            Ingredients ingredients = new Ingredients(kindingredient,Integer.parseInt(calories),lastSelected,
-                    Double.parseDouble(amount),units);
+            Ingredients ingredients = new Ingredients(kindingredient, Integer.parseInt(calories), lastSelected,
+                    Double.parseDouble(amount), units);
 
 
-               recipe.addingredienttolist(ingredients);
-               Toast.makeText(getApplicationContext(), "מרכיב נשמר", Toast.LENGTH_SHORT).show();
+            recipe.addingredienttolist(ingredients);
+            Toast.makeText(getApplicationContext(), "מרכיב נשמר", Toast.LENGTH_SHORT).show();
             dialogdetaileOnIngredients.dismiss();
-
 
 
         }
     }
-
-
 
 
     private void Addrecipe(ArrayList<Ingredients> list) {
@@ -269,40 +239,35 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
 
 
         }
-        if (difficult.equals(""))
-        {
-            Toast.makeText(getApplicationContext(),"חסר קושי",Toast.LENGTH_SHORT).show();
+        if (difficult.equals("")) {
+            Toast.makeText(getApplicationContext(), "חסר קושי", Toast.LENGTH_SHORT).show();
             return;
         }
 
 
-
-        int time=0;
-        if(!ettime.getText().toString().isEmpty())
-             time = Integer.parseInt(ettime.getText().toString());
+        int time = 0;
+        if (!ettime.getText().toString().isEmpty())
+            time = Integer.parseInt(ettime.getText().toString());
         else
-            time=0;
+            time = 0;
 
         recipe.setDifficulty(difficult);
         recipe.setBitmap(namebitmap);
         recipe.setTime(time);
         String kind = etkind.getText().toString();
         recipe.setKindOfrecipe(kind);
-        String nameRecipe=etnamerecipe.getText().toString();
+        String nameRecipe = etnamerecipe.getText().toString();
         recipe.setNameOfrecipe(nameRecipe);
-        firebaseDatabase= FirebaseDatabase.getInstance();
-        String uid=firebaseAuth.getCurrentUser().getUid();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        String uid = firebaseAuth.getCurrentUser().getUid();
 
-        String tableIdR  = General.RECIPE_TABLE_NAME+"/"+uid;
-        postRef= FirebaseDatabase.getInstance().getReference(tableIdR).push();
-        recipe.setKey(postRef.getKey());
-        postRef= FirebaseDatabase.getInstance().getReference(tableIdR+"/"+recipe.getKey());
+        String tableIdR = General.RECIPE_TABLE_NAME + "/" + uid;
+        postRef = FirebaseDatabase.getInstance().getReference(tableIdR);
         postRef.setValue(recipe);
         postRef.setValue(recipe, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReferfinence) {
-                if(databaseError==null)
-                {
+                if (databaseError == null) {
                     Toast.makeText(AddDetailsOnRecipeAdmin.this, "מתכון נשמר בהצלחה",
                             Toast.LENGTH_SHORT).show();
 
@@ -318,8 +283,7 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==CODE && resultCode==RESULT_OK)
-        {
+        if (requestCode == CODE && resultCode == RESULT_OK) {
             String s = data.getStringExtra("uri");
             imageUri = Uri.parse(s);
             String timeStamp = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
@@ -329,7 +293,7 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
         }
     }
 
-    private void uploadImage(){
+    private void uploadImage() {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference().child("images/").child(namebitmap);
         storageReference.putFile(imageUri);

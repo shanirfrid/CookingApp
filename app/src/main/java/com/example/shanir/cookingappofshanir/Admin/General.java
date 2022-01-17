@@ -5,18 +5,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-/**
- * Created by gul on 25/03/2018.
- */
-
 public class General {
 
     public static final String USER_TABLE_NAME = "Users";
-    public static final String SAVE_RECIPES="SaveRecipes";
-    public static final String Admin_Email="shanir207@gmail.com";
-    public static final String RECIPE_ITEM_NAME = "RecipeItems";
-    public static final String RECIPE_TABLE_NAME = "Recipe";
-    public static final String UIDUSER="QpAJbK5rgBZan9RCTnDkgvs9W7j2";
+    public static final String FAVORITE_RECIPES ="UserFavoriteRecipes";
+    public static final String ADMIN_EMAIL ="shanir207@gmail.com";
+    public static final String USER_INGREDIENTS_TABLE_NAME = "UserIngredients";
+    public static final String USER_INGREDIENTS_SUB_TABLE = "ingredients";
+    public static final String RECIPE_FAVORITE_NAMES = "recipeNames";
+    public static final String RECIPE_TABLE_NAME = "Recipes";
     public static User user;
     public static String userKey;
 

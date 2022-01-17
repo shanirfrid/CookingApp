@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -23,7 +22,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.shanir.cookingappofshanir.Admin.General;
 import com.example.shanir.cookingappofshanir.classs.Navigation;
-import com.example.shanir.cookingappofshanir.classs.UserItems;
+import com.example.shanir.cookingappofshanir.classs.UserIngredients;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -35,7 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Consumers extends AppCompatActivity implements View.OnClickListener{
+public class MyIngredientsActivity extends AppCompatActivity implements View.OnClickListener{
     EditText etadd;
     ImageView imageViewadd, mRightArrowImageView;
     ListView listView;
@@ -48,7 +47,7 @@ public class Consumers extends AppCompatActivity implements View.OnClickListener
     private DrawerLayout mDrawerLayout;
     NavigationView navigationView;
     private String tableId;
-    private UserItems item;
+    private UserIngredients item;
     ProductListAdapter productListAdapter;
 
     @Override
@@ -93,30 +92,25 @@ public class Consumers extends AppCompatActivity implements View.OnClickListener
         postRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    item = postSnapshot.getValue(UserItems.class);
-                }
+                item = dataSnapshot.getValue(UserIngredients.class);
+
                 if (item == null) {
-                    item = new UserItems();
+                    item = new UserIngredients();
                 }
                 setAdapter(item);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
     }
 
-
     //Adapter to item list
-    private void setAdapter(UserItems list) {
-        productList = list.getItems();
-        productListAdapter = new ProductListAdapter(getApplicationContext(), 0, list.getItems());
+    private void setAdapter(UserIngredients list) {
+        productList = list.getIngredients();
+        productListAdapter = new ProductListAdapter(getApplicationContext(), 0, list.getIngredients());
         listView.setAdapter(productListAdapter);
-
-
     }
 
 
@@ -133,21 +127,20 @@ public class Consumers extends AppCompatActivity implements View.OnClickListener
                 productList.remove(position);
                 updateItemsList();
                 productListAdapter.notifyDataSetChanged();
-                Toast.makeText(context, "הרכיב נמחק",
+                Toast.makeText(context, "The item was deleted",
                         Toast.LENGTH_SHORT).show();
             } else if (which == AlertDialog.BUTTON_NEGATIVE)
-                Toast.makeText(context, "לא הסכמת למחוק",
+                Toast.makeText(context, "You didn't agree to delete this item",
                         Toast.LENGTH_SHORT).show();
         }
     }
-
 
     @Override
     public void onClick(View v) {
         if (v == imageViewadd) {
             String st = etadd.getText().toString().toLowerCase();
             if (st.trim().isEmpty()) {
-                etadd.setError("צריך להכניס מצרך");
+                etadd.setError("You don't have any ingredients!");
                 return;
             }
 
@@ -156,7 +149,7 @@ public class Consumers extends AppCompatActivity implements View.OnClickListener
             etadd.setText("");
         } else if (v == btsave) {
             updateItemsList();
-            Toast.makeText(getApplicationContext(), "המצרכים נשמרו", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Your ingredients were saved", Toast.LENGTH_SHORT).show();
 
         } else if (v == btrecipelist) {
             Intent intent = new Intent(this, ListOfRecipe.class);
@@ -170,7 +163,6 @@ public class Consumers extends AppCompatActivity implements View.OnClickListener
         item.add(productList);
         DatabaseReference database = FirebaseDatabase.getInstance().getReference(tableId);
         database.setValue(item);
-
     }
 
 
@@ -180,7 +172,7 @@ public class Consumers extends AppCompatActivity implements View.OnClickListener
      */
     private void setRefToTables() {
         String uid = firebaseAuth.getCurrentUser().getUid();
-        tableId = General.RECIPE_ITEM_NAME + "/" + uid;
+        tableId = General.USER_INGREDIENTS_TABLE_NAME + "/" + uid + General.USER_INGREDIENTS_SUB_TABLE;
         postRef = FirebaseDatabase.getInstance().getReference(tableId);
 
     }
