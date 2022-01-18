@@ -89,8 +89,8 @@ public class AdminListOfRecipes extends AppCompatActivity implements View.OnClic
                     public void onClick(DialogInterface dialog, int id) {
 
                         String tableIdR = General.RECIPE_TABLE_NAME;
-                        String tid = recipeList.get(pos).getKey();
-                        DatabaseReference referenveToSelectedRecipe = FirebaseDatabase.getInstance().getReference(tableIdR + "/" + tid);
+                        String recipeName = recipeList.get(pos).getNameOfrecipe();
+                        DatabaseReference referenveToSelectedRecipe = FirebaseDatabase.getInstance().getReference(tableIdR + "/" + recipeName);
                         referenveToSelectedRecipe.removeValue();
                         mRecipeListAdapter.deleteRecipe(pos);
                         mRecipeListAdapter.notifyDataSetChanged();

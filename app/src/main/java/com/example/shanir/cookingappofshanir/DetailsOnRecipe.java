@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -226,7 +227,7 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
 
     public void addRecipeToSaveRecipes() {
         String uid = firebaseAuth.getCurrentUser().getUid();
-        String mPathToUserSavedRecipes = General.FAVORITE_RECIPES + "/" + uid +"/" + General.RECIPE_FAVORITE_NAMES;
+        String mPathToUserSavedRecipes = General.FAVORITE_RECIPES + "/" + uid +"/"+ General.RECIPE_FAVORITE_NAMES;
         DatabaseReference mReferenceToUserSavedRecipes
                 = FirebaseDatabase.getInstance().getReference(mPathToUserSavedRecipes);
         HashMap<String, Object> map = new HashMap<>();
@@ -235,7 +236,18 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 long count = snapshot.getChildrenCount();
-                map.put(String.valueOf(count+1), stname);
+                ArrayList<String> recipesFavoriteNames = (ArrayList<String>) snapshot.getValue();
+                boolean isCurrentRecipeIndb = false;
+                if (recipesFavoriteNames != null) {
+                    if (recipesFavoriteNames.contains(stname)) {
+                        Toast.makeText(DetailsOnRecipe.this,
+                                "You already added this recipe to your favorite recipes",
+                                Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
+                map.put(String.valueOf(count + 1), stname);
                 mReferenceToUserSavedRecipes.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
