@@ -1,9 +1,14 @@
 package com.example.shanir.cookingappofshanir.Admin;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -14,19 +19,29 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.shanir.cookingappofshanir.ListOfRecipe;
 import com.example.shanir.cookingappofshanir.R;
 import com.example.shanir.cookingappofshanir.classs.Adapter;
+import com.example.shanir.cookingappofshanir.classs.FileHelper;
 import com.example.shanir.cookingappofshanir.classs.Ingredients;
+import com.example.shanir.cookingappofshanir.classs.Permission;
 import com.example.shanir.cookingappofshanir.classs.Recipe;
+import com.example.shanir.cookingappofshanir.classs.UpdateProfile;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,7 +53,6 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
     ImageView ivrecipe;
     RadioGroup rg1;
     String namebitmap;
-    int CODE = 299;
     String difficult = "";
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
@@ -56,7 +70,11 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
     EditText etkindofingredients, etamount, etunits, etcalories;
     Button btsaveingredient;
     String kindingredient, units, amount, calories, nameingredient;
+    private int GALLERY = 1, CAMERA = 2;
     Uri imageUri;
+    final String PIC_FILE_NAME = "userpic";
+    boolean imageHasChanged = false;
+
 
 
     @Override
@@ -109,11 +127,11 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
     public void onCheckedChanged(RadioGroup radioGroup, int i) {
         if (radioGroup == rg1) {
             if (i == R.id.rbEasy) {
-                difficult = "קל";
+                difficult = "Easy";
             } else if (i == R.id.rbMedium) {
-                difficult = "בינוני";
+                difficult = "Medium";
             } else if (i == R.id.rbHard) {
-                difficult = "קשה";
+                difficult = "Hard";
             }
         }
     }
@@ -123,15 +141,18 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
 
         if (view == btsaverecipe) {
             Addrecipe(list);
+            Intent intent = new Intent(this, AdminListOfRecipes.class);
+            startActivity(intent);
 
-        } else if (view == imageViewadd) {
+        } else if (view == imageViewadd)
+        {
             String st = etadd.getText().toString().toLowerCase();
             if (st.trim().isEmpty()) {
                 etadd.setError("צריך להכניס מצרך");
                 return;
             }
-            if (!adapter.Getlist().contains(etadd.getText().toString().toLowerCase())) {
 
+            if (!adapter.Getlist().contains(etadd.getText().toString().toLowerCase())) {
                 adapter.add(st);
                 adapter.notifyDataSetChanged();
             } else {
@@ -140,9 +161,13 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
 
             }
             etadd.setText("");
+
+
         } else if (view == ivrecipe) {
-            Intent i = new Intent(this, Picture.class);
-            startActivityForResult(i, CODE);
+            Permission permission = new Permission(this, getApplicationContext());
+            permission.requestMultiplePermissions();
+            showPictureDialog();
+           
         } else if (view == btsaveingredient) {
 
             etkindofingredients = (EditText) dialogdetaileOnIngredients.findViewById(R.id.etkindofIngredient);
@@ -179,7 +204,6 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
             Ingredients ingredients = new Ingredients(kindingredient, Integer.parseInt(calories), lastSelected,
                     Double.parseDouble(amount), units);
 
-
             recipe.addingredienttolist(ingredients);
             Toast.makeText(getApplicationContext(), "מרכיב נשמר", Toast.LENGTH_SHORT).show();
             dialogdetaileOnIngredients.dismiss();
@@ -197,12 +221,12 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
             return;
         }
         if (etnamerecipe.getText().toString().trim().isEmpty()) {
-            etnamerecipe.setError("צריך שם מתכון");
+            etnamerecipe.setError("You need to enter recipe name");
             etnamerecipe.requestFocus();
             return;
         }
         if (difficult.equals("")) {
-            Toast.makeText(getApplicationContext(), "חסר קושי", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "You need to insert a difficult", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -214,10 +238,16 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
             time = 0;
 
         recipe.setDifficulty(difficult);
-        recipe.setBitmap(namebitmap);
         recipe.setTime(time);
         String nameRecipe = etnamerecipe.getText().toString();
         recipe.setNameOfrecipe(nameRecipe);
+
+        if (imageUri != null) {
+            namebitmap = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
+            uploadImage(imageUri);
+        }
+        recipe.setBitmap(namebitmap);
+
         firebaseDatabase = FirebaseDatabase.getInstance();
 
         String tableIdR = General.RECIPE_TABLE_NAME +"/"+ recipe.getNameOfrecipe();
@@ -227,35 +257,105 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReferfinence) {
                 if (databaseError == null) {
-                    Toast.makeText(AddDetailsOnRecipeAdmin.this, "מתכון נשמר בהצלחה",
+                    Toast.makeText(AddDetailsOnRecipeAdmin.this, "Recipe has been saved successfully",
                             Toast.LENGTH_SHORT).show();
 
                     finish();
                     startActivity(getIntent());
                 } else
                     Toast.makeText(AddDetailsOnRecipeAdmin.this,
-                            "בעייה בקישור לאינטרנט - מתכון לא נשמר", Toast.LENGTH_SHORT).show();
+                            "Internet connection is lost - recipe didn't save", Toast.LENGTH_SHORT).show();
             }
 
         });
     }
 
+
+
+    private void showPictureDialog() {
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+        pictureDialog.setTitle("Add Photo!");
+        String[] pictureDialogItems = {
+                "Select photo from gallery",
+                "Take Photo"};
+        pictureDialog.setItems(pictureDialogItems,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                choosePhotoFromGallary();
+                                break;
+                            case 1:
+                                takePhotoFromCamera();
+                                break;
+                        }
+                    }
+                });
+        pictureDialog.show();
+    }
+
+
+    public void choosePhotoFromGallary() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, GALLERY);
+    }
+
+    private void takePhotoFromCamera() {
+        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, CAMERA);
+    }
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CODE && resultCode == RESULT_OK) {
-            String s = data.getStringExtra("uri");
-            imageUri = Uri.parse(s);
-            String timeStamp = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
-            namebitmap = timeStamp;
-            ivrecipe.setImageURI(imageUri);
-            uploadImage();
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == this.RESULT_CANCELED) {
+            return;
+        }
+        if (requestCode == GALLERY) {
+            if (data != null) {
+                imageUri = data.getData();
+                try {
+                    Bitmap bitmapGallery = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                    ivrecipe.setImageBitmap(bitmapGallery);
+                    imageHasChanged = true;
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(AddDetailsOnRecipeAdmin.this, "Failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        } else if (requestCode == CAMERA) {
+
+            Bitmap bitmapCamera = (Bitmap) data.getExtras().get("data");
+            ivrecipe.setImageBitmap(bitmapCamera);
+            imageHasChanged = true;
+            FileHelper.saveBitmapToFile(bitmapCamera, AddDetailsOnRecipeAdmin.this, PIC_FILE_NAME);
+            File tmpFile = new File(getFilesDir() + "/" + PIC_FILE_NAME);
+            imageUri = Uri.fromFile(tmpFile);
+            Log.d("dd", "onActivityResult: " + imageUri);
+            Toast.makeText(AddDetailsOnRecipeAdmin.this, "Image Saved!", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void uploadImage() {
+    private void uploadImage(Uri imageUri) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference().child("images/").child(namebitmap);
-        storageReference.putFile(imageUri);
+        storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(AddDetailsOnRecipeAdmin.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(AddDetailsOnRecipeAdmin.this, " Failed", Toast.LENGTH_SHORT).show();
+
+            }
+        })
+        ;
     }
 
 
