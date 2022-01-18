@@ -82,12 +82,10 @@ public class RecipeListAdapter extends BaseAdapter {
         TextView tvname = (TextView) v.findViewById(R.id.tvnamerecipeitem);
         TextView tvdifficult = (TextView) v.findViewById(R.id.vdifiitem);
         TextView tvtime = (TextView) v.findViewById(R.id.tvtimerecipeitem);
-        TextView tvkind = (TextView) v.findViewById(R.id.tvkindrecipeitem);
         ImageView ivRecipeImage = (ImageView) v.findViewById(R.id.recipe_image);
 
         tvname.setText(recipeList.get(position).getNameOfrecipe());
         tvtime.setText(String.valueOf(recipeList.get(position).getTime()));
-        tvkind.setText(recipeList.get(position).getKindOfrecipe());
         tvdifficult.setText(recipeList.get(position).getDifficulty());
         Bitmap recipeBitmap = recipeList.get(position).getNameBitmap();
         if (recipeBitmap != null)

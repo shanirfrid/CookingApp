@@ -80,18 +80,6 @@ android:layout_gravity="center"
         />
 
     <EditText
-        android:id="@+id/etkindofrecipe"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:hint="recipe kind"
-        android:textColorHint="#333"
-        android:textColor="#333"
-        android:background="#fff"
-        />
-
-    <EditText
         android:id="@+id/ettimeadddetailsadmin"
         android:layout_width="200dp"
         android:layout_height="wrap_content"

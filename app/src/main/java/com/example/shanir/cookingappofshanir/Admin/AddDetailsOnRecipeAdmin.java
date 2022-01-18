@@ -34,7 +34,7 @@ import java.util.Date;
 public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     TextView tvheaddialog;
     Button btsaverecipe;
-    EditText ettime, etkind;
+    EditText ettime;
     ImageView ivrecipe;
     RadioGroup rg1;
     String namebitmap;
@@ -63,7 +63,6 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_details_on_recipe_admin);
-        etkind = (EditText) findViewById(R.id.etkindofrecipe);
         ettime = (EditText) findViewById(R.id.ettimeadddetailsadmin);
         ivrecipe = (ImageView) findViewById(R.id.ivadmindetails);
         etnamerecipe = (EditText) findViewById(R.id.etnameofrecipeadddetails);
@@ -197,11 +196,6 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
             ettime.requestFocus();
             return;
         }
-        if (etkind.getText().toString().trim().isEmpty()) {
-            etkind.setError("צריך סוג");
-            etkind.requestFocus();
-            return;
-        }
         if (etnamerecipe.getText().toString().trim().isEmpty()) {
             etnamerecipe.setError("צריך שם מתכון");
             etnamerecipe.requestFocus();
@@ -222,8 +216,6 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
         recipe.setDifficulty(difficult);
         recipe.setBitmap(namebitmap);
         recipe.setTime(time);
-        String kind = etkind.getText().toString();
-        recipe.setKindOfrecipe(kind);
         String nameRecipe = etnamerecipe.getText().toString();
         recipe.setNameOfrecipe(nameRecipe);
         firebaseDatabase = FirebaseDatabase.getInstance();

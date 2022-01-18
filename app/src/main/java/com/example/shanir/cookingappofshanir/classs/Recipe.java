@@ -25,7 +25,6 @@ public class Recipe  {
 
     private String bitmap;
     private Bitmap nameBitmap;
-    private String kindOfrecipe;
     private String nameOfrecipe;
     private String difficulty;
     private int time;
@@ -37,10 +36,9 @@ public class Recipe  {
         list= new ArrayList<>();
         bitmap = "none";
     }
-    public Recipe(String nameOfrecipe,String kindOfrecipe,String difficulty,int time)
+    public Recipe(String nameOfrecipe,String difficulty,int time)
     {
 
-        this.kindOfrecipe = kindOfrecipe;
         this.nameOfrecipe = nameOfrecipe;
         this.difficulty = difficulty;
         this.time = time;
@@ -49,11 +47,10 @@ public class Recipe  {
 
 
     public Recipe( ArrayList<Ingredients> list,
-                   String  bitmap, String kindOfrecipe, String nameOfrecipe, String difficulty, int time) {
+                   String  bitmap, String nameOfrecipe, String difficulty, int time) {
 
         this.list = list;
         this.bitmap = bitmap;
-        this.kindOfrecipe = kindOfrecipe;
         this.nameOfrecipe = nameOfrecipe;
         this.difficulty = difficulty;
         this.time = time;
@@ -131,14 +128,6 @@ public class Recipe  {
         this.bitmap = bitmap;
     }
 
-    public String getKindOfrecipe() {
-        return kindOfrecipe;
-    }
-
-    public void setKindOfrecipe(String kindOfrecipe) {
-        this.kindOfrecipe = kindOfrecipe;
-    }
-
     public String getDifficulty() {
         return difficulty;
     }
@@ -157,7 +146,7 @@ public class Recipe  {
 
     @Override
     public String toString() {
-        return  "שם המתכון: " +nameOfrecipe +"\n" +"סוג המתכון: " +kindOfrecipe+ "\n" +"קושי: "+difficulty+"\n"+
+        return  "שם המתכון: " +nameOfrecipe +"\n" +"קושי: "+difficulty+"\n"+
                 "זמן מתכון: "+time;
     }
 

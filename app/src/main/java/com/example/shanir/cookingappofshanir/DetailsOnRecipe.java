@@ -42,7 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickListener {
-    TextView tvname, tvkind, tvdifficulty, tvtime;
+    TextView tvname, tvdifficulty, tvtime;
     Button btsaverecipe, btmakenow;
     ImageView imageView;
     Recipe recipe;
@@ -70,7 +70,6 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
         listView = (ListView) findViewById(R.id.lvdetailsonrecipe);
         progressBar = (ProgressBar) findViewById(R.id.progressbardetailss);
         tvname = (TextView) findViewById(R.id.tvheadnameOfrecipe);
-        tvkind = (TextView) findViewById(R.id.tvheadkindOfrecipe);
         tvdifficulty = (TextView) findViewById(R.id.tvheaddificultyOfrecipe);
         tvtime = (TextView) findViewById(R.id.tvheadtimefrecipe);
         imageView = (ImageView) findViewById(R.id.ivdetailsrecipe);
@@ -115,8 +114,6 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
 
                     if (r.getNameOfrecipe().equals(stname)) {
                         tvname.setText(stname);
-                        kind = r.getKindOfrecipe();
-                        tvkind.setText(kind);
                         difficulty = r.getDifficulty();
                         tvdifficulty.setText(difficulty);
                         time = Integer.toString(r.getTime());

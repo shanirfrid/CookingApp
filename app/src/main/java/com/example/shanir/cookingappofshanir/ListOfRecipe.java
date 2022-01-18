@@ -200,7 +200,7 @@ public class ListOfRecipe extends AppCompatActivity {
 
     private void setRefToTables() {
         String uid = firebaseAuth.getCurrentUser().getUid();
-        tableId = General.USER_INGREDIENTS_TABLE_NAME + "/" + uid + "/"+General.USER_INGREDIENTS_SUB_TABLE;
+        tableId = General.USER_INGREDIENTS_TABLE_NAME + "/" + uid;
         postRef = FirebaseDatabase.getInstance().getReference(tableId);
     }
 

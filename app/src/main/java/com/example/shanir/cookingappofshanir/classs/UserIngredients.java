@@ -7,11 +7,15 @@ import java.util.ArrayList;
  */
 
 public class UserIngredients {
-    private ArrayList<String> ingredients = new ArrayList<>();
+    private ArrayList<String> ingredients;
 
     public UserIngredients() {
+        this.ingredients = new ArrayList<>();
     }
 
+    public UserIngredients(ArrayList<String> ingredients){
+        this.ingredients = ingredients;
+    }
 
     public void add(ArrayList<String> list) {
         ingredients = new ArrayList<>();
