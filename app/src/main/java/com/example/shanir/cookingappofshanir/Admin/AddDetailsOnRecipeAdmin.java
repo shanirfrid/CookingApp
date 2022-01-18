@@ -3,12 +3,8 @@ package com.example.shanir.cookingappofshanir.Admin;
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -21,11 +17,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.shanir.cookingappofshanir.Consumers;
-import com.example.shanir.cookingappofshanir.ListOfRecipe;
-import com.example.shanir.cookingappofshanir.ListOfSaveRecipes;
-import com.example.shanir.cookingappofshanir.MainActivity;
-import com.example.shanir.cookingappofshanir.Profile;
 import com.example.shanir.cookingappofshanir.R;
 import com.example.shanir.cookingappofshanir.classs.Adapter;
 import com.example.shanir.cookingappofshanir.classs.Ingredients;
@@ -46,7 +37,7 @@ import java.util.Date;
 public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     TextView tvheaddialog;
     Button btsaverecipe;
-    EditText ettime, etkind;
+    EditText ettime;
     ImageView ivrecipe;
     RadioGroup rg1;
     String namebitmap;
@@ -66,7 +57,8 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
     ArrayList<String> liststring;
     String lastSelected;
     Dialog dialogdetaileOnIngredients;
-    EditText etkindofingredients,etamount,etunits,etcalories;
+    EditText etkindofingredients,etamount,etunits,etcalories,
+            mIngredientUnitsEditText;
     Button btsaveingredient;
     String kindingredient,units,amount,calories,nameingredient;
     Uri imageUri;
@@ -76,7 +68,6 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_details_on_recipe_admin);
-        etkind = (EditText) findViewById(R.id.etkindofrecipe);
         ettime = (EditText) findViewById(R.id.ettimeadddetailsadmin);
         ivrecipe = (ImageView) findViewById(R.id.ivadmindetails);
         etnamerecipe=(EditText)findViewById(R.id.etnameofrecipeadddetails) ;
@@ -91,6 +82,9 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
         btsaverecipe.setOnClickListener(this);
 
         etadd = (EditText) findViewById(R.id.etwriteconsumersa);
+        mIngredientUnitsEditText =
+                (EditText) findViewById(R.id.add_recipe_ingredients_units);
+
         imageViewadd = (ImageView) findViewById(R.id.ivconsumersaddaa);
         imageViewadd.setOnClickListener(this);
         listView = (ListView) findViewById(R.id.listviewconsumersa);
@@ -179,15 +173,21 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
         }
        else if (view == imageViewadd)
         {
-            String st=etadd.getText().toString().toLowerCase();
+            String st=etadd.getText().toString().toLowerCase(),
+                    ingredientUnits = mIngredientUnitsEditText.getText().toString();
+
             if(st.trim().isEmpty())
             {
                 etadd.setError("צריך להכניס מצרך");
                 return;
             }
+            if (ingredientUnits.trim().isEmpty()) {
+                mIngredientUnitsEditText.setError("Enter ingredient units");
+                return;
+            }
             if (!adapter.Getlist().contains(etadd.getText().toString().toLowerCase())) {
 
-                adapter.add(st);
+                adapter.add(ingredientUnits + " - " + st);
                 adapter.notifyDataSetChanged();
             }
             else
@@ -197,6 +197,7 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
 
             }
             etadd.setText("");
+            mIngredientUnitsEditText.setText("");
         }
         else if (view==ivrecipe)
         {
@@ -259,10 +260,7 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
             ettime.setError("צריך זמן");
             ettime.requestFocus();
         }
-        if (etkind.getText().toString().trim().isEmpty()) {
-            etkind.setError("צריך סוג");
-            etkind.requestFocus();
-        }
+
         if (etnamerecipe.getText().toString().trim().isEmpty()) {
             etnamerecipe.setError("צריך שם מתכון");
             etnamerecipe.requestFocus();
@@ -286,8 +284,6 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
         recipe.setDifficulty(difficult);
         recipe.setBitmap(namebitmap);
         recipe.setTime(time);
-        String kind = etkind.getText().toString();
-        recipe.setKindOfrecipe(kind);
         String nameRecipe=etnamerecipe.getText().toString();
         recipe.setNameOfrecipe(nameRecipe);
         firebaseDatabase= FirebaseDatabase.getInstance();

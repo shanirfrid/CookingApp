@@ -15,55 +15,56 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/Theme.Design.NoActionBar">
         <activity
-
             android:name=".classs.UpdateProfile"
             android:exported="true" />
-        <activity android:name="MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
-
             </intent-filter>
-
         </activity>
         <activity
-            android:exported="true"
             android:name=".Register"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:exported="true"
             android:name=".Profile"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:exported="true"
             android:name=".DetailsOnRecipe"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:exported="true"
             android:name=".ListOfRecipe"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:exported="true"
             android:name=".ListOfSaveRecipes"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:exported="true"
             android:name=".Admin.Picture"
+            android:exported="true"
             android:screenOrientation="portrait" />
-        <activity android:name=".Consumers"
+        <activity
+            android:name=".Consumers"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Admin.AddDetailsOnRecipeAdmin"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Admin.AdminListOfRecipes"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Timerrun"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -1,218 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayoutaddingredient"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-
-    android:background="#d9d2d2"
-    android:id="@+id/mainLayoutaddingredient"
+    android:background="@color/colorBackground"
     tools:context="com.example.shanir.cookingappofshanir.Admin.AddDetailsOnRecipeAdmin">
 
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:orientation="horizontal"
-android:layout_gravity="center"
-    android:gravity="center"
-    android:layout_height="50dp">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivadmindetails"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:src="@drawable/account_profile"
+        android:textColor="#F9AC36"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etnameofrecipeadddetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="recipe name"
+        android:padding="20dp"
+        android:textColor="#000"
+        android:textColorHint="@color/colorHintText"
+        android:textSize="32sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivadmindetails" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/add_recipe_attributes_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/etnameofrecipeadddetails">
+
+        <LinearLayout
+            android:id="@+id/add_details_time_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/add_recipe_difficulty_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/ettimeadddetailsadmin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="time"
+                android:inputType="number"
+                android:paddingRight="2dp"
+                android:textColor="#666"
+                android:textColorHint="@color/colorHintText"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_baseline_access_time_24"
+                app:tint="#666" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/add_recipe_difficulty_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/add_details_time_layout"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RadioGroup
+                android:id="@+id/rgDiff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbEasy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/holo_green_light"
+                    android:outlineAmbientShadowColor="#000"
+                    android:text="Easy"
+                    android:textSize="15dp" />
+
+                <RadioButton
+                    android:id="@+id/rbMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/holo_orange_light"
+                    android:text="Medium"
+                    android:textSize="15dp" />
+
+                <RadioButton
+                    android:id="@+id/rbHard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/holo_red_light"
+                    android:text="Hard"
+                    android:textSize="15dp" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/tvheadadminname"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvheadingredients"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:text="הוספת מתכון"
-        android:textSize="30sp" />
-    <LinearLayout
-        android:layout_width="50dp"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
+        android:paddingStart="20dp"
+        android:text="Ingredients"
+        android:textColor="#222"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_recipe_attributes_layout" />
 
-    </LinearLayout>
-    <Button
-        android:layout_width="wrap_content"
-        android:background="#2749a6"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/add_recipe_add_ingredients_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textColor="#f9f5f5"
-        android:textSize="20sp"
-        android:id="@+id/btsaverecipeee"
-        android:text="שמור "
-        />
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toBottomOf="@id/tvheadingredients">
 
-</LinearLayout>
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-</LinearLayout>
-
-    <LinearLayout
-     android:layout_width="match_parent"
-     android:orientation="horizontal"
-     android:layout_height="wrap_content">
-
-
-     <LinearLayout
-    android:layout_width="wrap_content"
-    android:orientation="vertical"
-         android:layout_marginTop="20dp"
-    android:layout_height="wrap_content"
-         >
-
-
-
-    <EditText
-
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:id="@+id/etnameofrecipeadddetails"
-        android:hint=" הכנס שם מתכון"
-        android:background="#fff"
-        />
-
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-
-        android:id="@+id/etkindofrecipe"
-        android:hint="הכנס סוג מתכון"
-        android:background="#fff"
-        />
-
-    <EditText
-        android:layout_width="200dp"
-        android:layout_marginTop="10dp"
-        android:textSize="20sp"
-
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:id="@+id/ettimeadddetailsadmin"
-        android:hint="הכנס זמן (דקות)"
-        android:inputType="number"
-        android:background="#fff"
-        />
-</LinearLayout>
         <LinearLayout
-            android:layout_width="50dp"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ivconsumersaddaa"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/add_recipe_ingredients_units"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="3"
+                android:background="@drawable/edit_text_design"
+                android:hint="Enter unit"
+                android:paddingStart="10dp"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/colorHintText" />
+
+            <EditText
+                android:id="@+id/etwriteconsumersa"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="2"
+                android:background="@drawable/edit_text_design"
+                android:hint="Enter ingredient"
+                android:paddingStart="10dp"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/colorHintText" />
 
         </LinearLayout>
 
 
         <ImageView
-            android:id="@+id/ivadmindetails"
-            android:layout_width="80dp"
-            android:layout_marginTop="20dp"
-            android:layout_height="100dp"
-            android:src="@drawable/cemera"
-
-            />
-
-
-
-
- </LinearLayout>
-
-    <TextView
-        android:id="@+id/tvdifi"
-        android:text=" קושי"
-        android:textSize="25dp"
-        android:textColor="#1e1d1d"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_gravity="right"
-        android:layout_height="wrap_content"
-        />
-
-        <RadioGroup
-            android:id="@+id/rgDiff"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/rbEasy"
-                android:textSize="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="קל" />
-
-            <RadioButton
-                android:id="@+id/rbMedium"
-                android:textSize="15dp"
-
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="בינוני" />
-
-            <RadioButton
-                android:id="@+id/rbHard"
-                android:textSize="15dp"
-
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-
-                android:text="קשה" />
-        </RadioGroup>
-
- <TextView
-     android:layout_width="match_parent"
-     android:layout_height="wrap_content"
-     android:gravity="center"
-     android:textColor="#31378b"
-     android:textStyle="bold"
-     android:textSize="30sp"
-     android:id="@+id/tvheadingredients"
-     android:text="מרכיבים"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/plus"
             android:id="@+id/ivconsumersaddaa"
-            />
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/plus"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="תכתוב כאן "
-            android:id="@+id/etwriteconsumersa"
-
-            />
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ListView
-        android:layout_width="match_parent"
         android:id="@+id/listviewconsumersa"
-        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@id/btsaverecipeee"
+        app:layout_constraintTop_toBottomOf="@id/add_recipe_add_ingredients_layout" />
 
-        android:layout_height="match_parent">
+    <Button
+        android:id="@+id/btsaverecipeee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@color/colorPrimary"
+        android:text="add"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-
-    </ListView>
-
-
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
