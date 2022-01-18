@@ -22,20 +22,22 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.shanir.cookingappofshanir.ListOfRecipe;
 import com.example.shanir.cookingappofshanir.R;
 import com.example.shanir.cookingappofshanir.classs.Adapter;
 import com.example.shanir.cookingappofshanir.classs.FileHelper;
 import com.example.shanir.cookingappofshanir.classs.Ingredients;
 import com.example.shanir.cookingappofshanir.classs.Permission;
 import com.example.shanir.cookingappofshanir.classs.Recipe;
-import com.example.shanir.cookingappofshanir.classs.UpdateProfile;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -67,15 +69,14 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
     ArrayList<String> liststring;
     String lastSelected;
     Dialog dialogdetaileOnIngredients;
-    EditText etkindofingredients, etamount, etunits, etcalories;
+    EditText etunits;
     Button btsaveingredient;
-    String  units, nameingredient;
+    String units, nameingredient;
     private int GALLERY = 1, CAMERA = 2;
+    boolean recipeInDB;
     Uri imageUri;
     final String PIC_FILE_NAME = "userpic";
     boolean imageHasChanged = false;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,20 +144,19 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
             Addrecipe(list);
 
 
-        } else if (view == imageViewadd)
-        {
+        } else if (view == imageViewadd) {
             String st = etadd.getText().toString().toLowerCase();
             if (st.trim().isEmpty()) {
-                etadd.setError("צריך להכניס מצרך");
+                etadd.setError("You need to enter an ingredient");
                 return;
             }
 
-            if (!adapter.Getlist().contains(etadd.getText().toString().toLowerCase())) {
+            if (!adapter.getlist().contains(etadd.getText().toString().toLowerCase())) {
                 adapter.add(st);
                 adapter.notifyDataSetChanged();
             } else {
-
-                Toast.makeText(getApplicationContext(), "מרכיב זה כבר נמצא ברשימה", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),
+                        "This ingredients already exist in this list", Toast.LENGTH_SHORT).show();
 
             }
             etadd.setText("");
@@ -166,7 +166,7 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
             Permission permission = new Permission(this, getApplicationContext());
             permission.requestMultiplePermissions();
             showPictureDialog();
-           
+
         } else if (view == btsaveingredient) {
 
             etunits = (EditText) dialogdetaileOnIngredients.findViewById(R.id.etunits);
@@ -178,7 +178,7 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
                 etunits.requestFocus();
                 return;
             }
-            Ingredients ingredients = new Ingredients( lastSelected, units);
+            Ingredients ingredients = new Ingredients(lastSelected, units);
 
             recipe.addingredienttolist(ingredients);
             Toast.makeText(getApplicationContext(), "Ingredient has been saved successfully", Toast.LENGTH_SHORT).show();
@@ -186,7 +186,6 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
 
         }
     }
-
 
     private void Addrecipe(ArrayList<Ingredients> list) {
 
@@ -205,6 +204,10 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
             return;
         }
 
+        if (adapter.getlist().isEmpty()) {
+            Toast.makeText(getApplicationContext(), "You need to insert an ingredient", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         int time = 0;
         if (!ettime.getText().toString().isEmpty())
@@ -212,10 +215,11 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
         else
             time = 0;
 
-        recipe.setDifficulty(difficult);
-        recipe.setTime(time);
         String nameRecipe = etnamerecipe.getText().toString();
         recipe.setNameOfrecipe(nameRecipe);
+        recipe.setDifficulty(difficult);
+        recipe.setTime(time);
+
 
         if (imageUri != null) {
             namebitmap = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
@@ -225,26 +229,38 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
 
         firebaseDatabase = FirebaseDatabase.getInstance();
 
-        String tableIdR = General.RECIPE_TABLE_NAME +"/"+ recipe.getNameOfrecipe();
+        String tableIdR = General.RECIPE_TABLE_NAME + "/" + recipe.getNameOfrecipe();
         postRef = FirebaseDatabase.getInstance().getReference(tableIdR);
 
-        postRef.setValue(recipe, new DatabaseReference.CompletionListener() {
+        postRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReferfinence) {
-                if (databaseError == null) {
-                    Toast.makeText(AddDetailsOnRecipeAdmin.this, "Recipe has been saved successfully",
-                            Toast.LENGTH_SHORT).show();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()) {
+                    postRef.setValue(recipe).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(AddDetailsOnRecipeAdmin.this, "Recipe has been saved successfully",
+                                    Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(AddDetailsOnRecipeAdmin.this, AdminListOfRecipes.class);
-                    startActivity(intent);
-                } else
-                    Toast.makeText(AddDetailsOnRecipeAdmin.this,
-                            "Internet connection is lost - recipe didn't save", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(AddDetailsOnRecipeAdmin.this, AdminListOfRecipes.class);
+                            startActivity(intent);
+                        }
+                    });
+                }
+                else{
+                    Toast.makeText(AddDetailsOnRecipeAdmin.this, "This recipe is already exist",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(AddDetailsOnRecipeAdmin.this,
+                        "Error occurs - recipe didn't save", Toast.LENGTH_SHORT).show();
+            }
         });
-    }
 
+    }
 
 
     private void showPictureDialog() {

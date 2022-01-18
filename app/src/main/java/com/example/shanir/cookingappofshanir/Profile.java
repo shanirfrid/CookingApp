@@ -184,7 +184,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         storageRef.getBytes(ONE_MEGABYTE).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Profile.this, "bad", Toast.LENGTH_SHORT).show();
+
             }
         });
 

@@ -42,7 +42,7 @@ public class Adapter extends ArrayAdapter {
         this.objects = objects;
     }
 
-    public List<String> Getlist()
+    public List<String> getlist()
     {
         return objects;
     }
