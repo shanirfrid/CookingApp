@@ -69,7 +69,7 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
     ArrayList<String> liststring;
     String lastSelected;
     Dialog dialogdetaileOnIngredients;
-    EditText etunits;
+    EditText etunits, mIngredientUnitsEditText;
     Button btsaveingredient;
     String units, nameingredient;
     private int GALLERY = 1, CAMERA = 2;
@@ -95,6 +95,9 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
         btsaverecipe.setOnClickListener(this);
 
         etadd = (EditText) findViewById(R.id.etwriteconsumersa);
+        mIngredientUnitsEditText =
+                (EditText) findViewById(R.id.add_recipe_ingredients_units);
+
         imageViewadd = (ImageView) findViewById(R.id.ivconsumersaddaa);
         imageViewadd.setOnClickListener(this);
         listView = (ListView) findViewById(R.id.listviewconsumersa);
@@ -145,14 +148,21 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
 
 
         } else if (view == imageViewadd) {
-            String st = etadd.getText().toString().toLowerCase();
+            String st = etadd.getText().toString().toLowerCase(),
+                ingredientUnits = mIngredientUnitsEditText.getText().toString();
+
             if (st.trim().isEmpty()) {
                 etadd.setError("You need to enter an ingredient");
                 return;
             }
+            if (ingredientUnits.trim().isEmpty()) {
+                mIngredientUnitsEditText.setError("Enter ingredient units");
+                return;
+            }
+
 
             if (!adapter.getlist().contains(etadd.getText().toString().toLowerCase())) {
-                adapter.add(st);
+                adapter.add(ingredientUnits + " - " + st);
                 adapter.notifyDataSetChanged();
             } else {
                 Toast.makeText(getApplicationContext(),
@@ -160,6 +170,7 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
 
             }
             etadd.setText("");
+            mIngredientUnitsEditText.setText("");
 
 
         } else if (view == ivrecipe) {
@@ -172,7 +183,7 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
             etunits = (EditText) dialogdetaileOnIngredients.findViewById(R.id.etunits);
             nameingredient = lastSelected;
             units = etunits.getText().toString();
-
+    
             if (units.trim().isEmpty()) {
                 etunits.setError("You need to add units/amount");
                 etunits.requestFocus();
@@ -194,6 +205,7 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
             ettime.requestFocus();
             return;
         }
+    
         if (etnamerecipe.getText().toString().trim().isEmpty()) {
             etnamerecipe.setError("You need to enter recipe name");
             etnamerecipe.requestFocus();
@@ -219,7 +231,6 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
         recipe.setNameOfrecipe(nameRecipe);
         recipe.setDifficulty(difficult);
         recipe.setTime(time);
-
 
         if (imageUri != null) {
             namebitmap = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
@@ -248,7 +259,7 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
                     });
                 }
                 else{
-                    Toast.makeText(AddDetailsOnRecipeAdmin.this, "This recipe is already exist",
+                    Toast.makeText(AddDetailsOnRecipeAdmin.this, "This recipe already exists",
                             Toast.LENGTH_SHORT).show();
                 }
             }
@@ -337,7 +348,6 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
         storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(AddDetailsOnRecipeAdmin.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
