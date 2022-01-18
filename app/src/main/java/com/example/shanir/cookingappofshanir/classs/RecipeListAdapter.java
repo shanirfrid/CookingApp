@@ -60,12 +60,6 @@ public class RecipeListAdapter extends BaseAdapter {
         this.recipeList.remove(position);
     }
 
-    public void add(List<Recipe> list) {
-        recipeList = new ArrayList<>();
-        for (Recipe r : list)
-            recipeList.add(r);
-    }
-
     @Override
     public int getCount() {
         return recipeList.size();

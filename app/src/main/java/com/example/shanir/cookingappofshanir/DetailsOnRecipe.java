@@ -237,7 +237,6 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
 
                 long count = snapshot.getChildrenCount();
                 ArrayList<String> recipesFavoriteNames = (ArrayList<String>) snapshot.getValue();
-                boolean isCurrentRecipeIndb = false;
                 if (recipesFavoriteNames != null) {
                     if (recipesFavoriteNames.contains(stname)) {
                         Toast.makeText(DetailsOnRecipe.this,
