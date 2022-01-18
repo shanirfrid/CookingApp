@@ -50,13 +50,8 @@ public class RecipeListAdapter extends BaseAdapter {
     }
 
     public void addRecipe(Recipe recipe) {
-        this.recipeList.add(recipe);
-    }
-
-    public void add(List<Recipe> list) {
-        recipeList = new ArrayList<>();
-        for (Recipe r : list)
-            recipeList.add(r);
+        if (!this.recipeList.contains(recipe))
+            this.recipeList.add(recipe);
     }
 
     @Override

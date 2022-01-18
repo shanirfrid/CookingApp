@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -22,11 +21,9 @@ import com.example.shanir.cookingappofshanir.classs.Adapter;
 import com.example.shanir.cookingappofshanir.classs.Ingredients;
 import com.example.shanir.cookingappofshanir.classs.Recipe;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -76,7 +73,6 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
         rg1 = (RadioGroup) findViewById(R.id.rgDiff);
         recipe = new Recipe();
         firebaseAuth = FirebaseAuth.getInstance();
-        retrieveDataR();
 
         rg1.setOnCheckedChangeListener(this);
         btsaverecipe.setOnClickListener(this);
@@ -94,40 +90,12 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 lastSelected = (String) adapter.getItem(position);
-                createDialog();
+                createDialogIngredients();
             }
         });
-
-
     }
 
-    // Get Recipe list from database
-    public void retrieveDataR() {
-        recipes = new ArrayList<>();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        String uid = firebaseAuth.getCurrentUser().getUid();
-
-        String tableIdR = General.RECIPE_TABLE_NAME + "/" + uid;
-        postRef = FirebaseDatabase.getInstance().getReference(tableIdR);
-        postRef.addValueEventListener(new ValueEventListener() {
-            Recipe r;
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                r = dataSnapshot.getValue(Recipe.class);
-                r.settID(firebaseAuth.getCurrentUser().getUid());
-                r.setKey(dataSnapshot.getKey());
-                recipes.add(r);
-                Log.d("dd","Num of recipes : "+recipes.size());
-        }
-        @Override
-        public void onCancelled (DatabaseError databaseError){
-
-        }
-    });
-}
-
-    private void createDialog() {
+    private void createDialogIngredients() {
         dialogdetaileOnIngredients = new Dialog(this);
         dialogdetaileOnIngredients.setContentView(R.layout.cdialogdetailsoningredients);
         dialogdetaileOnIngredients.setTitle("Ingredient" + lastSelected + "dialog screen");
@@ -138,7 +106,6 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
         btsaveingredient.setOnClickListener(this);
         dialogdetaileOnIngredients.show();
     }
-
 
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -158,6 +125,7 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
 
         if (view == btsaverecipe) {
             Addrecipe(list);
+
         } else if (view == imageViewadd) {
             String st = etadd.getText().toString().toLowerCase();
             if (st.trim().isEmpty()) {
@@ -228,16 +196,17 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
         if (ettime.getText().toString().trim().isEmpty()) {
             ettime.setError("צריך זמן");
             ettime.requestFocus();
+            return;
         }
         if (etkind.getText().toString().trim().isEmpty()) {
             etkind.setError("צריך סוג");
             etkind.requestFocus();
+            return;
         }
         if (etnamerecipe.getText().toString().trim().isEmpty()) {
             etnamerecipe.setError("צריך שם מתכון");
             etnamerecipe.requestFocus();
-
-
+            return;
         }
         if (difficult.equals("")) {
             Toast.makeText(getApplicationContext(), "חסר קושי", Toast.LENGTH_SHORT).show();
@@ -259,11 +228,10 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
         String nameRecipe = etnamerecipe.getText().toString();
         recipe.setNameOfrecipe(nameRecipe);
         firebaseDatabase = FirebaseDatabase.getInstance();
-        String uid = firebaseAuth.getCurrentUser().getUid();
 
-        String tableIdR = General.RECIPE_TABLE_NAME + "/" + uid;
+        String tableIdR = General.RECIPE_TABLE_NAME +"/"+ recipe.getNameOfrecipe();
         postRef = FirebaseDatabase.getInstance().getReference(tableIdR);
-        postRef.setValue(recipe);
+
         postRef.setValue(recipe, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReferfinence) {

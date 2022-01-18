@@ -37,6 +37,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FavoriteRecipesActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     ListView mSavedRecipesListView;
@@ -114,18 +115,23 @@ public class FavoriteRecipesActivity extends AppCompatActivity implements Adapte
         });
     }
 
-    public void setEventListenerForGettingRecipes(ArrayList<String> recipesNameList) {
-
-        FirebaseStorage storage = FirebaseStorage.getInstance();
+    public void setEventListenerForGettingRecipes(ArrayList<String> favoriteRecipesNameList) {
         final long ONE_MEGABYTE = 1024 * 1024 * 5;
 
-        mReferenceToAllRecipes.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    Recipe recipe = postSnapshot.getValue(Recipe.class);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
 
-                    if (recipesNameList.contains(recipe.getNameOfrecipe())) {
+        for (String favoriteRecipeName : favoriteRecipesNameList) {
+            String currentRecipePath = General.RECIPE_TABLE_NAME + "/" +
+                    favoriteRecipeName;
+            DatabaseReference referenceToFavoriteRecipe = FirebaseDatabase.getInstance().getReference(currentRecipePath);
+            referenceToFavoriteRecipe.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Recipe recipe = snapshot.getValue(Recipe.class);
+                    if (recipe != null) {
+
+                        mRecipeListAdapter.addRecipe(recipe);
+                        mRecipeListAdapter.notifyDataSetChanged();
                         StorageReference storageRef = storage.getReferenceFromUrl
                                 ("gs://cookingappofshanir.appspot.com/images/").child
                                 (recipe.getBitmap());
@@ -147,12 +153,15 @@ public class FavoriteRecipesActivity extends AppCompatActivity implements Adapte
                         });
                     }
                 }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(FavoriteRecipesActivity.this, "There isn't such recipe " + favoriteRecipeName, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
+
 
 
     // Get Item list from database
@@ -183,7 +192,7 @@ public class FavoriteRecipesActivity extends AppCompatActivity implements Adapte
 
     private void setReferenceToUserSaveRecipes() {
         String uid = firebaseAuth.getCurrentUser().getUid();
-        mPathToUserSavedRecipes = General.FAVORITE_RECIPES + "/" + uid ;
+        mPathToUserSavedRecipes = General.FAVORITE_RECIPES + "/" + uid;
         mReferenceToUserSavedRecipes = FirebaseDatabase.getInstance().getReference(mPathToUserSavedRecipes);
     }
 

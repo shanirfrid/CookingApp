@@ -168,4 +168,13 @@ public class Recipe  {
     public void setTime(int time) {
         this.time = time;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if (!(o instanceof Recipe)){
+            return false;
+        }
+        return this.getNameOfrecipe().equals(((Recipe) o).getNameOfrecipe());
+
+    }
 }
