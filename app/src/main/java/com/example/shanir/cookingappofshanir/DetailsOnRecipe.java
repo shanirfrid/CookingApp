@@ -58,7 +58,7 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
     Dialog dialogdetaileOnIngredientinrecipe;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference postRef;
-    String kindingredient, amount, units, calories;
+    String units;
     ArrayList<Ingredients> ingredientsArrayList;
     Adapter adapter;
     ArrayList<String> liststring;
@@ -171,10 +171,7 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
                 lastSelected = (String) adapter.getItem(position);
                 for (int n = 0; n < ingredientsArrayList.size(); n++) {
                     if (ingredientsArrayList.get(n).getName().equals(lastSelected)) {
-                        kindingredient = ingredientsArrayList.get(n).getKindOfingredient();
-                        amount = String.valueOf(ingredientsArrayList.get(n).getAmount());
                         units = ingredientsArrayList.get(n).getUnits();
-                        calories = Integer.toString(ingredientsArrayList.get(n).getCalories());
                     }
                 }
                 createDialog();
@@ -190,13 +187,7 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
         dialogdetaileOnIngredientinrecipe.setCancelable(true);
         tvheaddialog = (TextView) dialogdetaileOnIngredientinrecipe.findViewById(R.id.tvheaddetailsoningredientt);
         tvheaddialog.setText(tvheaddialog.getText().toString() + lastSelected);
-        tvamount = (TextView) dialogdetaileOnIngredientinrecipe.findViewById(R.id.tvamount);
         tvunits = (TextView) dialogdetaileOnIngredientinrecipe.findViewById(R.id.tvunits);
-        tvkindingredient = (TextView) dialogdetaileOnIngredientinrecipe.findViewById(R.id.tvkindingredient);
-        tvcalories = (TextView) dialogdetaileOnIngredientinrecipe.findViewById(R.id.tvcalories);
-        tvamount.setText(tvamount.getText().toString() + amount);
-        tvcalories.setText(tvcalories.getText().toString() + calories);
-        tvkindingredient.setText(tvkindingredient.getText().toString() + kindingredient);
         tvunits.setText(tvunits.getText().toString() + units);
         btback = (Button) dialogdetaileOnIngredientinrecipe.findViewById(R.id.btbackdetailsoningredient);
         btback.setOnClickListener(new View.OnClickListener() {

@@ -69,7 +69,7 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
     Dialog dialogdetaileOnIngredients;
     EditText etkindofingredients, etamount, etunits, etcalories;
     Button btsaveingredient;
-    String kindingredient, units, amount, calories, nameingredient;
+    String  units, nameingredient;
     private int GALLERY = 1, CAMERA = 2;
     Uri imageUri;
     final String PIC_FILE_NAME = "userpic";
@@ -141,8 +141,7 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
 
         if (view == btsaverecipe) {
             Addrecipe(list);
-            Intent intent = new Intent(this, AdminListOfRecipes.class);
-            startActivity(intent);
+
 
         } else if (view == imageViewadd)
         {
@@ -170,44 +169,20 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
            
         } else if (view == btsaveingredient) {
 
-            etkindofingredients = (EditText) dialogdetaileOnIngredients.findViewById(R.id.etkindofIngredient);
-            etamount = (EditText) dialogdetaileOnIngredients.findViewById(R.id.etamount);
-            etcalories = (EditText) dialogdetaileOnIngredients.findViewById(R.id.etcalories);
             etunits = (EditText) dialogdetaileOnIngredients.findViewById(R.id.etunits);
-            amount = etamount.getText().toString();
             nameingredient = lastSelected;
             units = etunits.getText().toString();
-            calories = etcalories.getText().toString();
-            kindingredient = etkindofingredients.getText().toString();
-
-            if (kindingredient.trim().isEmpty()) {
-                etkindofingredients.setError("צריך סוג");
-                etkindofingredients.requestFocus();
-                return;
-            }
 
             if (units.trim().isEmpty()) {
-                etunits.setError("צריך יחידות");
+                etunits.setError("You need to add units/amount");
                 etunits.requestFocus();
                 return;
             }
-            if (calories.trim().isEmpty()) {
-                etcalories.setError("צריך קלוריות");
-                etcalories.requestFocus();
-                return;
-            }
-            if (amount.trim().isEmpty()) {
-                etamount.setError("צריך כמות");
-                etamount.requestFocus();
-                return;
-            }
-            Ingredients ingredients = new Ingredients(kindingredient, Integer.parseInt(calories), lastSelected,
-                    Double.parseDouble(amount), units);
+            Ingredients ingredients = new Ingredients( lastSelected, units);
 
             recipe.addingredienttolist(ingredients);
-            Toast.makeText(getApplicationContext(), "מרכיב נשמר", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Ingredient has been saved successfully", Toast.LENGTH_SHORT).show();
             dialogdetaileOnIngredients.dismiss();
-
 
         }
     }
@@ -260,8 +235,8 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
                     Toast.makeText(AddDetailsOnRecipeAdmin.this, "Recipe has been saved successfully",
                             Toast.LENGTH_SHORT).show();
 
-                    finish();
-                    startActivity(getIntent());
+                    Intent intent = new Intent(AddDetailsOnRecipeAdmin.this, AdminListOfRecipes.class);
+                    startActivity(intent);
                 } else
                     Toast.makeText(AddDetailsOnRecipeAdmin.this,
                             "Internet connection is lost - recipe didn't save", Toast.LENGTH_SHORT).show();

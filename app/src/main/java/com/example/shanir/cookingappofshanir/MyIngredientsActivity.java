@@ -172,11 +172,9 @@ public class MyIngredientsActivity extends AppCompatActivity implements View.OnC
      */
     private void setRefToTables() {
         String uid = firebaseAuth.getCurrentUser().getUid();
-        tableId = General.USER_INGREDIENTS_TABLE_NAME + "/" + uid ;
+        tableId = General.USER_INGREDIENTS_TABLE_NAME + "/" + uid;
         postRef = FirebaseDatabase.getInstance().getReference(tableId);
-
     }
-
 
     public class ProductListAdapter extends ArrayAdapter<String> {
         List<String> mProducts;

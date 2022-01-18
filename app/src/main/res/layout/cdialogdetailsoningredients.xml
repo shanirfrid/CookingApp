@@ -16,45 +16,15 @@
         android:textAlignment="center"
         android:textStyle="bold"
         android:textColor="@color/colorPrimary"
-        android:text="פרטים על המרכיב:  "/>
+        android:text="Details on ingredient "/>
 
-
-    <EditText android:id="@+id/etkindofIngredient"
-       android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-
-        android:textAlignment="center"
-        android:hint="סוג מרכיב (פחמימות,חלבונים..)"
-        android:textColorHint="#837e7e"
-        android:textSize="20sp"
-        android:layout_gravity="center"
-        />
-    <EditText android:id="@+id/etcalories"
-        android:textSize="20sp"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:textAlignment="center"
-        android:hint="קלוריות"
-        android:textColorHint="#837e7e"
-        android:inputType="number|numberDecimal"/>
-
-
-    <EditText android:id="@+id/etamount"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:textSize="20sp"
-        android:textAlignment="center"
-        android:hint="כמות (גרם)"
-        android:textColorHint="#837e7e"
-        android:inputType="number"/>
 
     <EditText android:id="@+id/etunits"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:textSize="20sp"
         android:textAlignment="center"
-        android:hint="יחידות"
+        android:hint="amount/units"
         android:textColorHint="#837e7e"/>
 
     <Button android:id="@+id/btdetailsoningredient"
@@ -62,6 +32,7 @@
         android:layout_width="wrap_content"
         android:textSize="25sp"
         android:textStyle="bold"
-        android:text="אישור"
+        android:text="Confirm"
+        android:textAllCaps="false"
         android:background="@color/colorPrimary"/>
 </LinearLayout>

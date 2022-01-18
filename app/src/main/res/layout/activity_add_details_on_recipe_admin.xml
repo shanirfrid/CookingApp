@@ -195,7 +195,6 @@ android:layout_gravity="center"
         android:layout_width="match_parent"
         android:id="@+id/listviewconsumersa"
         android:layout_gravity="center"
-
         android:layout_height="match_parent">
 
 

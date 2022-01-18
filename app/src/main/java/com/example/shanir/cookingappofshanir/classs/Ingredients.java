@@ -8,40 +8,16 @@ import java.util.List;
  */
 
 public class Ingredients {
-    private String kindOfingredient;
-    private int calories;
     private String name;
-    private double amount;
     private String units;
 
-
-
-    public Ingredients(String kindOfingredient, int calories, String name, double amount, String units) {
-        this.kindOfingredient = kindOfingredient;
-        this.calories = calories;
+    public Ingredients( String name, String units) {
         this.name = name;
-        this.amount = amount;
         this.units = units;
     }
 
     public Ingredients()
     {}
-
-    public String getKindOfingredient() {
-        return kindOfingredient;
-    }
-
-    public void setKindOfingredient(String kindOfingredient) {
-        this.kindOfingredient = kindOfingredient;
-    }
-
-    public int getCalories() {
-        return calories;
-    }
-
-    public void setCalories(int calories) {
-        this.calories = calories;
-    }
 
     public String getName() {
         return name;
@@ -51,13 +27,6 @@ public class Ingredients {
         this.name = name;
     }
 
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
 
     public String getUnits() {
         return units;

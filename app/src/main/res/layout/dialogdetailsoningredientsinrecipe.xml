@@ -24,49 +24,15 @@
         android:textAlignment="center"
         android:textStyle="bold"
         android:textColor="@color/colorPrimary"
-        android:text="פרטים על המרכיב:  "/>
+        android:text="Details on ingredients: "/>
 
-
-    <TextView
-
-        android:id="@+id/tvkindingredient"
-        android:textSize="20sp"
-        android:textAlignment="center"
-        android:text="סוג המרכיב : "
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColorHint="#1e1e1e"
-        />
-    <TextView
-        android:id="@+id/tvcalories"
-        android:textSize="20sp"
-        android:textAlignment="center"
-        android:text="קלוריות : "
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-       android:layout_gravity="center"
-        android:textColorHint="#1e1e1e"
-       />
-
-    <TextView
-        android:id="@+id/tvamount"
-        android:textSize="20dp"
-        android:textAlignment="center"
-        android:text="כמות : "
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColorHint="#1e1e1e"
-       />
 
     <TextView android:id="@+id/tvunits"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:textSize="20dp"
         android:textAlignment="center"
-        android:text="יחידות : "
+        android:hint="250 g floor / 100ml water/ 1 cup"
         android:layout_gravity="center"
         android:textColorHint="#1e1e1e"
         />
