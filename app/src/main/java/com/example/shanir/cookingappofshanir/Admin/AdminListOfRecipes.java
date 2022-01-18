@@ -92,14 +92,8 @@ public class AdminListOfRecipes extends AppCompatActivity implements View.OnClic
                         String tid = recipeList.get(pos).getKey();
                         DatabaseReference referenveToSelectedRecipe = FirebaseDatabase.getInstance().getReference(tableIdR + "/" + tid);
                         referenveToSelectedRecipe.removeValue();
-
-                        //TODO - FIX DELETE
-                       //initRecipeListView();
-                        recipeList.remove(pos);
-                        mRecipeListAdapter = new RecipeListAdapter(AdminListOfRecipes.this, recipeList);
-                        mRecipesListView.setAdapter(mRecipeListAdapter);
-                        retrieveRecipeList();
-
+                        mRecipeListAdapter.deleteRecipe(pos);
+                        mRecipeListAdapter.notifyDataSetChanged();
                         Toast.makeText(context, "Recipe was deleted", Toast.LENGTH_SHORT).show();
                     }
                 });

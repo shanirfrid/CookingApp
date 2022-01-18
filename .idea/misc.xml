@@ -16,11 +16,11 @@
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/drawable/ic_menu.xml" value="0.15677083333333333" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/drawable/plus.xml" value="0.26614583333333336" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_add_details_on_recipe_admin.xml" value="0.264" />
-        <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_admin_list_of_recipes.xml" value="0.25" />
+        <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_admin_list_of_recipes.xml" value="0.2" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_adminchose.xml" value="0.25" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_consumers.xml" value="0.1875" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_details_on_recipe.xml" value="0.25" />
-        <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_list_of_recipe.xml" value="0.14201183431952663" />
+        <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_list_of_recipe.xml" value="0.2" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_list_of_save_recipes.xml" value="0.19270833333333334" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/shani/Documents/GitHub/CookingApp/app/src/main/res/layout/activity_main2.xml" value="0.1359375" />
@@ -54,7 +54,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

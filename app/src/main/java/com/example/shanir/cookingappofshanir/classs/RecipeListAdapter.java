@@ -50,7 +50,14 @@ public class RecipeListAdapter extends BaseAdapter {
     }
 
     public void addRecipe(Recipe recipe) {
+        if (this.recipeList.contains(recipe))
+            return;
+
         this.recipeList.add(recipe);
+    }
+
+    public void deleteRecipe(int position) {
+        this.recipeList.remove(position);
     }
 
     public void add(List<Recipe> list) {

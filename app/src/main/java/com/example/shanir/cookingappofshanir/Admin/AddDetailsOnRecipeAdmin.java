@@ -47,7 +47,6 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
     FirebaseDatabase firebaseDatabase;
     DatabaseReference postRef;
     ArrayList<Ingredients> list;
-    ArrayList<Recipe> recipes;
     ImageView imageViewadd;
     EditText etadd, etnamerecipe;
     ListView listView;
@@ -76,7 +75,6 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
         rg1 = (RadioGroup) findViewById(R.id.rgDiff);
         recipe = new Recipe();
         firebaseAuth = FirebaseAuth.getInstance();
-        retrieveDataR();
 
         rg1.setOnCheckedChangeListener(this);
         btsaverecipe.setOnClickListener(this);
@@ -101,31 +99,8 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
 
     }
 
-    // Get Recipe list from database
-    public void retrieveDataR() {
-        recipes = new ArrayList<>();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        String uid = firebaseAuth.getCurrentUser().getUid();
 
-        String tableIdR = General.RECIPE_TABLE_NAME + "/" + uid;
-        postRef = FirebaseDatabase.getInstance().getReference(tableIdR);
-        postRef.addValueEventListener(new ValueEventListener() {
-            Recipe r;
 
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                r = dataSnapshot.getValue(Recipe.class);
-                r.settID(firebaseAuth.getCurrentUser().getUid());
-                r.setKey(dataSnapshot.getKey());
-                recipes.add(r);
-                Log.d("dd","Num of recipes : "+recipes.size());
-        }
-        @Override
-        public void onCancelled (DatabaseError databaseError){
-
-        }
-    });
-}
 
     private void createDialog() {
         dialogdetaileOnIngredients = new Dialog(this);
