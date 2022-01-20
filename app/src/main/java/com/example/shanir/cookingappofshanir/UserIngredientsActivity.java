@@ -22,6 +22,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.shanir.cookingappofshanir.utils.General;
 import com.example.shanir.cookingappofshanir.utils.Navigation;
+import com.example.shanir.cookingappofshanir.utils.NavigationMenu;
 import com.example.shanir.cookingappofshanir.utils.UserIngredients;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,70 +35,100 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserIngredientsActivity extends AppCompatActivity implements View.OnClickListener{
-    EditText etadd;
-    ImageView imageViewadd, mRightArrowImageView;
-    ListView listView;
-    TextView tv;
-    Button btsave, btrecipelist;
-    ArrayList<String> productList;
-    Context context = this;
-    FirebaseAuth firebaseAuth;
-    private DatabaseReference postRef;
+public class UserIngredientsActivity extends AppCompatActivity {
+    private EditText mAddIngredientEditText;
+    private ImageView mAddIngredientImageView, mMenuImageView;
+    private ListView mIngredientsListView;
+    private Button mSaveIngredientsButton, mFindRecipesButton;
+    private ArrayList<String> mIngredientsList;
+    private FirebaseAuth mFirebaseAuth;
+    private DatabaseReference mUserIngredientsDbRef;
     private DrawerLayout mDrawerLayout;
-    NavigationView navigationView;
-    private String tableId;
-    private UserIngredients item;
-    ProductListAdapter productListAdapter;
+    private NavigationView mNavigationView;
+    private String mUserIngredientsTablePath;
+    private UserIngredients mUserIngredients;
+    private IngredientListAdapter ingredientListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consumers);
-        etadd = (EditText) findViewById(R.id.etwriteconsumers);
-        btsave = (Button) findViewById(R.id.btsaveconsumers);
-        btrecipelist = (Button) findViewById(R.id.btmovetorecipelist);
-        imageViewadd = (ImageView) findViewById(R.id.ivconsumersadd);
-        mRightArrowImageView = (ImageView) findViewById(R.id.menu_image_view);
-        imageViewadd.setOnClickListener(this);
+        mAddIngredientEditText = findViewById(R.id.etwriteconsumers);
+        mMenuImageView = findViewById(R.id.menu_image_view);
+        mIngredientsListView = findViewById(R.id.listviewconsumers);
 
-        listView = (ListView) findViewById(R.id.listviewconsumers);
-        tv = (TextView) findViewById(R.id.tvheadconsumers);
-        firebaseAuth = FirebaseAuth.getInstance();
-        if (firebaseAuth.getCurrentUser() == null) {
+        mFirebaseAuth = FirebaseAuth.getInstance();
+
+        if (mFirebaseAuth.getCurrentUser() == null) {
             startActivity(new Intent(this, SignInActivity.class));
             finish();
         }
-        btsave.setOnClickListener(this);
-        btrecipelist.setOnClickListener(this);
+
+        this.initSaveIngredientsButton();
+        this.initFindRecipesButton();
+        this.initAddIngredientButton();
+
         setRefToTables();
         retrieveData();
 
-        navigationView = findViewById(R.id.navigation_menu);
-        navigationView.setNavigationItemSelectedListener(new Navigation(this));
+        mDrawerLayout = findViewById(R.id.mainLayoutConsumers);
+        mNavigationView = findViewById(R.id.navigation_menu);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationMenu(this, mMenuImageView, mDrawerLayout));
+    }
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.mainLayoutConsumers);
-        mRightArrowImageView.setOnClickListener(new View.OnClickListener() {
+    private void initAddIngredientButton() {
+        mAddIngredientImageView = findViewById(R.id.ivconsumersadd);
+        mAddIngredientImageView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                mDrawerLayout.openDrawer(GravityCompat.START);
+            public void onClick(View v) {
+                String st = mAddIngredientEditText.getText().toString().toLowerCase();
+                if (st.trim().isEmpty()) {
+                    mAddIngredientEditText.setError("You don't have any ingredients!");
+                    return;
+                }
+
+                ingredientListAdapter.add(st);
+                ingredientListAdapter.notifyDataSetChanged();
+                mAddIngredientEditText.setText("");
             }
         });
+    }
 
+    private void initSaveIngredientsButton() {
+        mSaveIngredientsButton = findViewById(R.id.btsaveconsumers);
+        mSaveIngredientsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateItemsList();
+                Toast.makeText(getApplicationContext(), "Your ingredients were saved", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void initFindRecipesButton() {
+        mFindRecipesButton = findViewById(R.id.btmovetorecipelist);
+        mFindRecipesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserIngredientsActivity.this,
+                        UserSuitableRecipesActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
     // Get Item list from database
     public void retrieveData() {
-        postRef.addValueEventListener(new ValueEventListener() {
+        mUserIngredientsDbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                item = dataSnapshot.getValue(UserIngredients.class);
+                mUserIngredients = dataSnapshot.getValue(UserIngredients.class);
 
-                if (item == null) {
-                    item = new UserIngredients();
+                if (mUserIngredients == null) {
+                    mUserIngredients = new UserIngredients();
                 }
-                setAdapter(item);
+                setAdapter(mUserIngredients);
             }
 
             @Override
@@ -106,11 +137,11 @@ public class UserIngredientsActivity extends AppCompatActivity implements View.O
         });
     }
 
-    //Adapter to item list
-    private void setAdapter(UserIngredients list) {
-        productList = list.getIngredients();
-        productListAdapter = new ProductListAdapter(getApplicationContext(), 0, list.getIngredients());
-        listView.setAdapter(productListAdapter);
+    // Adapter to item list
+    private void setAdapter(UserIngredients userIngredients) {
+        mIngredientsList = userIngredients.getIngredients();
+        ingredientListAdapter = new IngredientListAdapter(getApplicationContext(), 0, userIngredients.getIngredients());
+        mIngredientsListView.setAdapter(ingredientListAdapter);
     }
 
 
@@ -124,45 +155,21 @@ public class UserIngredientsActivity extends AppCompatActivity implements View.O
         @Override
         public void onClick(DialogInterface dialog, int which) {
             if (which == AlertDialog.BUTTON_POSITIVE) {
-                productList.remove(position);
+                mIngredientsList.remove(position);
                 updateItemsList();
-                productListAdapter.notifyDataSetChanged();
-                Toast.makeText(context, "The item was deleted",
+                ingredientListAdapter.notifyDataSetChanged();
+                Toast.makeText(UserIngredientsActivity.this, "The item was deleted",
                         Toast.LENGTH_SHORT).show();
             } else if (which == AlertDialog.BUTTON_NEGATIVE)
-                Toast.makeText(context, "You didn't agree to delete this item",
+                Toast.makeText(UserIngredientsActivity.this, "You didn't agree to delete this item",
                         Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v == imageViewadd) {
-            String st = etadd.getText().toString().toLowerCase();
-            if (st.trim().isEmpty()) {
-                etadd.setError("You don't have any ingredients!");
-                return;
-            }
-
-            productListAdapter.add(st);
-            productListAdapter.notifyDataSetChanged();
-            etadd.setText("");
-        } else if (v == btsave) {
-            updateItemsList();
-            Toast.makeText(getApplicationContext(), "Your ingredients were saved", Toast.LENGTH_SHORT).show();
-
-        } else if (v == btrecipelist) {
-            Intent intent = new Intent(this, UserSuitableRecipesActivity.class);
-            startActivity(intent);
-        }
-
-
     }
 
     private void updateItemsList() {
-        item.add(productList);
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference(tableId);
-        database.setValue(item);
+        mUserIngredients.add(mIngredientsList);
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference(mUserIngredientsTablePath);
+        database.setValue(mUserIngredients);
     }
 
 
@@ -171,16 +178,16 @@ public class UserIngredientsActivity extends AppCompatActivity implements View.O
     postRefR - recipes list
      */
     private void setRefToTables() {
-        String uid = firebaseAuth.getCurrentUser().getUid();
-        tableId = General.USER_INGREDIENTS_TABLE_NAME + "/" + uid;
-        postRef = FirebaseDatabase.getInstance().getReference(tableId);
+        String uid = mFirebaseAuth.getCurrentUser().getUid();
+        mUserIngredientsTablePath = General.USER_INGREDIENTS_TABLE_NAME + "/" + uid;
+        mUserIngredientsDbRef = FirebaseDatabase.getInstance().getReference(mUserIngredientsTablePath);
     }
 
-    public class ProductListAdapter extends ArrayAdapter<String> {
+    public class IngredientListAdapter extends ArrayAdapter<String> {
         List<String> mProducts;
         private Context mContext;
 
-        public ProductListAdapter(@NonNull Context context, int resource, List<String> mProducts) {
+        public IngredientListAdapter(@NonNull Context context, int resource, List<String> mProducts) {
             super(context, resource, mProducts);
             this.mProducts = mProducts;
             this.mContext = context;
@@ -210,7 +217,7 @@ public class UserIngredientsActivity extends AppCompatActivity implements View.O
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UserIngredientsActivity.this);
                     builder.setTitle("מחיקת מרכיב                        ");
                     builder.setMessage("האם אתה מאשר את מחיקת הפריט?" + "\n" + "בחר פה את תשובתך");
                     builder.setCancelable(true);
