@@ -23,11 +23,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shanir.cookingappofshanir.R;
-import com.example.shanir.cookingappofshanir.classs.Adapter;
-import com.example.shanir.cookingappofshanir.classs.FileHelper;
-import com.example.shanir.cookingappofshanir.classs.Ingredients;
-import com.example.shanir.cookingappofshanir.classs.Permission;
-import com.example.shanir.cookingappofshanir.classs.Recipe;
+import com.example.shanir.cookingappofshanir.utils.Adapter;
+import com.example.shanir.cookingappofshanir.utils.FileHelper;
+import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.Ingredients;
+import com.example.shanir.cookingappofshanir.utils.Permission;
+import com.example.shanir.cookingappofshanir.utils.Recipe;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;

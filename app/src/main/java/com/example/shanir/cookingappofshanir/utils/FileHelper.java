@@ -1,4 +1,4 @@
-package com.example.shanir.cookingappofshanir.classs;
+package com.example.shanir.cookingappofshanir.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;

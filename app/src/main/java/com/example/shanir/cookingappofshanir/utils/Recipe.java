@@ -1,16 +1,8 @@
-package com.example.shanir.cookingappofshanir.classs;
+package com.example.shanir.cookingappofshanir.utils;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.Exclude;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Shanir on 03/03/2018.

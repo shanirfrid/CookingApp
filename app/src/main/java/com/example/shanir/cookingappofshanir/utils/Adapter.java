@@ -1,4 +1,4 @@
-package com.example.shanir.cookingappofshanir.classs;
+package com.example.shanir.cookingappofshanir.utils;
 
 import android.app.Activity;
 import android.content.Context;

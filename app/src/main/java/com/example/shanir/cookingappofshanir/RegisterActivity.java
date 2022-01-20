@@ -24,10 +24,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.shanir.cookingappofshanir.Admin.General;
-import com.example.shanir.cookingappofshanir.classs.FileHelper;
-import com.example.shanir.cookingappofshanir.classs.Permission;
-import com.example.shanir.cookingappofshanir.classs.User;
+import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.FileHelper;
+import com.example.shanir.cookingappofshanir.utils.Permission;
+import com.example.shanir.cookingappofshanir.utils.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

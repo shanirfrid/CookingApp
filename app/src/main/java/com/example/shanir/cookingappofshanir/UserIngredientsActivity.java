@@ -20,9 +20,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.shanir.cookingappofshanir.Admin.General;
-import com.example.shanir.cookingappofshanir.classs.Navigation;
-import com.example.shanir.cookingappofshanir.classs.UserIngredients;
+import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.Navigation;
+import com.example.shanir.cookingappofshanir.utils.UserIngredients;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;

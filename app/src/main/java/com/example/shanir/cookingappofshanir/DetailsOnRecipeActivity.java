@@ -20,11 +20,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.shanir.cookingappofshanir.Admin.General;
-import com.example.shanir.cookingappofshanir.classs.Adapter;
-import com.example.shanir.cookingappofshanir.classs.Ingredients;
-import com.example.shanir.cookingappofshanir.classs.Recipe;
-import com.example.shanir.cookingappofshanir.classs.TextFormatter;
+import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.Adapter;
+import com.example.shanir.cookingappofshanir.utils.Ingredients;
+import com.example.shanir.cookingappofshanir.utils.Recipe;
+import com.example.shanir.cookingappofshanir.utils.TextFormatter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -206,7 +206,7 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
         Intent intent = null;
         if (v == btmakenow) {
             intent = new Intent(this, TimerActivity.class);
-            intent.putExtra("timerrun", Integer.parseInt(time));
+            intent.putExtra("totalTimeInMinutes", Integer.parseInt(time));
             startActivity(intent);
         } else if (v == btsaverecipe) {
             addRecipeToSaveRecipes();

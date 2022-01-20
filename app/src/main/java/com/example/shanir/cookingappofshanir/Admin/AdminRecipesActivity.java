@@ -21,9 +21,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shanir.cookingappofshanir.SignInActivity;
-import com.example.shanir.cookingappofshanir.classs.RecipeListAdapter;
+import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.RecipeListAdapter;
 import com.example.shanir.cookingappofshanir.R;
-import com.example.shanir.cookingappofshanir.classs.Recipe;
+import com.example.shanir.cookingappofshanir.utils.Recipe;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;

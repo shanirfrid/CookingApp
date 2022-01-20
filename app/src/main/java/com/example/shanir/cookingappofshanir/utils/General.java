@@ -1,9 +1,4 @@
-package com.example.shanir.cookingappofshanir.Admin;
-
-import com.example.shanir.cookingappofshanir.classs.User;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+package com.example.shanir.cookingappofshanir.utils;
 
 public class General {
 

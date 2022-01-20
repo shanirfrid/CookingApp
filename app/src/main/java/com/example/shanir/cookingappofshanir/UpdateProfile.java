@@ -1,4 +1,4 @@
-package com.example.shanir.cookingappofshanir.classs;
+package com.example.shanir.cookingappofshanir;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -20,9 +20,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.shanir.cookingappofshanir.Admin.General;
-import com.example.shanir.cookingappofshanir.UserProfileActivity;
-import com.example.shanir.cookingappofshanir.R;
+import com.example.shanir.cookingappofshanir.utils.FileHelper;
+import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.Permission;
+import com.example.shanir.cookingappofshanir.utils.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;

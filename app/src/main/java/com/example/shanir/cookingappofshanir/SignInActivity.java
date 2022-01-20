@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shanir.cookingappofshanir.Admin.AdminRecipesActivity;
-import com.example.shanir.cookingappofshanir.Admin.General;
+import com.example.shanir.cookingappofshanir.utils.General;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

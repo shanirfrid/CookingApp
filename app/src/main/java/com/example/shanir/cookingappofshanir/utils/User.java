@@ -1,6 +1,4 @@
-package com.example.shanir.cookingappofshanir.classs;
-
-import android.graphics.Bitmap;
+package com.example.shanir.cookingappofshanir.utils;
 
 import java.util.ArrayList;
 

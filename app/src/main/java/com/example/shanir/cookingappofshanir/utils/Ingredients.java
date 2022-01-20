@@ -1,7 +1,4 @@
-package com.example.shanir.cookingappofshanir.classs;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.example.shanir.cookingappofshanir.utils;
 
 /**
  * Created by Shanir on 03/03/2018.

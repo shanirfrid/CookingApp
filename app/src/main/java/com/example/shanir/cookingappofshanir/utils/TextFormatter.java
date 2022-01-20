@@ -1,4 +1,4 @@
-package com.example.shanir.cookingappofshanir.classs;
+package com.example.shanir.cookingappofshanir.utils;
 
 public class TextFormatter {
 

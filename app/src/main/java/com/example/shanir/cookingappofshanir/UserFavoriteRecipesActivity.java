@@ -18,11 +18,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.shanir.cookingappofshanir.Admin.General;
-import com.example.shanir.cookingappofshanir.classs.Navigation;
-import com.example.shanir.cookingappofshanir.classs.Recipe;
-import com.example.shanir.cookingappofshanir.classs.RecipeListAdapter;
-import com.example.shanir.cookingappofshanir.classs.RecipeNames;
+import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.Navigation;
+import com.example.shanir.cookingappofshanir.utils.Recipe;
+import com.example.shanir.cookingappofshanir.utils.RecipeListAdapter;
+import com.example.shanir.cookingappofshanir.utils.RecipeNames;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
