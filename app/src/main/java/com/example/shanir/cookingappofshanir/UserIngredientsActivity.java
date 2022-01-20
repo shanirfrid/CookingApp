@@ -4,58 +4,55 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.shanir.cookingappofshanir.utils.General;
-import com.example.shanir.cookingappofshanir.utils.Navigation;
 import com.example.shanir.cookingappofshanir.utils.NavigationMenu;
-import com.example.shanir.cookingappofshanir.utils.UserIngredients;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class UserIngredientsActivity extends AppCompatActivity {
     private EditText mAddIngredientEditText;
     private ImageView mAddIngredientImageView, mMenuImageView;
     private ListView mIngredientsListView;
-    private Button mSaveIngredientsButton, mFindRecipesButton;
-    private ArrayList<String> mIngredientsList;
+    private Button mFindRecipesButton;
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mUserIngredientsDbRef;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private String mUserIngredientsTablePath;
-    private UserIngredients mUserIngredients;
-    private IngredientListAdapter ingredientListAdapter;
+    private IngredientListAdapter mIngredientsListAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void  onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consumers);
         mAddIngredientEditText = findViewById(R.id.etwriteconsumers);
         mMenuImageView = findViewById(R.id.menu_image_view);
-        mIngredientsListView = findViewById(R.id.listviewconsumers);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
 
@@ -64,16 +61,22 @@ public class UserIngredientsActivity extends AppCompatActivity {
             finish();
         }
 
-        this.initSaveIngredientsButton();
         this.initFindRecipesButton();
         this.initAddIngredientButton();
-
-        setRefToTables();
-        retrieveData();
+        this.initIngredientList();
+        setUserIngredientsDbRef();
+        setDbEventListener();
 
         mDrawerLayout = findViewById(R.id.mainLayoutConsumers);
         mNavigationView = findViewById(R.id.navigation_menu);
         mNavigationView.setNavigationItemSelectedListener(new NavigationMenu(this, mMenuImageView, mDrawerLayout));
+    }
+
+    private void initIngredientList() {
+        mIngredientsListView = findViewById(R.id.listviewconsumers);
+        mIngredientsListAdapter = new IngredientListAdapter(getApplicationContext(), new ArrayList<>());
+        mIngredientsListView.setAdapter(mIngredientsListAdapter);
+
     }
 
     private void initAddIngredientButton() {
@@ -81,26 +84,15 @@ public class UserIngredientsActivity extends AppCompatActivity {
         mAddIngredientImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String st = mAddIngredientEditText.getText().toString().toLowerCase();
-                if (st.trim().isEmpty()) {
+                String ingredientToAdd = mAddIngredientEditText.getText().toString().toLowerCase();
+
+                if (ingredientToAdd.trim().isEmpty()) {
                     mAddIngredientEditText.setError("You don't have any ingredients!");
                     return;
                 }
 
-                ingredientListAdapter.add(st);
-                ingredientListAdapter.notifyDataSetChanged();
+                mUserIngredientsDbRef.child(ingredientToAdd).setValue(ingredientToAdd);
                 mAddIngredientEditText.setText("");
-            }
-        });
-    }
-
-    private void initSaveIngredientsButton() {
-        mSaveIngredientsButton = findViewById(R.id.btsaveconsumers);
-        mSaveIngredientsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateItemsList();
-                Toast.makeText(getApplicationContext(), "Your ingredients were saved", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -118,32 +110,45 @@ public class UserIngredientsActivity extends AppCompatActivity {
 
     }
 
-    // Get Item list from database
-    public void retrieveData() {
-        mUserIngredientsDbRef.addValueEventListener(new ValueEventListener() {
+    private void setDbEventListener() {
+        mUserIngredientsDbRef.addChildEventListener(new ChildEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mUserIngredients = dataSnapshot.getValue(UserIngredients.class);
-
-                if (mUserIngredients == null) {
-                    mUserIngredients = new UserIngredients();
-                }
-                setAdapter(mUserIngredients);
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                mIngredientsListAdapter.add((String) snapshot.getValue());
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                mIngredientsListAdapter.remove((String) snapshot.getValue());
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
 
-    // Adapter to item list
-    private void setAdapter(UserIngredients userIngredients) {
-        mIngredientsList = userIngredients.getIngredients();
-        ingredientListAdapter = new IngredientListAdapter(getApplicationContext(), 0, userIngredients.getIngredients());
-        mIngredientsListView.setAdapter(ingredientListAdapter);
+    private void setUserIngredientsDbRef() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mUserIngredientsTablePath = General.USER_INGREDIENTS_TABLE_NAME +
+                "/" + userId + "/"+ General.USER_INGREDIENTS_SUB_TABLE_NAME;
+        mUserIngredientsDbRef = FirebaseDatabase.getInstance()
+                .getReference(mUserIngredientsTablePath);
     }
-
 
     public class DialogListener implements DialogInterface.OnClickListener {
         private int position;
@@ -155,52 +160,45 @@ public class UserIngredientsActivity extends AppCompatActivity {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             if (which == AlertDialog.BUTTON_POSITIVE) {
-                mIngredientsList.remove(position);
-                updateItemsList();
-                ingredientListAdapter.notifyDataSetChanged();
-                Toast.makeText(UserIngredientsActivity.this, "The item was deleted",
-                        Toast.LENGTH_SHORT).show();
-            } else if (which == AlertDialog.BUTTON_NEGATIVE)
-                Toast.makeText(UserIngredientsActivity.this, "You didn't agree to delete this item",
-                        Toast.LENGTH_SHORT).show();
+                String ingredientName = mIngredientsListAdapter.getItem(position);
+                mUserIngredientsDbRef.child(ingredientName).setValue(null);
+            }
         }
     }
 
-    private void updateItemsList() {
-        mUserIngredients.add(mIngredientsList);
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference(mUserIngredientsTablePath);
-        database.setValue(mUserIngredients);
-    }
 
+    public class IngredientListAdapter extends BaseAdapter {
+        List<String> mIngredientList;
+        private final Context mContext;
 
-    /*
-    postRef - Items list
-    postRefR - recipes list
-     */
-    private void setRefToTables() {
-        String uid = mFirebaseAuth.getCurrentUser().getUid();
-        mUserIngredientsTablePath = General.USER_INGREDIENTS_TABLE_NAME + "/" + uid;
-        mUserIngredientsDbRef = FirebaseDatabase.getInstance().getReference(mUserIngredientsTablePath);
-    }
+        public IngredientListAdapter(@NonNull Context context,
+                                     List<String> ingredientList) {
+            mIngredientList = ingredientList;
+            mContext = context;
+        }
 
-    public class IngredientListAdapter extends ArrayAdapter<String> {
-        List<String> mProducts;
-        private Context mContext;
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        public void add(String ingredient) {
+            mIngredientList.add(ingredient);
+            mIngredientList.sort(Comparator.comparing(String::toString));
+            notifyDataSetChanged();
+        }
 
-        public IngredientListAdapter(@NonNull Context context, int resource, List<String> mProducts) {
-            super(context, resource, mProducts);
-            this.mProducts = mProducts;
-            this.mContext = context;
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        public void remove(String ingredient) {
+            mIngredientList.remove(ingredient);
+            mIngredientList.sort(Comparator.comparing(String::toString));
+            notifyDataSetChanged();
         }
 
         @Override
         public int getCount() {
-            return mProducts.size();
+            return mIngredientList.size();
         }
 
         @Override
         public String getItem(int i) {
-            return mProducts.get(i);
+            return mIngredientList.get(i);
         }
 
         @Override
@@ -212,17 +210,17 @@ public class UserIngredientsActivity extends AppCompatActivity {
         public View getView(int i, View view, ViewGroup viewGroup) {
             View v = View.inflate(mContext, R.layout.product_item_list, null);
             ((TextView) v.findViewById(R.id.product_name)).setText(getItem(i));
-            ImageView imageView = (ImageView) v.findViewById(R.id.delete_product_image_view);
+            ImageView imageView = v.findViewById(R.id.delete_product_image_view);
             imageView.setTag(new Integer(i));
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(UserIngredientsActivity.this);
-                    builder.setTitle("מחיקת מרכיב                        ");
-                    builder.setMessage("האם אתה מאשר את מחיקת הפריט?" + "\n" + "בחר פה את תשובתך");
-                    builder.setCancelable(true);
-                    builder.setNegativeButton("לא מסכים", new DialogListener((int) view.getTag()));
-                    builder.setPositiveButton("מסכים", new DialogListener((int) view.getTag()));
+                    builder.setTitle("Delete ingredient")
+                            .setMessage("Do you approve to delete this item?" + "\n" + "Choose here your answer")
+                            .setCancelable(true)
+                            .setNegativeButton("Disagree", new DialogListener((int) view.getTag()))
+                            .setPositiveButton("Agree", new DialogListener((int) view.getTag()));
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }

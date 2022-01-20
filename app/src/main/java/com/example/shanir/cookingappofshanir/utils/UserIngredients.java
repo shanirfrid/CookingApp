@@ -13,10 +13,6 @@ public class UserIngredients {
         this.ingredients = new ArrayList<>();
     }
 
-    public UserIngredients(ArrayList<String> ingredients){
-        this.ingredients = ingredients;
-    }
-
     public void add(ArrayList<String> list) {
         ingredients = new ArrayList<>();
         for (String s:list)
