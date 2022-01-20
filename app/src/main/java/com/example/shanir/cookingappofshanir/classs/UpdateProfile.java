@@ -21,27 +21,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shanir.cookingappofshanir.Admin.General;
-import com.example.shanir.cookingappofshanir.MainActivity;
-import com.example.shanir.cookingappofshanir.Profile;
+import com.example.shanir.cookingappofshanir.UserProfileActivity;
 import com.example.shanir.cookingappofshanir.R;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -51,8 +40,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-
-import javax.annotation.Nonnull;
 
 
 public class UpdateProfile extends AppCompatActivity implements View.OnClickListener {
@@ -100,14 +87,14 @@ public class UpdateProfile extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         if (v == button) {
             updateProfile();
-            Intent intent = new Intent(this, Profile.class);
+            Intent intent = new Intent(this, UserProfileActivity.class);
             startActivity(intent);
         } else if (v == tvEditProfileImage) {
             Permission permission = new Permission(this, getApplicationContext());
             permission.requestMultiplePermissions();
             showPictureDialog();
         } else if (v == mExit) {
-            Intent intent = new Intent(this, Profile.class);
+            Intent intent = new Intent(this, UserProfileActivity.class);
             startActivity(intent);
         }
     }

@@ -36,7 +36,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
-public class ListOfRecipe extends AppCompatActivity {
+public class UserSuitableRecipesActivity extends AppCompatActivity {
 
     TextView tvhowmanyrecipe;
     ArrayList<String> userIngredients;
@@ -73,7 +73,7 @@ public class ListOfRecipe extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 lastSelected = (Recipe) adapter.getItem(position);
-                Intent i = new Intent(getApplicationContext(), DetailsOnRecipe.class);
+                Intent i = new Intent(getApplicationContext(), DetailsOnRecipeActivity.class);
                 i.putExtra("detailsrecipe", lastSelected.getNameOfrecipe());
                 startActivity(i);
             }
@@ -102,7 +102,7 @@ public class ListOfRecipe extends AppCompatActivity {
                 {
                     Toast.makeText(getApplicationContext(),
                             "אין לך שום מצרכים " + "\n" + "בבקשה הכנס מצרכים", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), MyIngredientsActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), UserIngredientsActivity.class);
                     startActivity(intent);
                 } else {
                     Setlistuser(item);

@@ -13,14 +13,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.shanir.cookingappofshanir.Admin.AdminListOfRecipes;
+import com.example.shanir.cookingappofshanir.Admin.AdminRecipesActivity;
 import com.example.shanir.cookingappofshanir.Admin.General;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
     Button btSignIn;
     TextView tvhead, tvsignup;
     EditText  etpass, etemail;
@@ -90,11 +90,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Intent intent=null;
                     if (General.userEmail.equals(General.ADMIN_EMAIL))
                     {
-                         intent=new Intent(getApplicationContext(), AdminListOfRecipes.class);
+                         intent=new Intent(getApplicationContext(), AdminRecipesActivity.class);
                     }
                     else
                     {
-                         intent = new Intent(getApplicationContext(), MyIngredientsActivity.class);
+                         intent = new Intent(getApplicationContext(), UserIngredientsActivity.class);
                     }
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -119,11 +119,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent=null;
             if (General.userEmail.equals(General.ADMIN_EMAIL))
             {
-                intent=new Intent(getApplicationContext(),AdminListOfRecipes.class);
+                intent=new Intent(getApplicationContext(), AdminRecipesActivity.class);
             }
             else
             {
-                intent = new Intent(getApplicationContext(), MyIngredientsActivity.class);
+                intent = new Intent(getApplicationContext(), UserIngredientsActivity.class);
             }
             startActivity(intent);
             finish();
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             userLogin();
 
         } else if (v == tvsignup) {
-            i = new Intent(getApplicationContext(), Register.class);
+            i = new Intent(getApplicationContext(), RegisterActivity.class);
             startActivity(i);
             finish();
         }

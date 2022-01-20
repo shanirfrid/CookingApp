@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickListener {
+public class DetailsOnRecipeActivity extends AppCompatActivity implements View.OnClickListener {
     TextView tvname, tvdifficulty, tvtime;
     Button btsaverecipe, btmakenow;
     ImageView imageView;
@@ -205,7 +205,7 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         Intent intent = null;
         if (v == btmakenow) {
-            intent = new Intent(this, Timerrun.class);
+            intent = new Intent(this, TimerActivity.class);
             intent.putExtra("timerrun", Integer.parseInt(time));
             startActivity(intent);
         } else if (v == btsaverecipe) {
@@ -227,7 +227,7 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
                 ArrayList<String> recipesFavoriteNames = (ArrayList<String>) snapshot.getValue();
                 if (recipesFavoriteNames != null) {
                     if (recipesFavoriteNames.contains(stname)) {
-                        Toast.makeText(DetailsOnRecipe.this,
+                        Toast.makeText(DetailsOnRecipeActivity.this,
                                 "You already added this recipe to your favorite recipes",
                                 Toast.LENGTH_SHORT).show();
                         return;
@@ -238,7 +238,7 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
                 mReferenceToUserSavedRecipes.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Intent intent = new Intent(DetailsOnRecipe.this, FavoriteRecipesActivity.class);
+                        Intent intent = new Intent(DetailsOnRecipeActivity.this, UserFavoriteRecipesActivity.class);
                         intent.putExtra("nameofrecipedetails", stname);
                         startActivity(intent);
                     }
@@ -263,7 +263,7 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
         switch (item.getItemId()) {
             case R.id.item_back:
 
-                Intent intent = new Intent(getApplicationContext(), ListOfRecipe.class);
+                Intent intent = new Intent(getApplicationContext(), UserSuitableRecipesActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

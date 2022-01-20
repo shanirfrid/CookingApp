@@ -28,10 +28,8 @@ import com.example.shanir.cookingappofshanir.classs.FileHelper;
 import com.example.shanir.cookingappofshanir.classs.Ingredients;
 import com.example.shanir.cookingappofshanir.classs.Permission;
 import com.example.shanir.cookingappofshanir.classs.Recipe;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,7 +46,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
+public class AdminAddRecipeActivity extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     TextView tvheaddialog;
     Button btsaverecipe;
     EditText ettime;
@@ -250,23 +248,23 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
                     postRef.setValue(recipe).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            Toast.makeText(AddDetailsOnRecipeAdmin.this, "Recipe has been saved successfully",
+                            Toast.makeText(AdminAddRecipeActivity.this, "Recipe has been saved successfully",
                                     Toast.LENGTH_SHORT).show();
 
-                            Intent intent = new Intent(AddDetailsOnRecipeAdmin.this, AdminListOfRecipes.class);
+                            Intent intent = new Intent(AdminAddRecipeActivity.this, AdminRecipesActivity.class);
                             startActivity(intent);
                         }
                     });
                 }
                 else{
-                    Toast.makeText(AddDetailsOnRecipeAdmin.this, "This recipe already exists",
+                    Toast.makeText(AdminAddRecipeActivity.this, "This recipe already exists",
                             Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(AddDetailsOnRecipeAdmin.this,
+                Toast.makeText(AdminAddRecipeActivity.this,
                         "Error occurs - recipe didn't save", Toast.LENGTH_SHORT).show();
             }
         });
@@ -325,7 +323,7 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
 
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Toast.makeText(AddDetailsOnRecipeAdmin.this, "Failed!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdminAddRecipeActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -334,11 +332,11 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
             Bitmap bitmapCamera = (Bitmap) data.getExtras().get("data");
             ivrecipe.setImageBitmap(bitmapCamera);
             imageHasChanged = true;
-            FileHelper.saveBitmapToFile(bitmapCamera, AddDetailsOnRecipeAdmin.this, PIC_FILE_NAME);
+            FileHelper.saveBitmapToFile(bitmapCamera, AdminAddRecipeActivity.this, PIC_FILE_NAME);
             File tmpFile = new File(getFilesDir() + "/" + PIC_FILE_NAME);
             imageUri = Uri.fromFile(tmpFile);
             Log.d("dd", "onActivityResult: " + imageUri);
-            Toast.makeText(AddDetailsOnRecipeAdmin.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AdminAddRecipeActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -352,7 +350,7 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(AddDetailsOnRecipeAdmin.this, " Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminAddRecipeActivity.this, " Failed", Toast.LENGTH_SHORT).show();
 
             }
         })

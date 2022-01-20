@@ -1,16 +1,10 @@
 package com.example.shanir.cookingappofshanir;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.provider.MediaStore;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,9 +19,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.shanir.cookingappofshanir.Admin.General;
-import com.example.shanir.cookingappofshanir.classs.FileHelper;
 import com.example.shanir.cookingappofshanir.classs.Navigation;
-import com.example.shanir.cookingappofshanir.classs.Permission;
 import com.example.shanir.cookingappofshanir.classs.UpdateProfile;
 import com.example.shanir.cookingappofshanir.classs.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,7 +38,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 
-public class Profile extends AppCompatActivity implements View.OnClickListener {
+public class UserProfileActivity extends AppCompatActivity implements View.OnClickListener {
     ImageView ivAccountProfile, mRightArrowImageView;
     TextView textView, textViewdetails, tvHeaderVerficationEmail, tvVerficationEmail, tvIconEmail;
     Button btsave;
@@ -98,7 +90,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         retrieveData();
         if (mAuth.getCurrentUser() == null) {
             finish();
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, SignInActivity.class));
         }
     }
 
@@ -114,7 +106,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                     user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(Profile.this, "Email verification has been sent", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UserProfileActivity.this, "Email verification has been sent", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

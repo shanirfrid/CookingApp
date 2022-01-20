@@ -18,7 +18,7 @@ import com.example.shanir.cookingappofshanir.classs.CheakTime;
 
 import java.sql.Time;
 
-public class Timerrun extends AppCompatActivity implements View.OnClickListener {
+public class TimerActivity extends AppCompatActivity implements View.OnClickListener {
     int time ;
     TextView tv;
     ProgressBar progress;
@@ -75,7 +75,7 @@ public class Timerrun extends AppCompatActivity implements View.OnClickListener 
             case R.id.item_back:
 
                 asTsk1=null;
-                Intent intent = new Intent(getApplicationContext(), MyIngredientsActivity.class);
+                Intent intent = new Intent(getApplicationContext(), UserIngredientsActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

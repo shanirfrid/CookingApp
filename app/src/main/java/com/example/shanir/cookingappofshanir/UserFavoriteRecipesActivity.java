@@ -37,9 +37,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public class FavoriteRecipesActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class UserFavoriteRecipesActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     ListView mSavedRecipesListView;
     String mNewRecipeName = "";
     FirebaseAuth firebaseAuth;
@@ -67,7 +66,7 @@ public class FavoriteRecipesActivity extends AppCompatActivity implements Adapte
         firebaseAuth = FirebaseAuth.getInstance();
 
         if (firebaseAuth.getCurrentUser() == null) {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, SignInActivity.class));
             finish();
         }
 
@@ -81,7 +80,7 @@ public class FavoriteRecipesActivity extends AppCompatActivity implements Adapte
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Recipe selectedRecipe = (Recipe) mRecipeListAdapter.getItem(position);
-                Intent i = new Intent(getApplicationContext(), DetailsOnRecipe.class);
+                Intent i = new Intent(getApplicationContext(), DetailsOnRecipeActivity.class);
                 i.putExtra("detailslistofsaverecipe", selectedRecipe.getNameOfrecipe());
                 startActivity(i);
             }
@@ -108,7 +107,7 @@ public class FavoriteRecipesActivity extends AppCompatActivity implements Adapte
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mSelectedRecipe = (Recipe) mRecipeListAdapter.getItem(position);
-                Intent i = new Intent(getApplicationContext(), DetailsOnRecipe.class);
+                Intent i = new Intent(getApplicationContext(), DetailsOnRecipeActivity.class);
                 i.putExtra("detailsSaverecipe", mSelectedRecipe.getNameOfrecipe());
                 startActivity(i);
             }
@@ -156,7 +155,7 @@ public class FavoriteRecipesActivity extends AppCompatActivity implements Adapte
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(FavoriteRecipesActivity.this, "There isn't such recipe " + favoriteRecipeName, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserFavoriteRecipesActivity.this, "There isn't such recipe " + favoriteRecipeName, Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -213,23 +212,23 @@ public class FavoriteRecipesActivity extends AppCompatActivity implements Adapte
         switch (item.getItemId()) {
             case R.id.menuLogout:
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
 
                 break;
 
             case R.id.mnItemConsumers:
-                Intent intent2 = new Intent(getBaseContext(), MyIngredientsActivity.class);
+                Intent intent2 = new Intent(getBaseContext(), UserIngredientsActivity.class);
                 startActivity(intent2);
                 break;
             case R.id.mnItemListOfRecipes:
-                Intent intent3 = new Intent(getBaseContext(), ListOfRecipe.class);
+                Intent intent3 = new Intent(getBaseContext(), UserSuitableRecipesActivity.class);
                 startActivity(intent3);
                 break;
 
             case R.id.mnItemProfile:
-                Intent intent6 = new Intent(getBaseContext(), Profile.class);
+                Intent intent6 = new Intent(getBaseContext(), UserProfileActivity.class);
                 startActivity(intent6);
                 break;
             case R.id.mnItemListofsaverecipes:
@@ -243,7 +242,7 @@ public class FavoriteRecipesActivity extends AppCompatActivity implements Adapte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent i = new Intent(getApplicationContext(), DetailsOnRecipe.class);
+        Intent i = new Intent(getApplicationContext(), DetailsOnRecipeActivity.class);
         mSelectedRecipe = (Recipe) mRecipeListAdapter.getItem(position);
         i.putExtra("detailslistofsaverecipe", mSelectedRecipe.getNameOfrecipe());
         i.putExtra("numlistofsverecipe", 0);

@@ -18,7 +18,7 @@
             android:name=".classs.UpdateProfile"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".SignInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,38 +27,38 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Register"
+            android:name=".RegisterActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Profile"
+            android:name=".UserProfileActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DetailsOnRecipe"
+            android:name=".DetailsOnRecipeActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ListOfRecipe"
+            android:name=".UserSuitableRecipesActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:exported="true"
-            android:name=".FavoriteRecipesActivity"
+            android:name=".UserFavoriteRecipesActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".MyIngredientsActivity"
+        <activity android:name=".UserIngredientsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Admin.AddDetailsOnRecipeAdmin"
+            android:name=".Admin.AdminAddRecipeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Admin.AdminListOfRecipes"
+            android:name=".Admin.AdminRecipesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Timerrun"
+            android:name=".TimerActivity"
             android:screenOrientation="portrait" />
     </application>
 

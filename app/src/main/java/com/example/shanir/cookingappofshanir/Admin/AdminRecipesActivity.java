@@ -20,7 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.shanir.cookingappofshanir.MainActivity;
+import com.example.shanir.cookingappofshanir.SignInActivity;
 import com.example.shanir.cookingappofshanir.classs.RecipeListAdapter;
 import com.example.shanir.cookingappofshanir.R;
 import com.example.shanir.cookingappofshanir.classs.Recipe;
@@ -39,7 +39,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminListOfRecipes extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class AdminRecipesActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     FirebaseAuth firebaseAuth;
     ProgressBar pb;
@@ -77,7 +77,7 @@ public class AdminListOfRecipes extends AppCompatActivity implements View.OnClic
         mRecipesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(AdminListOfRecipes.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(AdminRecipesActivity.this);
                 final int pos = position;
                 List<Recipe> recipeList = mRecipeListAdapter.getRecipeList();
                 String nameOfSelectedRecipe = recipeList.get(pos).getNameOfrecipe();
@@ -114,13 +114,13 @@ public class AdminListOfRecipes extends AppCompatActivity implements View.OnClic
         switch (view.getId()) {
             case R.id.admin_logout:
                 firebaseAuth.signOut();
-                intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent = new Intent(getApplicationContext(), SignInActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 break;
 
             case R.id.add_recipe_btn:
-                intent = new Intent(getApplicationContext(), AddDetailsOnRecipeAdmin.class);
+                intent = new Intent(getApplicationContext(), AdminAddRecipeActivity.class);
                 startActivity(intent);
                 break;
 

@@ -34,7 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyIngredientsActivity extends AppCompatActivity implements View.OnClickListener{
+public class UserIngredientsActivity extends AppCompatActivity implements View.OnClickListener{
     EditText etadd;
     ImageView imageViewadd, mRightArrowImageView;
     ListView listView;
@@ -65,7 +65,7 @@ public class MyIngredientsActivity extends AppCompatActivity implements View.OnC
         tv = (TextView) findViewById(R.id.tvheadconsumers);
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() == null) {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, SignInActivity.class));
             finish();
         }
         btsave.setOnClickListener(this);
@@ -152,7 +152,7 @@ public class MyIngredientsActivity extends AppCompatActivity implements View.OnC
             Toast.makeText(getApplicationContext(), "Your ingredients were saved", Toast.LENGTH_SHORT).show();
 
         } else if (v == btrecipelist) {
-            Intent intent = new Intent(this, ListOfRecipe.class);
+            Intent intent = new Intent(this, UserSuitableRecipesActivity.class);
             startActivity(intent);
         }
 

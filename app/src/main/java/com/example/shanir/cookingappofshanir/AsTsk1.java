@@ -23,7 +23,7 @@ public class AsTsk1 extends AsyncTask<Integer, Integer, String> {
     private Time timetext;
     private CheakTime cheakTime;
     boolean isRun = true;
-    private Timerrun mTimerRunActivity;
+    private TimerActivity mTimerRunActivity;
     int num;
 
     public AsTsk1(TextView tv,
@@ -32,14 +32,12 @@ public class AsTsk1 extends AsyncTask<Integer, Integer, String> {
         this.progressBar = progressBar;
 
         this.context=context;
-        this.mTimerRunActivity = (Timerrun) context;
+        this.mTimerRunActivity = (TimerActivity) context;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-
-
     }
 
     @Override

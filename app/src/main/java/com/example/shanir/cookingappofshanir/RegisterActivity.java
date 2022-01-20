@@ -47,7 +47,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Register extends AppCompatActivity implements View.OnClickListener {
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     EditText etpass, etfirstname, etemail, etlastname, etphone, etid, etconfirmpass;
     TextView tvBack;
     Button btsave;
@@ -115,7 +115,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
         } else if (v == tvBack) {
             finish();
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, SignInActivity.class);
             startActivity(intent);
         }
     }
@@ -168,11 +168,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     Bitmap bitmapGallery = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uriProfileImage);
                     mProfileImage.setImageBitmap(bitmapGallery);
 
-                    Toast.makeText(Register.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
 
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Toast.makeText(Register.this, "Failed!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -180,11 +180,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
             Bitmap bitmapCamera = (Bitmap) data.getExtras().get("data");
             mProfileImage.setImageBitmap(bitmapCamera);
-            FileHelper.saveBitmapToFile(bitmapCamera, Register.this, PIC_FILE_NAME_PROFIL);
+            FileHelper.saveBitmapToFile(bitmapCamera, RegisterActivity.this, PIC_FILE_NAME_PROFIL);
             File tmpFile = new File(getFilesDir() + "/" + PIC_FILE_NAME_PROFIL);
             uriProfileImage = Uri.fromFile(tmpFile);
             Log.d("dd", "onActivityResult: " + uriProfileImage);
-            Toast.makeText(Register.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RegisterActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
         }
     }
     private void uploadImage(Uri imageUri) {
@@ -193,12 +193,12 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(Register.this,"Image Uploaded", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this,"Image Uploaded", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Register.this," Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this," Failed", Toast.LENGTH_SHORT).show();
             }
         })
         ;
@@ -250,17 +250,17 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                                 uploadImage(uriProfileImage);
                             }
                             adduser();
-                            Toast.makeText(Register.this, "Signed in successfully",
+                            Toast.makeText(RegisterActivity.this, "Signed in successfully",
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             if (task.getException() instanceof FirebaseAuthUserCollisionException)
-                                Toast.makeText(Register.this, "OOPS! you are already signed in",
+                                Toast.makeText(RegisterActivity.this, "OOPS! you are already signed in",
                                         Toast.LENGTH_SHORT).show();
                             else {
-                                Toast.makeText(Register.this, task.getException().getMessage(),
+                                Toast.makeText(RegisterActivity.this, task.getException().getMessage(),
                                         Toast.LENGTH_SHORT).show();
 
-                                Toast.makeText(Register.this, "Authentication failed.",
+                                Toast.makeText(RegisterActivity.this, "Authentication failed.",
                                         Toast.LENGTH_SHORT).show();
                                 Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
                             }
@@ -291,13 +291,13 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     General.user = user;
                     General.userKey = user.getIdkey();
                     General.userEmail = user.getEmail();
-                    Toast.makeText(Register.this, "data successfully saved", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), MyIngredientsActivity.class);
+                    Toast.makeText(RegisterActivity.this, "data successfully saved", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), UserIngredientsActivity.class);
                     startActivity(intent);
                     finish();
 
                 } else
-                    Toast.makeText(Register.this, "failed to save due to poor network conditions", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "failed to save due to poor network conditions", Toast.LENGTH_SHORT).show();
             }
         });
     }
