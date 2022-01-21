@@ -49,6 +49,7 @@ public class RecipeListAdapter extends BaseAdapter {
 
     public void deleteRecipe(int position) {
         this.recipeList.remove(position);
+        notifyDataSetChanged();
     }
 
     @Override

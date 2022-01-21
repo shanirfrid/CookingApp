@@ -17,6 +17,7 @@ import com.example.shanir.cookingappofshanir.utils.General;
 import com.example.shanir.cookingappofshanir.utils.NavigationMenu;
 import com.example.shanir.cookingappofshanir.utils.Recipe;
 import com.example.shanir.cookingappofshanir.utils.RecipeListAdapter;
+import com.example.shanir.cookingappofshanir.utils.TextFormatter;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -50,7 +51,7 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
         retrieveUserIngredients();
 
         mRecipesNumberTextView.setText(
-                resultsMessageBuilder(mRecipeListAdapter.getCount()));
+                TextFormatter.foundRecipesNumber(mRecipeListAdapter.getCount()));
 
     }
 
@@ -131,19 +132,9 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     mRecipeListAdapter.add(recipe);
                     mRecipesNumberTextView.setText(
-                            resultsMessageBuilder(mRecipeListAdapter.getCount()));
+                            TextFormatter.foundRecipesNumber(mRecipeListAdapter.getCount()));
                 });
     }
 
-    private static String resultsMessageBuilder(int recipesAmount) {
-        switch (recipesAmount) {
-            case 0:
-                return "No recipe was found!";
-            case 1:
-                return "1 recipe was found!";
-            default:
-                return recipesAmount + " recipes were found!";
-        }
-    }
 
 }

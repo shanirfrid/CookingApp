@@ -206,18 +206,15 @@ public class UserIngredientsActivity extends AppCompatActivity {
             ((TextView) v.findViewById(R.id.product_name)).setText(getItem(i));
             ImageView imageView = v.findViewById(R.id.delete_product_image_view);
             imageView.setTag(new Integer(i));
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(UserIngredientsActivity.this);
-                    builder.setTitle("Delete ingredient")
-                            .setMessage("Do you approve to delete this item?" + "\n" + "Choose here your answer")
-                            .setCancelable(true)
-                            .setNegativeButton("Disagree", new DialogListener((int) view.getTag()))
-                            .setPositiveButton("Agree", new DialogListener((int) view.getTag()));
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
+            imageView.setOnClickListener(view1 -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(UserIngredientsActivity.this);
+                builder.setTitle("Delete ingredient")
+                        .setMessage("Do you approve to delete this item?" + "\n" + "Choose here your answer")
+                        .setCancelable(true)
+                        .setNegativeButton("No", new DialogListener((int) view1.getTag()))
+                        .setPositiveButton("Yes", new DialogListener((int) view1.getTag()));
+                AlertDialog dialog = builder.create();
+                dialog.show();
             });
             return v;
         }
