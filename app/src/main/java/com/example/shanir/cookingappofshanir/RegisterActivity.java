@@ -288,9 +288,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReferfinence) {
                 if (databaseError == null) {
-                    General.user = user;
-                    General.userKey = user.getIdkey();
-                    General.userEmail = user.getEmail();
                     Toast.makeText(RegisterActivity.this, "data successfully saved", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), UserIngredientsActivity.class);
                     startActivity(intent);

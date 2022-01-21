@@ -9,144 +9,105 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.shanir.cookingappofshanir.Admin.AdminRecipesActivity;
 import com.example.shanir.cookingappofshanir.utils.General;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
-    Button btSignIn;
-    TextView tvhead, tvsignup;
-    EditText  etpass, etemail;
-    ProgressBar pb;
-    FirebaseAuth mAuth;
+public class SignInActivity extends AppCompatActivity {
+    Button mSignInButton;
+    TextView mSignUpTextView;
+    EditText mPasswordEditText, mEmailEditText;
+    ProgressBar mProgressBar;
+    FirebaseAuth mFireBaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAuth = FirebaseAuth.getInstance();
-        btSignIn = (Button) findViewById(R.id.btSignIn);
-        tvsignup = (TextView) findViewById(R.id.tvSignUp);
-        etemail = (EditText) findViewById(R.id.etemaillogin);
-        etpass = (EditText) findViewById(R.id.etPasswordlogin);
-        tvhead = (TextView) findViewById(R.id.tvheadlogin);
+        mEmailEditText = findViewById(R.id.etemaillogin);
+        mPasswordEditText = findViewById(R.id.etPasswordlogin);
+        mProgressBar = findViewById(R.id.progressbarlogin);
 
-        pb = (ProgressBar) findViewById(R.id.progressbarlogin);
-        btSignIn.setOnClickListener(this);
-        tvsignup.setOnClickListener(this);
-    }
-
-
-
-    private void userLogin() {
-        String password = etpass.getText().toString().trim();
-        String email = etemail.getText().toString().trim();
-
-
-        if (email.isEmpty()) {
-            etemail.setError("צריך מייל");
-            etemail.requestFocus();
-            return;
-
-
-        }
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            etemail.setError("בבקשה תכניס מייל אמיתי");
-            etemail.requestFocus();
-            return;
-
-
-        }
-        if (password.isEmpty()) {
-            etpass.setError("צריך סיסמא");
-            etpass.requestFocus();
-            return;
-
-
-        }
-        if (password.length() < 6) {
-            etpass.setError("האורך המינימאלי של הסיסמא צריך להיות 6 ");
-            etpass.requestFocus();
-            return;
-        }
-        pb.setVisibility(View.VISIBLE);
-        mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                pb.setVisibility(View.GONE);
-                if (task.isSuccessful())
-                {
-                    General.userKey = mAuth.getCurrentUser().getUid();
-                    General.userEmail = mAuth.getCurrentUser().getEmail();
-                    Intent intent=null;
-                    if (General.userEmail.equals(General.ADMIN_EMAIL))
-                    {
-                         intent=new Intent(getApplicationContext(), AdminRecipesActivity.class);
-                    }
-                    else
-                    {
-                         intent = new Intent(getApplicationContext(), UserIngredientsActivity.class);
-                    }
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    finish();
-                }
-                else
-                {
-                    Toast.makeText(getApplicationContext(),task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
+        mFireBaseAuth = FirebaseAuth.getInstance();
+        initSignInButton();
+        initSignUpTextView();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if (mAuth.getCurrentUser()!=null)
-        {
-            General.userKey = mAuth.getCurrentUser().getUid();
-            General.userEmail = mAuth.getCurrentUser().getEmail();
-            Intent intent=null;
-            if (General.userEmail.equals(General.ADMIN_EMAIL))
-            {
-                intent=new Intent(getApplicationContext(), AdminRecipesActivity.class);
-            }
-            else
-            {
-                intent = new Intent(getApplicationContext(), UserIngredientsActivity.class);
-            }
+        if (mFireBaseAuth.getCurrentUser() == null)
+            return;
+        passUserToSuitablePage();
+    }
+
+    private void passUserToSuitablePage(){
+        Intent intent;
+        if (mFireBaseAuth.getCurrentUser().getEmail()
+                .equals(General.ADMIN_EMAIL))
+            intent = new Intent(getApplicationContext(), AdminRecipesActivity.class);
+        else
+            intent = new Intent(getApplicationContext(), UserIngredientsActivity.class);
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
+    private void initSignUpTextView() {
+        mSignUpTextView = findViewById(R.id.tvSignUp);
+        mSignUpTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
             startActivity(intent);
             finish();
-        }
+        });
     }
 
-
-
-
-    @Override
-    public void onClick(View v) {
-        Intent i = null;
-        if (v == btSignIn) {
-            userLogin();
-
-        } else if (v == tvsignup) {
-            i = new Intent(getApplicationContext(), RegisterActivity.class);
-            startActivity(i);
-            finish();
-        }
-
+    private void initSignInButton() {
+        mSignInButton = findViewById(R.id.btSignIn);
+        mSignInButton.setOnClickListener(v -> userLogin());
     }
 
+    private void userLogin() {
+        String email = mEmailEditText.getText().toString().trim();
+        String password = mPasswordEditText.getText().toString().trim();
 
+        if (email.isEmpty()) {
+            mEmailEditText.setError("You need an email");
+            mEmailEditText.requestFocus();
+            return;
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            mEmailEditText.setError("Please enter a valid email");
+            mEmailEditText.requestFocus();
+            return;
+        }
+
+        if (password.isEmpty()) {
+            mPasswordEditText.setError("You need to enter a password");
+            mPasswordEditText.requestFocus();
+            return;
+        }
+
+        if (password.length() < General.MINIMAL_PASSWORD_SIZE) {
+            mPasswordEditText.setError("The minimal length of the password is 6 characters");
+            mPasswordEditText.requestFocus();
+            return;
+        }
+
+        mProgressBar.setVisibility(View.VISIBLE);
+        mFireBaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            mProgressBar.setVisibility(View.GONE);
+            if (task.isSuccessful()) {
+                passUserToSuitablePage();
+            }
+            else{
+                Toast.makeText(SignInActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
 

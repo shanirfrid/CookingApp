@@ -11,12 +11,6 @@ public class General {
     public static final String RECIPE_TABLE_NAME = "Recipes";
     public static final String RECIPE_IMAGES_URL = "gs://cookingappofshanir.appspot.com/images/";
     public static final long ONE_MEGABYTE = 1024 * 1024 * 5;
-
-    public static User user;
-    public static String userKey;
-
-    public static String userEmail;
-
-
+    public static final int MINIMAL_PASSWORD_SIZE = 6;
 
 }
