@@ -35,4 +35,14 @@ public class DbReference {
         return FirebaseStorage.getInstance().
                 getReferenceFromUrl(General.RECIPE_IMAGES_URL).child(bitmap);
     }
+
+    public static StorageReference getDbRefToImageProfileBitmap(String bitmap) {
+        return FirebaseStorage.getInstance().getReference()
+                .child(General.PROFILE_IMAGES_URL).child(bitmap);
+    }
+
+    public static DatabaseReference getDbRefToUser(String userID) {
+        return FirebaseDatabase.getInstance()
+                .getReference(General.USER_TABLE_NAME).child(userID);
+    }
 }

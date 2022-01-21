@@ -10,6 +10,8 @@ public class General {
     public static final String RECIPE_FAVORITE_NAMES = "recipeNames";
     public static final String RECIPE_TABLE_NAME = "Recipes";
     public static final String RECIPE_IMAGES_URL = "gs://cookingappofshanir.appspot.com/images/";
+    public static final String PROFILE_IMAGES_URL = "imagesprofil/";
+    public static final String PROFILE_IMAGE_FILE_NAME = "userpicprofil";
     public static final long ONE_MEGABYTE = 1024 * 1024 * 5;
     public static final int MINIMAL_PASSWORD_SIZE = 6;
 
