@@ -21,6 +21,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.shanir.cookingappofshanir.utils.DbReference;
 import com.example.shanir.cookingappofshanir.utils.General;
 import com.example.shanir.cookingappofshanir.utils.NavigationMenu;
 import com.google.android.material.navigation.NavigationView;
@@ -41,14 +42,12 @@ public class UserIngredientsActivity extends AppCompatActivity {
     private ListView mIngredientsListView;
     private Button mFindRecipesButton;
     private FirebaseAuth mFirebaseAuth;
-    private DatabaseReference mUserIngredientsDbRef;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
-    private String mUserIngredientsTablePath;
     private IngredientListAdapter mIngredientsListAdapter;
 
     @Override
-    protected void  onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consumers);
         mAddIngredientEditText = findViewById(R.id.etwriteconsumers);
@@ -64,7 +63,6 @@ public class UserIngredientsActivity extends AppCompatActivity {
         this.initFindRecipesButton();
         this.initAddIngredientButton();
         this.initIngredientList();
-        setUserIngredientsDbRef();
         setDbEventListener();
 
         mDrawerLayout = findViewById(R.id.mainLayoutConsumers);
@@ -91,7 +89,9 @@ public class UserIngredientsActivity extends AppCompatActivity {
                     return;
                 }
 
-                mUserIngredientsDbRef.child(ingredientToAdd).setValue(ingredientToAdd);
+                DbReference.getDbRefToUserIngredients(mFirebaseAuth.getUid())
+                        .child(ingredientToAdd)
+                        .setValue(ingredientToAdd);
                 mAddIngredientEditText.setText("");
             }
         });
@@ -111,43 +111,36 @@ public class UserIngredientsActivity extends AppCompatActivity {
     }
 
     private void setDbEventListener() {
-        mUserIngredientsDbRef.addChildEventListener(new ChildEventListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                mIngredientsListAdapter.add((String) snapshot.getValue());
-            }
+        DbReference.getDbRefToUserIngredients(mFirebaseAuth.getUid())
+                .addChildEventListener(new ChildEventListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        mIngredientsListAdapter.add((String) snapshot.getValue());
+                    }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-            }
+                    }
 
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                mIngredientsListAdapter.remove((String) snapshot.getValue());
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                        mIngredientsListAdapter.remove((String) snapshot.getValue());
 
-            }
+                    }
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-            }
+                    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-    }
-
-    private void setUserIngredientsDbRef() {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mUserIngredientsTablePath = General.USER_INGREDIENTS_TABLE_NAME +
-                "/" + userId + "/"+ General.USER_INGREDIENTS_SUB_TABLE_NAME;
-        mUserIngredientsDbRef = FirebaseDatabase.getInstance()
-                .getReference(mUserIngredientsTablePath);
+                    }
+                });
     }
 
     public class DialogListener implements DialogInterface.OnClickListener {
@@ -161,7 +154,8 @@ public class UserIngredientsActivity extends AppCompatActivity {
         public void onClick(DialogInterface dialog, int which) {
             if (which == AlertDialog.BUTTON_POSITIVE) {
                 String ingredientName = mIngredientsListAdapter.getItem(position);
-                mUserIngredientsDbRef.child(ingredientName).setValue(null);
+                DbReference.getDbRefToUserIngredients(mFirebaseAuth.getUid())
+                        .child(ingredientName).setValue(null);
             }
         }
     }
