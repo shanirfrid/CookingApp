@@ -79,7 +79,7 @@ public class RecipeListAdapter extends BaseAdapter {
         tvname.setText(recipeList.get(position).getNameOfrecipe());
         tvtime.setText(String.valueOf(recipeList.get(position).getTime()));
         tvdifficult.setText(recipeList.get(position).getDifficulty());
-        Bitmap recipeBitmap = recipeList.get(position).getNameBitmap();
+        Bitmap recipeBitmap = recipeList.get(position).getBitmap();
         if (recipeBitmap != null)
             ivRecipeImage.setImageBitmap(recipeBitmap);
 

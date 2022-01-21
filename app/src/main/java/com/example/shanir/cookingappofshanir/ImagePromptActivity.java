@@ -26,6 +26,8 @@ public abstract class ImagePromptActivity extends AppCompatActivity {
     protected ImageView mImageView;
     protected Uri mImageUri;
     protected String mBitmapName;
+    protected String mImageDirectory = General.PROFILE_IMAGE_FILE_NAME;
+
 
     protected void uploadImage(String directory) {
         if (mImageUri == null)
@@ -85,9 +87,9 @@ public abstract class ImagePromptActivity extends AppCompatActivity {
         Bitmap cameraBitmap = (Bitmap) data.getExtras().get("data");
         mImageView.setImageBitmap(cameraBitmap);
         FileHelper.saveBitmapToFile(cameraBitmap, this,
-                General.PROFILE_IMAGE_FILE_NAME);
+                mImageDirectory);
         File tmpFile = new File(getFilesDir() + "/" +
-                General.PROFILE_IMAGE_FILE_NAME);
+                mImageDirectory);
         mImageUri = Uri.fromFile(tmpFile);
     }
 

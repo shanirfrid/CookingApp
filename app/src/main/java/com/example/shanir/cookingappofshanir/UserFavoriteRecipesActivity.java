@@ -17,15 +17,11 @@ import com.example.shanir.cookingappofshanir.utils.General;
 import com.example.shanir.cookingappofshanir.utils.NavigationMenu;
 import com.example.shanir.cookingappofshanir.utils.Recipe;
 import com.example.shanir.cookingappofshanir.utils.RecipeListAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 
@@ -120,7 +116,7 @@ public class UserFavoriteRecipesActivity extends AppCompatActivity {
         DbReference.getDbRefToRecipeBitmap(recipe.getBitmap())
                 .getBytes(General.ONE_MEGABYTE).addOnSuccessListener(bytes -> {
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            recipe.setNameBitmap(bitmap);
+            recipe.setBitmapName(bitmap);
         }).addOnCompleteListener(task -> {
             mRecipeListAdapter.add(recipe);
         });

@@ -11,12 +11,12 @@ import java.util.ArrayList;
 public class Recipe  {
     private ArrayList<Ingredients> list;
 
-    public void setNameBitmap(Bitmap nameBitmap) {
-        this.nameBitmap = nameBitmap;
+    public void setBitmapName(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 
-    private String bitmap;
-    private Bitmap nameBitmap;
+    private String bitmapName;
+    private Bitmap bitmap;
     private String nameOfrecipe;
     private String difficulty;
     private int time;
@@ -26,7 +26,7 @@ public class Recipe  {
     public  Recipe()
     {
         list= new ArrayList<>();
-        bitmap = "none";
+        bitmapName = "none";
     }
     public Recipe(String nameOfrecipe,String difficulty,int time)
     {
@@ -40,6 +40,17 @@ public class Recipe  {
 
     public Recipe( ArrayList<Ingredients> list,
                    String  bitmap, String nameOfrecipe, String difficulty, int time) {
+
+        this.list = list;
+        this.bitmapName = bitmap;
+        this.nameOfrecipe = nameOfrecipe;
+        this.difficulty = difficulty;
+        this.time = time;
+        this.list= new ArrayList<>();
+    }
+
+    public Recipe( ArrayList<Ingredients> list,
+                   Bitmap  bitmap, String nameOfrecipe, String difficulty, int time) {
 
         this.list = list;
         this.bitmap = bitmap;
@@ -106,18 +117,18 @@ public class Recipe  {
     }
 
 
-    public String getBitmap() {
+    public String getBitmapName() {
+        return this.bitmapName;
+    }
+
+    public Bitmap getBitmap(){
         return this.bitmap;
     }
 
-    public Bitmap getNameBitmap(){
-        return this.nameBitmap;
-    }
 
 
-
-    public void setBitmap(String bitmap) {
-        this.bitmap = bitmap;
+    public void setBitmapName(String bitmapName) {
+        this.bitmapName = bitmapName;
     }
 
     public String getDifficulty() {

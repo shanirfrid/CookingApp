@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,22 +17,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shanir.cookingappofshanir.SignInActivity;
-import com.example.shanir.cookingappofshanir.UserIngredientsActivity;
 import com.example.shanir.cookingappofshanir.utils.DbReference;
 import com.example.shanir.cookingappofshanir.utils.General;
 import com.example.shanir.cookingappofshanir.utils.RecipeListAdapter;
 import com.example.shanir.cookingappofshanir.R;
 import com.example.shanir.cookingappofshanir.utils.Recipe;
 import com.example.shanir.cookingappofshanir.utils.TextFormatter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -144,7 +136,7 @@ public class AdminRecipesActivity extends AppCompatActivity {
         DbReference.getDbRefToRecipeBitmap(recipe.getBitmap())
                 .getBytes(General.ONE_MEGABYTE).addOnSuccessListener(bytes -> {
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            recipe.setNameBitmap(bitmap);
+            recipe.setBitmapName(bitmap);
         }).addOnCompleteListener(task -> {
             mRecipeListAdapter.add(recipe);
             mProgressBar.setVisibility(View.GONE);

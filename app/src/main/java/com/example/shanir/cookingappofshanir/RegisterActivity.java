@@ -90,9 +90,9 @@ public class RegisterActivity extends ImagePromptActivity {
     private void registerUser() {
         String password = mPasswordEditText.getText().toString().trim();
         String email = mEmailEditText.getText().toString().trim();
-        String comfirmPassword = mConfirmPassEditText.getText().toString().trim();
+        String confirmPassword = mConfirmPassEditText.getText().toString().trim();
 
-        if (!comfirmPassword.equals(password)) {
+        if (!confirmPassword.equals(password)) {
             mPasswordEditText.setError("Passwords do not match");
             mPasswordEditText.requestFocus();
             return;

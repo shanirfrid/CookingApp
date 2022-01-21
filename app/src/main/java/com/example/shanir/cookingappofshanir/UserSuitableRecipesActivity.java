@@ -127,7 +127,7 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
                 .getBytes(General.ONE_MEGABYTE)
                 .addOnSuccessListener(bytes -> {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    recipe.setNameBitmap(bitmap);
+                    recipe.setBitmapName(bitmap);
                 })
                 .addOnCompleteListener(task -> {
                     mRecipeListAdapter.add(recipe);

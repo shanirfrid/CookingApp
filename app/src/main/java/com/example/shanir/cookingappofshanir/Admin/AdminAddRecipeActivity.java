@@ -235,7 +235,7 @@ public class AdminAddRecipeActivity extends AppCompatActivity implements View.On
             namebitmap = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
             uploadImage(imageUri);
         }
-        recipe.setBitmap(namebitmap);
+        recipe.setBitmapName(namebitmap);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
 
