@@ -94,7 +94,7 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
         if (i.getExtras() != null) {
             stname = i.getExtras().getString("detailsrecipe", "");
             if (stname.equals("")) {
-                stname = i.getExtras().getString("detailslistofsaverecipe");
+                stname = i.getExtras().getString("nameOfSelectedRecipe");
                 btsaverecipe.setEnabled(false);
                 btsaverecipe.setVisibility(View.GONE);
 

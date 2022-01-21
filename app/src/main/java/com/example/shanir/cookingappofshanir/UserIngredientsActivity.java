@@ -51,8 +51,6 @@ public class UserIngredientsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consumers);
         mAddIngredientEditText = findViewById(R.id.etwriteconsumers);
-        mMenuImageView = findViewById(R.id.menu_image_view);
-
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         if (mFirebaseAuth.getCurrentUser() == null) {
@@ -63,8 +61,12 @@ public class UserIngredientsActivity extends AppCompatActivity {
         this.initFindRecipesButton();
         this.initAddIngredientButton();
         this.initIngredientList();
+        this.initMenu();
         setDbEventListener();
+    }
 
+    private void initMenu(){
+        mMenuImageView = findViewById(R.id.menu_image_view);
         mDrawerLayout = findViewById(R.id.mainLayoutConsumers);
         mNavigationView = findViewById(R.id.navigation_menu);
         mNavigationView.setNavigationItemSelectedListener(new NavigationMenu(this, mMenuImageView, mDrawerLayout));
@@ -74,7 +76,6 @@ public class UserIngredientsActivity extends AppCompatActivity {
         mIngredientsListView = findViewById(R.id.listviewconsumers);
         mIngredientsListAdapter = new IngredientListAdapter(getApplicationContext(), new ArrayList<>());
         mIngredientsListView.setAdapter(mIngredientsListAdapter);
-
     }
 
     private void initAddIngredientButton() {

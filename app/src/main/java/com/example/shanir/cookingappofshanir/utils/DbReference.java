@@ -19,8 +19,20 @@ public class DbReference {
                 .getReference(General.RECIPE_TABLE_NAME);
     }
 
-    public static StorageReference getDbRefToRecipeImages() {
+    public static DatabaseReference getDbRefToRecipe(String recipeName) {
+        String recipePath = General.RECIPE_TABLE_NAME + "/" + recipeName;
+        return FirebaseDatabase.getInstance().getReference(recipePath);
+    }
+
+    public static DatabaseReference getDbRefToUserFavoriteRecipes(String userID) {
+        String userFavoriteRecipesTablePath = General.FAVORITE_RECIPES +
+                "/" + userID + "/" + General.RECIPE_FAVORITE_NAMES;
+        return FirebaseDatabase.getInstance()
+                .getReference(userFavoriteRecipesTablePath);
+    }
+
+    public static StorageReference getDbRefToRecipeBitmap(String bitmap) {
         return FirebaseStorage.getInstance().
-                getReferenceFromUrl(General.RECIPE_IMAGES_URL);
+                getReferenceFromUrl(General.RECIPE_IMAGES_URL).child(bitmap);
     }
 }

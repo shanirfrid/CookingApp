@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,18 +17,11 @@ import com.example.shanir.cookingappofshanir.utils.General;
 import com.example.shanir.cookingappofshanir.utils.NavigationMenu;
 import com.example.shanir.cookingappofshanir.utils.Recipe;
 import com.example.shanir.cookingappofshanir.utils.RecipeListAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,22 +37,25 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
     private NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
     private ImageView mMenuImageView;
-    private final long ONE_MEGABYTE = 1024 * 1024 * 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_recipe);
         mRecipesNumberTextView = findViewById(R.id.tvnumrecipe);
-        mMenuImageView = findViewById(R.id.right_arrow_image_view);
         mFirebaseAuth = FirebaseAuth.getInstance();
 
-        initRecipeList();
+        this.initRecipeList();
+        this.initMenu();
         retrieveUserIngredients();
 
         mRecipesNumberTextView.setText(
                 resultsMessageBuilder(mRecipeListAdapter.getCount()));
 
+    }
+
+    private void initMenu() {
+        mMenuImageView = findViewById(R.id.right_arrow_image_view);
         mDrawerLayout = findViewById(R.id.mainLayoutlistofrecipe);
         mNavigationView = findViewById(R.id.navigation_menu);
         mNavigationView.setNavigationItemSelectedListener
@@ -128,9 +122,8 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
     }
 
     private void fetchRecipeDetails(Recipe recipe) {
-        DbReference.getDbRefToRecipeImages()
-                .child(recipe.getBitmap())
-                .getBytes(ONE_MEGABYTE)
+        DbReference.getDbRefToRecipeBitmap(recipe.getBitmap())
+                .getBytes(General.ONE_MEGABYTE)
                 .addOnSuccessListener(bytes -> {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                     recipe.setNameBitmap(bitmap);
