@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shanir.cookingappofshanir.utils.FileHelper;
@@ -43,18 +44,15 @@ import java.util.Date;
 import java.util.HashMap;
 
 
-public class UpdateProfile extends AppCompatActivity implements View.OnClickListener {
+public class UpdateProfile extends ImagePromptActivity implements View.OnClickListener {
 
     EditText mFirstName, mLastName, mId, mPhone;
     Button button;
     TextView tvEditProfileImage;
     String tableusers;
     FirebaseAuth mAuth;
-    ImageView mProfileImage, mExit;
-    private int GALLERY = 1, CAMERA = 2;
-    String namebitmap = "none";
+    ImageView mExit;
     final String PIC_FILE_NAME_PROFIL = "userpicprofil";
-    Uri uriProfileImage;
     ProgressBar mPb;
     boolean imageHasChanged = false;
     private DatabaseReference postRef;
@@ -68,14 +66,14 @@ public class UpdateProfile extends AppCompatActivity implements View.OnClickList
         mLastName = (EditText) findViewById(R.id.et_lastname_update_profile);
         mPhone = (EditText) findViewById(R.id.et_phone_update_profile);
         mId = (EditText) findViewById(R.id.et_id_update_profile);
-        mProfileImage = (ImageView) findViewById(R.id.iv_update_profile_image);
+        mImageView = (ImageView) findViewById(R.id.iv_update_profile_image);
         mPb = (ProgressBar) findViewById(R.id.pb_update_profile);
         mExit = (ImageView) findViewById(R.id.close_image_view);
         tvEditProfileImage = (TextView) findViewById(R.id.tv_edit_profile_image);
 
         Intent i = getIntent();
         if (i.getExtras() != null) {
-            namebitmap = i.getExtras().getString("bitmap");
+            mBitmapName = i.getExtras().getString("bitmap");
         }
         mAuth = FirebaseAuth.getInstance();
         button.setOnClickListener(this);
@@ -127,6 +125,20 @@ public class UpdateProfile extends AppCompatActivity implements View.OnClickList
         });
     }
 
+    @Override
+    protected void onGalleryResult(@Nullable Intent data)
+            throws IOException, NullPointerException {
+        super.onGalleryResult(data);
+        imageHasChanged = true;
+    }
+
+    @Override
+    protected void onCameraResult(@Nullable Intent data)
+            throws NullPointerException {
+        super.onCameraResult(data);
+        imageHasChanged = true;
+    }
+
     private void loadImage(String name) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://cookingappofshanir.appspot.com/imagesprofil/").child(name);
@@ -140,7 +152,7 @@ public class UpdateProfile extends AppCompatActivity implements View.OnClickList
             public void onSuccess(byte[] bytes) {
                 mPb.setVisibility(View.GONE);
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                mProfileImage.setImageBitmap(bitmap);
+                mImageView.setImageBitmap(bitmap);
             }
         });
     }
@@ -157,7 +169,6 @@ public class UpdateProfile extends AppCompatActivity implements View.OnClickList
         String lastname = mLastName.getText().toString();
         String phone = mPhone.getText().toString();
         String id = mId.getText().toString();
-        ImageView profilePicture = mProfileImage;
         HashMap<String, Object> map = new HashMap<>();
         postRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -166,12 +177,9 @@ public class UpdateProfile extends AppCompatActivity implements View.OnClickList
                 map.put("lastname", lastname);
                 map.put("id", id);
                 map.put("phone", phone);
+                uploadImage(General.PROFILE_IMAGES_URL);
 
-                if (uriProfileImage != null) {
-                    namebitmap = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
-                    uploadImage(uriProfileImage);
-                }
-                map.put("bitmap", namebitmap);
+                map.put("bitmap", mBitmapName);
                 postRef.updateChildren(map);
             }
 
@@ -180,93 +188,4 @@ public class UpdateProfile extends AppCompatActivity implements View.OnClickList
             }
         });
     }
-
-    private void showPictureDialog() {
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
-        pictureDialog.setTitle("Add Photo!");
-        String[] pictureDialogItems = {
-                "Select photo from gallery",
-                "Take Photo"};
-        pictureDialog.setItems(pictureDialogItems,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                choosePhotoFromGallary();
-                                break;
-                            case 1:
-                                takePhotoFromCamera();
-                                break;
-                        }
-                    }
-                });
-        pictureDialog.show();
-    }
-
-
-    public void choosePhotoFromGallary() {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, GALLERY);
-    }
-
-    private void takePhotoFromCamera() {
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, CAMERA);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == this.RESULT_CANCELED) {
-            return;
-        }
-        if (requestCode == GALLERY) {
-            if (data != null) {
-                uriProfileImage = data.getData();
-                Log.d("dd", "onActivityResult: " + uriProfileImage);
-                try {
-                    Bitmap bitmapGallery = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uriProfileImage);
-                    mProfileImage.setImageBitmap(bitmapGallery);
-                    imageHasChanged = true;
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(UpdateProfile.this, "Failed!", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        } else if (requestCode == CAMERA) {
-
-            Bitmap bitmapCamera = (Bitmap) data.getExtras().get("data");
-            mProfileImage.setImageBitmap(bitmapCamera);
-            imageHasChanged = true;
-            FileHelper.saveBitmapToFile(bitmapCamera, UpdateProfile.this, PIC_FILE_NAME_PROFIL);
-            File tmpFile = new File(getFilesDir() + "/" + PIC_FILE_NAME_PROFIL);
-            uriProfileImage = Uri.fromFile(tmpFile);
-            Log.d("dd", "onActivityResult: " + uriProfileImage);
-            Toast.makeText(UpdateProfile.this, "Image Saved!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void uploadImage(Uri imageUri) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReference().child("imagesprofil/").child(namebitmap);
-        storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(UpdateProfile.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(UpdateProfile.this, " Failed", Toast.LENGTH_SHORT).show();
-
-            }
-        })
-        ;
-    }
-
-
 }
