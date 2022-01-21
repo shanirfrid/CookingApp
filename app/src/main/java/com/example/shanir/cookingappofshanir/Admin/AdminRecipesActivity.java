@@ -162,7 +162,7 @@ public class AdminRecipesActivity extends AppCompatActivity implements View.OnCl
                     }).addOnCompleteListener(new OnCompleteListener<byte[]>() {
                         @Override
                         public void onComplete(@NonNull Task<byte[]> task) {
-                            mRecipeListAdapter.addRecipe(recipe);
+                            mRecipeListAdapter.add(recipe);
                             mRecipeListAdapter.notifyDataSetChanged();
                         }
                     });

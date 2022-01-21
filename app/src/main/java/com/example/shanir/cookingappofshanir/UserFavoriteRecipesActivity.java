@@ -129,7 +129,7 @@ public class UserFavoriteRecipesActivity extends AppCompatActivity implements Ad
                     Recipe recipe = snapshot.getValue(Recipe.class);
                     if (recipe != null) {
 
-                        mRecipeListAdapter.addRecipe(recipe);
+                        mRecipeListAdapter.add(recipe);
                         mRecipeListAdapter.notifyDataSetChanged();
                         StorageReference storageRef = storage.getReferenceFromUrl
                                 ("gs://cookingappofshanir.appspot.com/images/").child
@@ -146,7 +146,7 @@ public class UserFavoriteRecipesActivity extends AppCompatActivity implements Ad
                             @Override
                             public void onComplete(@NonNull Task<byte[]> task) {
 
-                                mRecipeListAdapter.addRecipe(recipe);
+                                mRecipeListAdapter.add(recipe);
                                 mRecipeListAdapter.notifyDataSetChanged();
                             }
                         });

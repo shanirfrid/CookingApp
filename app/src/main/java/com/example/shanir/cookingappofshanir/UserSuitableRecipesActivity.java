@@ -9,18 +9,15 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.shanir.cookingappofshanir.utils.General;
-import com.example.shanir.cookingappofshanir.utils.Navigation;
+import com.example.shanir.cookingappofshanir.utils.NavigationMenu;
 import com.example.shanir.cookingappofshanir.utils.Recipe;
 import com.example.shanir.cookingappofshanir.utils.RecipeListAdapter;
-import com.example.shanir.cookingappofshanir.utils.UserIngredients;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -35,78 +32,82 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserSuitableRecipesActivity extends AppCompatActivity {
 
-    TextView tvhowmanyrecipe;
-    ArrayList<String> userIngredients;
-    private UserIngredients item;
-    Recipe lastSelected;
+    TextView mRecipesNumberTextView;
+    Collection<String> mUserIngredientList;
     ArrayList<Recipe> itemsRecipe;
-    ArrayList<Recipe> suitableRecipes;
-    FirebaseAuth firebaseAuth;
+    ArrayList<Recipe> mSuitableRecipesList;
+    FirebaseAuth mFirebaseAuth;
     FirebaseDatabase firebaseDatabase;
-    private DatabaseReference postRef, postRefr;
-    ListView listView;
-    RecipeListAdapter adapter;
-    private String tableId;
+    private DatabaseReference mUserIngredientsDbRef, mReferenceToRecipeTableDb;
+    ListView mRecipeListView;
+    RecipeListAdapter mRecipeListAdapter;
+    private String mUserIngredientsTablePath;
     ArrayList<String> liststring;
-    private NavigationView navigationView;
+    private NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
-    private ImageView mRightArrowImageView;
+    private ImageView mMenuImageView;
+    FirebaseStorage mFirebaseStorage;
+    final long ONE_MEGABYTE = 1024 * 1024 * 5;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_recipe);
-        tvhowmanyrecipe = (TextView) findViewById(R.id.tvnumrecipe);
-        listView = (ListView) findViewById(R.id.listviewOfRecipes);
-        mRightArrowImageView = (ImageView) findViewById(R.id.right_arrow_image_view);
-        firebaseAuth = FirebaseAuth.getInstance();
+        mRecipesNumberTextView = findViewById(R.id.tvnumrecipe);
+
+        mMenuImageView = findViewById(R.id.right_arrow_image_view);
+        mFirebaseAuth = FirebaseAuth.getInstance();
         liststring = new ArrayList<String>();
-        adapter = new RecipeListAdapter(this, new ArrayList<Recipe>());
-        listView.setAdapter(adapter);
-        setRefToTables();
-        datalistingredientuser();
-        datatlistingredientrecipe();
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mFirebaseStorage = FirebaseStorage.getInstance();
+
+        initRecipeList();
+        setUserIngredientsDbRef();
+        setRecipeDbRef();
+        retrieveUserIngredients();
+//        datatlistingredientrecipe();
+
+        mRecipesNumberTextView.setText(
+                resultsMessageBuilder(mRecipeListAdapter.getCount()));
+
+        mDrawerLayout = findViewById(R.id.mainLayoutConsumers);
+        mNavigationView = findViewById(R.id.navigation_menu);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationMenu(this, mMenuImageView, mDrawerLayout));
+    }
+
+    private void initRecipeList() {
+        mRecipeListView = findViewById(R.id.listviewOfRecipes);
+        mRecipeListAdapter = new RecipeListAdapter(getApplicationContext(), new ArrayList<>());
+        mRecipeListView.setAdapter(mRecipeListAdapter);
+
+        mRecipeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                lastSelected = (Recipe) adapter.getItem(position);
+                Recipe selectedRecipe = (Recipe) mRecipeListAdapter.getItem(position);
                 Intent i = new Intent(getApplicationContext(), DetailsOnRecipeActivity.class);
-                i.putExtra("detailsrecipe", lastSelected.getNameOfrecipe());
+                i.putExtra("detailsrecipe", selectedRecipe.getNameOfrecipe());
                 startActivity(i);
             }
         });
-
-        navigationView = findViewById(R.id.navigation_menu);
-        navigationView.setNavigationItemSelectedListener(new Navigation(this));
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.mainLayoutlistofrecipe);
-        mRightArrowImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mDrawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
     }
 
-    public void datalistingredientuser() {
-
-        postRef.addValueEventListener(new ValueEventListener() {
+    public void retrieveUserIngredients() {
+        mUserIngredientsDbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                item = dataSnapshot.getValue(UserIngredients.class);
+                Map<String, String> userIngredientsMap =
+                        (HashMap<String, String>) dataSnapshot.getValue();
 
-                if (item == null) //never get here
-                {
-                    Toast.makeText(getApplicationContext(),
-                            "אין לך שום מצרכים " + "\n" + "בבקשה הכנס מצרכים", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), UserIngredientsActivity.class);
-                    startActivity(intent);
-                } else {
-                    Setlistuser(item);
-                }
+                if (userIngredientsMap == null)
+                    return;
+
+                getSuitableRecipes(userIngredientsMap.values());
             }
 
             @Override
@@ -116,75 +117,53 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
         });
     }
 
-    public void Setlistuser(UserIngredients list) {
-        if (list != null)
-            userIngredients = list.getIngredients();
-    }
-
-    public void datatlistingredientrecipe() {
-        suitableRecipes = new ArrayList<>();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        String tableIdR = General.RECIPE_TABLE_NAME;
-        postRefr = FirebaseDatabase.getInstance().getReference(tableIdR);
-        postRefr.addValueEventListener(new ValueEventListener() {
-            Recipe r;
-
+    private void getSuitableRecipes(Collection<String> userIngredients) {
+        mReferenceToRecipeTableDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    r = postSnapshot.getValue(Recipe.class);
-                    suitableRecipes.add(r);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    Recipe recipe = postSnapshot.getValue(Recipe.class);
+
+                    if (recipe == null)
+                        continue;
+
+                    if (!userIngredients.containsAll(
+                            recipe.getListNameIngredientOnRecipe()))
+                        continue;
+
+                    fetchRecipeDetails(recipe);
                 }
-                if (suitableRecipes != null)
-                    SetlistRecipe(suitableRecipes);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
 
-    public void SetlistRecipe(ArrayList<Recipe> recipes) {
-        if (userIngredients != null) {
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            final long ONE_MEGABYTE = 1024 * 1024 * 5;
+    private void fetchRecipeDetails(Recipe recipe) {
+        StorageReference storageRef = mFirebaseStorage.getReferenceFromUrl
+                (General.RECIPE_IMAGES_URL).child(recipe.getBitmap());
 
-            itemsRecipe = recipes;
-            suitableRecipes = new ArrayList<Recipe>();
-            int suituableRecipesAmount = 0;
+        storageRef.getBytes(ONE_MEGABYTE)
+                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        recipe.setNameBitmap(bitmap);
+                    }
 
-            for (Recipe currentRecipe : recipes) {
-                if (userIngredients.containsAll(
-                        currentRecipe.getListNameIngredientOnRecipe())) {
-                    suituableRecipesAmount++;
-                    StorageReference storageRef = storage.getReferenceFromUrl
-                            ("gs://cookingappofshanir.appspot.com/images/").child(currentRecipe.getBitmap());
+                })
+                .addOnCompleteListener(new OnCompleteListener<byte[]>() {
+                    @Override
+                    public void onComplete(@NonNull Task<byte[]> task) {
+                        mRecipeListAdapter.add(recipe);
+                        mRecipesNumberTextView.setText(
+                                resultsMessageBuilder(mRecipeListAdapter.getCount()));
+                    }
 
-                    storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            currentRecipe.setNameBitmap(bitmap);
-                        }
-
-                    }).addOnCompleteListener(new OnCompleteListener<byte[]>() {
-                        @Override
-                        public void onComplete(@NonNull Task<byte[]> task) {
-                            suitableRecipes.add(currentRecipe);
-                            adapter.addRecipe(currentRecipe);
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
-                }
-            }
-
-            tvhowmanyrecipe.setText(
-                    resultsMessageBuilder(suituableRecipesAmount));
-        } else {
-            tvhowmanyrecipe.setText(resultsMessageBuilder(0));
-        }
+                });
     }
 
     private static String resultsMessageBuilder(int recipesAmount) {
@@ -198,10 +177,18 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
         }
     }
 
-    private void setRefToTables() {
-        String uid = firebaseAuth.getCurrentUser().getUid();
-        tableId = General.USER_INGREDIENTS_TABLE_NAME + "/" + uid;
-        postRef = FirebaseDatabase.getInstance().getReference(tableId);
+    private void setUserIngredientsDbRef() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mUserIngredientsTablePath = General.USER_INGREDIENTS_TABLE_NAME +
+                "/" + userId + "/" + General.USER_INGREDIENTS_SUB_TABLE_NAME;
+        mUserIngredientsDbRef = FirebaseDatabase.getInstance()
+                .getReference(mUserIngredientsTablePath);
+    }
+
+    private void setRecipeDbRef() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        String tableIdR = General.RECIPE_TABLE_NAME;
+        mReferenceToRecipeTableDb = FirebaseDatabase.getInstance().getReference(tableIdR);
     }
 
 }

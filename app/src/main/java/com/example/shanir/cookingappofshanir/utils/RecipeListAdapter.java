@@ -38,11 +38,13 @@ public class RecipeListAdapter extends BaseAdapter {
         this.recipeList = recipeList;
     }
 
-    public void addRecipe(Recipe recipe) {
+    public void add(Recipe recipe) {
         if (this.recipeList.contains(recipe))
             return;
 
         this.recipeList.add(recipe);
+        notifyDataSetChanged();
+
     }
 
     public void deleteRecipe(int position) {
