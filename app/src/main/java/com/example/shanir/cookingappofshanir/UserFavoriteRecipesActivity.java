@@ -116,7 +116,7 @@ public class UserFavoriteRecipesActivity extends AppCompatActivity {
         DbReference.getDbRefToRecipeBitmap(recipe.getBitmap())
                 .getBytes(General.ONE_MEGABYTE).addOnSuccessListener(bytes -> {
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            recipe.setBitmapName(bitmap);
+            recipe.setNameBitmap(bitmap);
         }).addOnCompleteListener(task -> {
             mRecipeListAdapter.add(recipe);
         });

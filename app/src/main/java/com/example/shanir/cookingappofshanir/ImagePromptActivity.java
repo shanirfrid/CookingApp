@@ -26,15 +26,15 @@ public abstract class ImagePromptActivity extends AppCompatActivity {
     protected ImageView mImageView;
     protected Uri mImageUri;
     protected String mBitmapName;
-    protected String mImageDirectory = General.PROFILE_IMAGE_FILE_NAME;
+    protected String mImageFileNameCamera = General.PROFILE_IMAGE_FILE_NAME_CAMERA;
 
 
-    protected void uploadImage(String directory) {
+    protected void uploadImage(String directoryImage) {
         if (mImageUri == null)
             return;
 
         mBitmapName = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
-        DbReference.getDbRefToImageBitmap(directory, mBitmapName)
+        DbReference.getDbRefToImageBitmap(directoryImage, mBitmapName)
                 .putFile(mImageUri).addOnSuccessListener(taskSnapshot ->
                 Toast.makeText(this,
                         "Image Uploaded",
@@ -87,9 +87,9 @@ public abstract class ImagePromptActivity extends AppCompatActivity {
         Bitmap cameraBitmap = (Bitmap) data.getExtras().get("data");
         mImageView.setImageBitmap(cameraBitmap);
         FileHelper.saveBitmapToFile(cameraBitmap, this,
-                mImageDirectory);
+                mImageFileNameCamera);
         File tmpFile = new File(getFilesDir() + "/" +
-                mImageDirectory);
+                mImageFileNameCamera);
         mImageUri = Uri.fromFile(tmpFile);
     }
 
