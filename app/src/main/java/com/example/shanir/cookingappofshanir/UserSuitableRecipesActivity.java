@@ -39,14 +39,14 @@ import java.util.Map;
 
 public class UserSuitableRecipesActivity extends AppCompatActivity {
 
-    TextView mRecipesNumberTextView;
-    FirebaseAuth mFirebaseAuth;
-    ListView mRecipeListView;
-    RecipeListAdapter mRecipeListAdapter;
+    private TextView mRecipesNumberTextView;
+    private FirebaseAuth mFirebaseAuth;
+    private ListView mRecipeListView;
+    private RecipeListAdapter mRecipeListAdapter;
     private NavigationView mNavigationView;
     private DrawerLayout mDrawerLayout;
     private ImageView mMenuImageView;
-    final long ONE_MEGABYTE = 1024 * 1024 * 5;
+    private final long ONE_MEGABYTE = 1024 * 1024 * 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +62,10 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
         mRecipesNumberTextView.setText(
                 resultsMessageBuilder(mRecipeListAdapter.getCount()));
 
-        mDrawerLayout = findViewById(R.id.mainLayoutConsumers);
+        mDrawerLayout = findViewById(R.id.mainLayoutlistofrecipe);
         mNavigationView = findViewById(R.id.navigation_menu);
-        mNavigationView.setNavigationItemSelectedListener(new NavigationMenu(this, mMenuImageView, mDrawerLayout));
+        mNavigationView.setNavigationItemSelectedListener
+                (new NavigationMenu(this, mMenuImageView, mDrawerLayout));
     }
 
     private void initRecipeList() {
@@ -80,7 +81,7 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
         });
     }
 
-    public void retrieveUserIngredients() {
+    private void retrieveUserIngredients() {
         DbReference.getDbRefToUserIngredients(mFirebaseAuth.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

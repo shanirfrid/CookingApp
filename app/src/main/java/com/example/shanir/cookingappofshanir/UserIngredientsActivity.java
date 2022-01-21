@@ -143,7 +143,7 @@ public class UserIngredientsActivity extends AppCompatActivity {
                 });
     }
 
-    public class DialogListener implements DialogInterface.OnClickListener {
+    private class DialogListener implements DialogInterface.OnClickListener {
         private int position;
 
         public DialogListener(int position) {
@@ -160,8 +160,7 @@ public class UserIngredientsActivity extends AppCompatActivity {
         }
     }
 
-
-    public class IngredientListAdapter extends BaseAdapter {
+    private class IngredientListAdapter extends BaseAdapter {
         List<String> mIngredientList;
         private final Context mContext;
 
