@@ -1,8 +1,10 @@
 package com.example.shanir.cookingappofshanir.Admin;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -36,6 +38,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdminAddRecipeActivity extends ImagePromptActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     TextView tvheaddialog;
@@ -264,7 +267,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
                         }
                     });
                 } else {
-                    Toast.makeText(AddDetailsOnRecipeAdmin.this, "This recipe already exists",
+                    Toast.makeText(AdminAddRecipeActivity.this, "This recipe already exists",
                             Toast.LENGTH_SHORT).show();
                 }
             }
