@@ -1,81 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/maindetaildonrecipeuser"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    tools:context="com.example.shanir.cookingappofshanir.DetailsOnRecipeActivity">
+    android:background="@color/colorBackground">
 
-    <ImageView
-        android:id="@+id/ivdetailsrecipe"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/maindetaildonrecipeuser"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher_background"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/ivdetailsrecipe"
+            android:layout_width="match_parent"
+            android:layout_height="270dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_load_image"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-    <TextView
-        android:id="@+id/tvheadnameOfrecipe"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="recipe name"
-        android:textColor="#131212"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivdetailsrecipe" />
-
-    <LinearLayout
-        android:id="@+id/recipe_details_attributes_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/tvheadnameOfrecipe">
+        <TextView
+            android:id="@+id/tvheadnameOfrecipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="recipe name"
+            android:padding="20dp"
+            android:textColor="#000"
+            android:textSize="32sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivdetailsrecipe" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/recipe_details_attributes_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/constraint_layout"
-            android:padding="10dp">
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/tvheadnameOfrecipe">
+
+            <LinearLayout
+                android:id="@+id/recipe_details_time_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tvheaddificultyOfrecipe"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <EditText
+                    android:id="@+id/tvheadtimefrecipe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="time"
+                    android:inputType="number"
+                    android:paddingRight="2dp"
+                    android:textColor="#666"
+                    android:textColorHint="@color/colorHintText"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_baseline_access_time_24"
+                    app:tint="#666" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tvheaddificultyOfrecipe"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="difficulty"
-                android:textColor="#666"
+                android:textColor="@color/colorHintText"
                 android:textSize="15sp"
-                app:layout_constraintEnd_toStartOf="@id/recipe_details_time_layout"
-                app:layout_constraintStart_toEndOf="@id/constraint_layout" />
-
-            <LinearLayout
-                android:id="@+id/recipe_details_time_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
+                app:layout_constraintStart_toEndOf="@id/recipe_details_time_layout"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tvheaddificultyOfrecipe">
-
-                <TextView
-                    android:id="@+id/tvheadtimefrecipe"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:paddingRight="2dp"
-                    android:text="time"
-                    android:textColor="#666"
-                    android:textSize="15sp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_access_time_24"
-                    android:tint="#666" />
-            </LinearLayout>
-
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -85,62 +88,68 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
-            android:visibility="gone" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/recipe_details_list_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ingredients:"
-        android:textColor="@color/colorPrimary"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/lvdetailsonrecipe"
-        app:layout_constraintTop_toBottomOf="@id/recipe_details_attributes_layout" />
-
-    <ListView
-        android:id="@+id/lvdetailsonrecipe"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/recipe_details_buttons_layout"
-        app:layout_constraintTop_toBottomOf="@id/recipe_details_list_header" />
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/recipe_details_buttons_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <Button
-            android:id="@+id/btmadenow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:text="make now"
-            android:textAllCaps="false"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btsaverecipedeails"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/btsaverecipedeails"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:text="add to favorite"
-            android:textAllCaps="false"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recipe_details_attributes_layout"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btmadenow" />
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/recipe_details_list_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:padding="10dp"
+            android:paddingStart="20dp"
+            android:text="Ingredients"
+            android:textColor="#222"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recipe_details_attributes_layout" />
+
+        <ListView
+            android:id="@+id/lvdetailsonrecipe"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/recipe_details_buttons_layout"
+            app:layout_constraintTop_toBottomOf="@id/recipe_details_list_header" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/recipe_details_buttons_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <Button
+                android:id="@+id/btmadenow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:text="make now"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btsaverecipedeails"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/btsaverecipedeails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:text="add to favorite"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btmadenow" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
 
 
