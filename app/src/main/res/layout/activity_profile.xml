@@ -100,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#000000"
                     android:textSize="20sp"
-                    android:visibility="gone" />
+                   />
 
             </LinearLayout>
         </ScrollView>
