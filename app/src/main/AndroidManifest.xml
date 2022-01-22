@@ -52,8 +52,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Admin.AdminAddRecipeActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Admin.AdminRecipesActivity"
             android:screenOrientation="portrait" />

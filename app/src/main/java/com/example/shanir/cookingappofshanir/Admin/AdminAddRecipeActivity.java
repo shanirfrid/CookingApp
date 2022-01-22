@@ -1,10 +1,15 @@
 package com.example.shanir.cookingappofshanir.Admin;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,6 +38,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdminAddRecipeActivity extends ImagePromptActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     TextView tvheaddialog;
@@ -48,9 +54,9 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
     EditText etadd, etnamerecipe;
     ListView listView;
     TextView tv;
-    Adapter adapter;
+    IngredientsListAdapter adapter;
     Recipe recipe;
-    ArrayList<String> liststring;
+    ArrayList<Ingredients> liststring;
     String lastSelected;
     Dialog dialogdetaileOnIngredients;
     EditText etunits, mIngredientUnitsEditText;
@@ -86,9 +92,9 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
         listView = (ListView) findViewById(R.id.listviewconsumersa);
         tv = (TextView) findViewById(R.id.tvheadingredients);
 
+        liststring = new ArrayList<Ingredients>();
+        adapter = new IngredientsListAdapter(this, liststring);
         mImageFileNameCamera = General.ADD_RECIPE_IMAGE_FILE_NAME_CAMERA;
-        liststring = new ArrayList<String>();
-        adapter = new Adapter(this, 0, liststring);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -97,6 +103,8 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
                 createDialogIngredients();
             }
         });
+
+        setListViewHeightBasedOnChildren(listView);
     }
 
     private void createDialogIngredients() {
@@ -110,6 +118,27 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
         btsaveingredient.setOnClickListener(this);
         dialogdetaileOnIngredients.show();
     }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        BaseAdapter listAdapter = (BaseAdapter) listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 50;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
+
 
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -144,9 +173,8 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
                 return;
             }
 
-
             if (!adapter.getlist().contains(etadd.getText().toString().toLowerCase())) {
-                adapter.add(ingredientUnits + " - " + st);
+                adapter.add(new Ingredients(st, ingredientUnits));
                 adapter.notifyDataSetChanged();
             } else {
                 Toast.makeText(getApplicationContext(),
@@ -265,6 +293,56 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
             throws NullPointerException {
         super.onCameraResult(data);
         imageHasChanged = true;
+    }
+
+    private class IngredientsListAdapter extends BaseAdapter {
+        List<Ingredients> mIngredientList;
+        Context mContext;
+
+        public IngredientsListAdapter(Context context,
+                                      List<Ingredients> ingredientList) {
+            mIngredientList = ingredientList;
+            mContext = context;
+        }
+
+        public void add(Ingredients ingredient) {
+            mIngredientList.add(ingredient);
+            setListViewHeightBasedOnChildren(listView);
+        }
+
+        public List<Ingredients> getlist() {
+            return mIngredientList;
+        }
+
+        @Override
+        public int getCount() {
+            return mIngredientList.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return mIngredientList.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            view = LayoutInflater
+                    .from(mContext)
+                    .inflate(R.layout.ingredient_and_unit_item_layout, null);
+
+            Ingredients ingredient = mIngredientList.get(i);
+            ((TextView) view.findViewById(R.id.ingredient_unit_textview))
+                    .setText(ingredient.getUnits());
+            ((TextView) view.findViewById(R.id.ingredient_name_textview))
+                    .setText(ingredient.getName());
+
+            return view;
+        }
     }
 }
 
