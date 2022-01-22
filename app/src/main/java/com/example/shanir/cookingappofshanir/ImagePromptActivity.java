@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shanir.cookingappofshanir.utils.DbReference;
 import com.example.shanir.cookingappofshanir.utils.FileHelper;
-import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.DbConstants;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,8 +26,7 @@ public abstract class ImagePromptActivity extends AppCompatActivity {
     protected ImageView mImageView;
     protected Uri mImageUri;
     protected String mBitmapName;
-    protected String mImageFileNameCamera = General.PROFILE_IMAGE_FILE_NAME_CAMERA;
-
+    protected String mImageFileNameCamera = DbConstants.PROFILE_IMAGE_FILE_NAME_CAMERA;
 
     protected void uploadImage(String directoryImage) {
         if (mImageUri == null)

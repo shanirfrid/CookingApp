@@ -3,8 +3,6 @@ package com.example.shanir.cookingappofshanir;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,13 +22,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.DbConstants;
 import com.example.shanir.cookingappofshanir.utils.Adapter;
+import com.example.shanir.cookingappofshanir.utils.ImageUtilities;
 import com.example.shanir.cookingappofshanir.utils.Ingredients;
 import com.example.shanir.cookingappofshanir.utils.Recipe;
 import com.example.shanir.cookingappofshanir.utils.TextFormatter;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -38,8 +36,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -127,7 +123,7 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
         }
         recipes = new ArrayList<>();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        String tableIdR = General.RECIPE_TABLE_NAME;
+        String tableIdR = DbConstants.RECIPE_TABLE_NAME;
         postRef = FirebaseDatabase.getInstance().getReference(tableIdR);
         postRef.addValueEventListener(new ValueEventListener() {
             Recipe r;
@@ -147,8 +143,9 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
                         ingredientsArrayList = r.getList();
                         recipe = r;
                         if (!recipe.getBitmap().equals("none"))
-                            loadImage(recipe.getBitmap());
-
+                            ImageUtilities.loadImage(
+                                    DbConstants.APP_RECIPE_IMAGES_FULL_URL +
+                                            recipe.getBitmap(), imageView, progressBar);
                     }
                 }
                 setlist(liststring, ingredientsArrayList);
@@ -161,26 +158,6 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
 
             }
         });
-    }
-
-    private void loadImage(String name) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://cookingappofshanir.appspot.com/images/").child(name);
-        final long ONE_MEGABYTE = 1024 * 1024 * 5;
-        //download file as a byte array
-        progressBar.setVisibility(View.VISIBLE);
-
-        storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-
-            @Override
-            public void onSuccess(byte[] bytes) {
-                progressBar.setVisibility(View.GONE);
-
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                imageView.setImageBitmap(bitmap);
-            }
-        });
-
     }
 
     public void setlist(ArrayList<String> listingredientname, ArrayList<Ingredients> ingredientsArrayList1) {
@@ -238,7 +215,7 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
 
     public void addRecipeToSaveRecipes() {
         String uid = firebaseAuth.getCurrentUser().getUid();
-        String mPathToUserSavedRecipes = General.FAVORITE_RECIPES + "/" + uid + "/" + General.RECIPE_FAVORITE_NAMES;
+        String mPathToUserSavedRecipes = DbConstants.FAVORITE_RECIPES + "/" + uid +"/"+ DbConstants.RECIPE_FAVORITE_NAMES;
         DatabaseReference mReferenceToUserSavedRecipes
                 = FirebaseDatabase.getInstance().getReference(mPathToUserSavedRecipes);
         HashMap<String, Object> map = new HashMap<>();

@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/Theme.Design.NoActionBar">
         <activity
-            android:name=".UpdateProfile"
+            android:name=".EditProfileActivity"
             android:exported="true" />
         <activity
             android:name=".SignInActivity"

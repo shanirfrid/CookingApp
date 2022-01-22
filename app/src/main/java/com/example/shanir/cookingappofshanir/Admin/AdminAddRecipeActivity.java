@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,8 +22,7 @@ import androidx.annotation.Nullable;
 
 import com.example.shanir.cookingappofshanir.ImagePromptActivity;
 import com.example.shanir.cookingappofshanir.R;
-import com.example.shanir.cookingappofshanir.utils.Adapter;
-import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.DbConstants;
 import com.example.shanir.cookingappofshanir.utils.Ingredients;
 import com.example.shanir.cookingappofshanir.utils.Permission;
 import com.example.shanir.cookingappofshanir.utils.Recipe;
@@ -94,7 +92,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
 
         liststring = new ArrayList<Ingredients>();
         adapter = new IngredientsListAdapter(this, liststring);
-        mImageFileNameCamera = General.ADD_RECIPE_IMAGE_FILE_NAME_CAMERA;
+        mImageFileNameCamera = DbConstants.ADD_RECIPE_IMAGE_FILE_NAME_CAMERA;
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -173,7 +171,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
                 return;
             }
 
-            if (!adapter.getlist().contains(etadd.getText().toString().toLowerCase())) {
+            if (!adapter.getList().contains(etadd.getText().toString().toLowerCase())) {
                 adapter.add(new Ingredients(st, ingredientUnits));
                 adapter.notifyDataSetChanged();
             } else {
@@ -228,7 +226,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
             return;
         }
 
-        if (adapter.getlist().isEmpty()) {
+        if (adapter.getList().isEmpty()) {
             Toast.makeText(getApplicationContext(), "You need to insert an ingredient", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -244,12 +242,12 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
         recipe.setDifficulty(difficult);
         recipe.setTime(time);
 
-        uploadImage(General.ADD_RECIPE_IMAGE_URL);
+        uploadImage(DbConstants.RECIPE_IMAGES_URL);
         recipe.setBitmap(mBitmapName);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
 
-        String tableIdR = General.RECIPE_TABLE_NAME + "/" + recipe.getNameOfrecipe();
+        String tableIdR = DbConstants.RECIPE_TABLE_NAME + "/" + recipe.getNameOfrecipe();
         postRef = FirebaseDatabase.getInstance().getReference(tableIdR);
 
         postRef.addValueEventListener(new ValueEventListener() {
@@ -310,7 +308,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
             setListViewHeightBasedOnChildren(listView);
         }
 
-        public List<Ingredients> getlist() {
+        public List<Ingredients> getList() {
             return mIngredientList;
         }
 

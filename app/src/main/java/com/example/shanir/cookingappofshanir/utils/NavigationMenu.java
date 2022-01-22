@@ -3,14 +3,11 @@ package com.example.shanir.cookingappofshanir.utils;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import com.example.shanir.cookingappofshanir.R;
 import com.example.shanir.cookingappofshanir.SignInActivity;
 import com.example.shanir.cookingappofshanir.UserFavoriteRecipesActivity;
@@ -36,14 +33,9 @@ public class NavigationMenu
     }
 
     private void initMenuButton() {
-        mMenuImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mDrawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
+        mMenuImageView.setOnClickListener(view ->
+                mDrawerLayout.openDrawer(GravityCompat.START));
     }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

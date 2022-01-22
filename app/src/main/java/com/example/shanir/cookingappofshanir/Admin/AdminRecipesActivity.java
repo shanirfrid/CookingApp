@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shanir.cookingappofshanir.SignInActivity;
 import com.example.shanir.cookingappofshanir.utils.DbReference;
-import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.DbConstants;
 import com.example.shanir.cookingappofshanir.utils.RecipeListAdapter;
 import com.example.shanir.cookingappofshanir.R;
 import com.example.shanir.cookingappofshanir.utils.Recipe;
@@ -134,7 +134,7 @@ public class AdminRecipesActivity extends AppCompatActivity {
 
     private void fetchRecipeDetails(Recipe recipe){
         DbReference.getDbRefToRecipeBitmap(recipe.getBitmap())
-                .getBytes(General.ONE_MEGABYTE).addOnSuccessListener(bytes -> {
+                .getBytes(DbConstants.ONE_MEGABYTE).addOnSuccessListener(bytes -> {
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             recipe.setNameBitmap(bitmap);
         }).addOnCompleteListener(task -> {
