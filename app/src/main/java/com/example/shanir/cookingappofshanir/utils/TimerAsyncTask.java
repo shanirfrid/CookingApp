@@ -7,17 +7,9 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.annotation.RequiresApi;
-
 import com.example.shanir.cookingappofshanir.TimerActivity;
-import com.example.shanir.cookingappofshanir.utils.TimerUtilities;
-
 import java.sql.Time;
-
-/**
- * Created by Shanir on 03/03/2018.
- */
 
 public class TimerAsyncTask extends AsyncTask<Integer, Integer, String> {
     final int ONE_SECOND_IN_MILLIS = 1000;

@@ -75,7 +75,7 @@ public class SignInActivity extends AppCompatActivity {
         String password = mPasswordEditText.getText().toString().trim();
 
         if (email.isEmpty()) {
-            mEmailEditText.setError("You need an email");
+            mEmailEditText.setError("Email required");
             mEmailEditText.requestFocus();
             return;
         }
@@ -87,7 +87,7 @@ public class SignInActivity extends AppCompatActivity {
         }
 
         if (password.isEmpty()) {
-            mPasswordEditText.setError("You need to enter a password");
+            mPasswordEditText.setError("Password required");
             mPasswordEditText.requestFocus();
             return;
         }
