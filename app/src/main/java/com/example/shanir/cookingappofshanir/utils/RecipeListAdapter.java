@@ -30,11 +30,11 @@ public class RecipeListAdapter extends BaseAdapter {
         this.recipeList = recipeList;
     }
 
-    public List<Recipe> getRecipeList(){
+    public List<Recipe> getRecipeList() {
         return this.recipeList;
     }
 
-    public void setRecipeList(List<Recipe> recipeList){
+    public void setRecipeList(List<Recipe> recipeList) {
         this.recipeList = recipeList;
     }
 
@@ -76,14 +76,16 @@ public class RecipeListAdapter extends BaseAdapter {
         TextView tvtime = (TextView) v.findViewById(R.id.tvtimerecipeitem);
         ImageView ivRecipeImage = (ImageView) v.findViewById(R.id.recipe_image);
 
-        tvname.setText(recipeList.get(position).getNameOfrecipe());
-        tvtime.setText(String.valueOf(recipeList.get(position).getTime()));
-        tvdifficult.setText(recipeList.get(position).getDifficulty());
-        Bitmap recipeBitmap = recipeList.get(position).getNameBitmap();
+        Recipe recipe = (Recipe) getItem(position);
+        tvname.setText(recipe.getNameOfrecipe());
+        tvtime.setText(TextFormatter.formatRecipeTime(recipe.getTime()));
+        tvdifficult.setText(recipe.getDifficulty());
+        Bitmap recipeBitmap = recipe.getNameBitmap();
+
         if (recipeBitmap != null)
             ivRecipeImage.setImageBitmap(recipeBitmap);
 
-        v.setTag(recipeList.get(position).gettID());
+        v.setTag(recipe.gettID());
         return v;
     }
 

@@ -303,6 +303,14 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
                                       ArrayList<Ingredients> ingredientList) {
             mIngredientList = ingredientList;
             mContext = context;
+
+            mIngredientList.add(new Ingredients("cauliflower", "1head"));
+            mIngredientList.add(new Ingredients("olive oil", "1/4cup"));
+            mIngredientList.add(new Ingredients("garlic", "5cloves"));
+            mIngredientList.add(new Ingredients("salt", "2tsp"));
+            mIngredientList.add(new Ingredients("red pepper", "1/4tsp"));
+            mIngredientList.add(new Ingredients("thyme leaves", "2tsp"));
+            notifyDataSetChanged();
         }
 
         public void add(Ingredients ingredient) {
