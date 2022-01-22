@@ -184,7 +184,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         if (v == btsave) {
-            Intent intent = new Intent(this, UpdateProfile.class);
+            Intent intent = new Intent(this, EditProfileActivity.class);
             intent.putExtra("bitmap", userprofil.getBitmap());
             startActivity(intent);
         }

@@ -3,9 +3,12 @@ package com.example.shanir.cookingappofshanir;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -14,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.shanir.cookingappofshanir.utils.DbReference;
 import com.example.shanir.cookingappofshanir.utils.FileHelper;
 import com.example.shanir.cookingappofshanir.utils.General;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +32,17 @@ public abstract class ImagePromptActivity extends AppCompatActivity {
     protected Uri mImageUri;
     protected String mBitmapName;
     protected String mImageFileNameCamera = General.PROFILE_IMAGE_FILE_NAME_CAMERA;
+    protected ProgressBar mProgressBar;
 
+    protected void loadImage(String bitmapId, String fullDirectoryPath) {
+        mProgressBar.setVisibility(View.VISIBLE);
+        DbReference.getDbFullRefToImageBitmap(fullDirectoryPath, bitmapId)
+                .getBytes(General.ONE_MEGABYTE).addOnSuccessListener(bytes -> {
+            mProgressBar.setVisibility(View.GONE);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            mImageView.setImageBitmap(bitmap);
+        });
+    }
 
     protected void uploadImage(String directoryImage) {
         if (mImageUri == null)
@@ -92,6 +107,10 @@ public abstract class ImagePromptActivity extends AppCompatActivity {
                 mImageFileNameCamera);
         mImageUri = Uri.fromFile(tmpFile);
     }
+
+//    protected  void loadImage(String name){
+//
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode,

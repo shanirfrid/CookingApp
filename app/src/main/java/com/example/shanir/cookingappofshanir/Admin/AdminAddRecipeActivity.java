@@ -216,7 +216,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
         recipe.setDifficulty(difficult);
         recipe.setTime(time);
 
-        uploadImage(General.ADD_RECIPE_IMAGE_URL);
+        uploadImage(General.RECIPE_IMAGES_URL);
         recipe.setBitmap(mBitmapName);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
