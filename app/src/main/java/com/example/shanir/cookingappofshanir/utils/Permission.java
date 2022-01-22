@@ -5,11 +5,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.ComponentActivity;
-
 
 @SuppressLint("RestrictedApi")
 public class Permission extends ComponentActivity {

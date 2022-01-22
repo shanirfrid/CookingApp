@@ -2,7 +2,6 @@ package com.example.shanir.cookingappofshanir;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -15,14 +14,11 @@ import android.widget.Toast;
 
 
 import com.example.shanir.cookingappofshanir.utils.DbReference;
-import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.DbConstants;
 import com.example.shanir.cookingappofshanir.utils.Permission;
 import com.example.shanir.cookingappofshanir.utils.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class RegisterActivity extends ImagePromptActivity {
     private EditText mPasswordEditText, mFirstNameEditText, mEmailEditText,
@@ -112,7 +108,7 @@ public class RegisterActivity extends ImagePromptActivity {
             mPasswordEditText.requestFocus();
             return;
         }
-        if (password.length() < General.MINIMAL_PASSWORD_SIZE) {
+        if (password.length() < DbConstants.MINIMAL_PASSWORD_SIZE) {
             mPasswordEditText.setError("Passwords should be a minimum of 6 characters in length ");
             mPasswordEditText.requestFocus();
             return;
@@ -123,7 +119,7 @@ public class RegisterActivity extends ImagePromptActivity {
                 .addOnCompleteListener(task -> {
                     mProgressBar.setVisibility(View.GONE);
                     if (task.isSuccessful()) {
-                        uploadImage(General.PROFILE_IMAGES_URL);
+                        uploadImage(DbConstants.PROFILE_IMAGES_URL);
                         adduser();
                     } else {
                         if (task.getException() instanceof FirebaseAuthUserCollisionException)

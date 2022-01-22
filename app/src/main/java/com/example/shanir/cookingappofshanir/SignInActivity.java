@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.shanir.cookingappofshanir.Admin.AdminRecipesActivity;
-import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.DbConstants;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SignInActivity extends AppCompatActivity {
@@ -46,7 +46,7 @@ public class SignInActivity extends AppCompatActivity {
     private void passUserToSuitablePage(){
         Intent intent;
         if (mFireBaseAuth.getCurrentUser().getEmail()
-                .equals(General.ADMIN_EMAIL))
+                .equals(DbConstants.ADMIN_EMAIL))
             intent = new Intent(getApplicationContext(), AdminRecipesActivity.class);
         else
             intent = new Intent(getApplicationContext(), UserIngredientsActivity.class);
@@ -92,7 +92,7 @@ public class SignInActivity extends AppCompatActivity {
             return;
         }
 
-        if (password.length() < General.MINIMAL_PASSWORD_SIZE) {
+        if (password.length() < DbConstants.MINIMAL_PASSWORD_SIZE) {
             mPasswordEditText.setError("The minimal length of the password is 6 characters");
             mPasswordEditText.requestFocus();
             return;

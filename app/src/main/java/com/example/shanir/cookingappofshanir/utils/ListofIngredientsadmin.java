@@ -2,24 +2,16 @@ package com.example.shanir.cookingappofshanir.utils;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import java.util.ArrayList;
-
-/**
- * Created by Shanir on 24/03/2018.
- */
 
 public class ListofIngredientsadmin implements Parcelable {
     ArrayList<Ingredients> ingredients;
 
     public ListofIngredientsadmin() {
-
         this.ingredients = new ArrayList<Ingredients>();
-
     }
 
     public void addIngredient(Ingredients ingredient) {
-
         ingredients.add(ingredient);
     }
 
@@ -31,7 +23,6 @@ public class ListofIngredientsadmin implements Parcelable {
         for (Ingredients ingredientI : ingredients) {
             System.out.println(ingredientI.getName() + " ");
         }
-
     }
 
     @Override

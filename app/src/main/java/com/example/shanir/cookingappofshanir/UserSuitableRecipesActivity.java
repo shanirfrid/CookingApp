@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.shanir.cookingappofshanir.utils.DbReference;
-import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.DbConstants;
 import com.example.shanir.cookingappofshanir.utils.NavigationMenu;
 import com.example.shanir.cookingappofshanir.utils.Recipe;
 import com.example.shanir.cookingappofshanir.utils.RecipeListAdapter;
@@ -124,7 +124,7 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
 
     private void fetchRecipeDetails(Recipe recipe) {
         DbReference.getDbRefToRecipeBitmap(recipe.getBitmap())
-                .getBytes(General.ONE_MEGABYTE)
+                .getBytes(DbConstants.ONE_MEGABYTE)
                 .addOnSuccessListener(bytes -> {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                     recipe.setNameBitmap(bitmap);
@@ -135,6 +135,5 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
                             TextFormatter.foundRecipesNumber(mRecipeListAdapter.getCount()));
                 });
     }
-
 
 }
