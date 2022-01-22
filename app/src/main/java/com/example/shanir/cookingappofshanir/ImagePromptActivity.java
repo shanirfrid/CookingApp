@@ -32,17 +32,6 @@ public abstract class ImagePromptActivity extends AppCompatActivity {
     protected Uri mImageUri;
     protected String mBitmapName;
     protected String mImageFileNameCamera = General.PROFILE_IMAGE_FILE_NAME_CAMERA;
-    protected ProgressBar mProgressBar;
-
-    protected void loadImage(String bitmapId, String fullDirectoryPath) {
-        mProgressBar.setVisibility(View.VISIBLE);
-        DbReference.getDbFullRefToImageBitmap(fullDirectoryPath, bitmapId)
-                .getBytes(General.ONE_MEGABYTE).addOnSuccessListener(bytes -> {
-            mProgressBar.setVisibility(View.GONE);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            mImageView.setImageBitmap(bitmap);
-        });
-    }
 
     protected void uploadImage(String directoryImage) {
         if (mImageUri == null)
@@ -107,10 +96,6 @@ public abstract class ImagePromptActivity extends AppCompatActivity {
                 mImageFileNameCamera);
         mImageUri = Uri.fromFile(tmpFile);
     }
-
-//    protected  void loadImage(String name){
-//
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode,

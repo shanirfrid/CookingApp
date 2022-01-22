@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 
 import com.example.shanir.cookingappofshanir.utils.DbReference;
 import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.ImageUtilities;
 import com.example.shanir.cookingappofshanir.utils.Permission;
 import com.example.shanir.cookingappofshanir.utils.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,6 +38,7 @@ public class EditProfileActivity extends ImagePromptActivity {
     private TextView mEditProfileImageTextView;
     private FirebaseAuth mFireBaseAuth;
     private ImageView mExitImageView;
+    private ProgressBar mProgressBar;
     private boolean mImageHasChanged = false;
 
     @Override
@@ -133,8 +135,8 @@ public class EditProfileActivity extends ImagePromptActivity {
                 mPhoneEditText.setText(userprofile.getPhone());
 
                 if (!userprofile.getBitmap().equals("none") && !mImageHasChanged)
-                    loadImage(userprofile.getBitmap(),
-                            General.APP_IMAGES_FULL_URL + General.PROFILE_IMAGES_URL);
+                    ImageUtilities.loadImage(General.APP_IMAGES_FULL_URL + General.PROFILE_IMAGES_URL,
+                            userprofile.getBitmap(),mImageView,mProgressBar);
             }
 
             @Override
