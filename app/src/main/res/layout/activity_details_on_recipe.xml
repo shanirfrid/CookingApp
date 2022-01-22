@@ -28,7 +28,9 @@
             android:text="recipe name"
             android:padding="20dp"
             android:textColor="#000"
-            android:textSize="32sp"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-light"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivdetailsrecipe" />
 
@@ -128,8 +130,9 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:text="make now"
+                android:padding="5dp"
+                android:fontFamily="sans-serif-medium"
                 android:textAllCaps="false"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btsaverecipedeails"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -140,8 +143,9 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:text="add to favorite"
+                android:padding="5dp"
+                android:fontFamily="sans-serif-medium"
                 android:textAllCaps="false"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/btmadenow" />

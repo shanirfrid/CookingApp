@@ -69,13 +69,14 @@
         <ListView
             android:id="@+id/listviewlistofallrecipe"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:divider="#aaa"
-            android:dividerHeight="1dp"
+            android:layout_height="0dp"
+            android:divider="#ccc"
+            android:dividerHeight="1px"
             app:layout_constraintTop_toBottomOf="@id/pbadminlistofrecipes"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:listitem="@layout/recipe_item_list">
+            app:layout_constraintBottom_toTopOf="@id/add_recipe_btn"
+            tools:listitem="@layout/recipe_item_list" >
         </ListView>
         <Button
             android:id="@+id/add_recipe_btn"

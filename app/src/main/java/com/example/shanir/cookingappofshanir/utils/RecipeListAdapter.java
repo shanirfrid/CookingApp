@@ -58,20 +58,22 @@ public class RecipeListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = View.inflate(mContext, R.layout.recipe_item_list, null);
-        TextView recipeNameTextView = v.findViewById(R.id.tvnamerecipeitem);
-        TextView recipeDifficultTextView = v.findViewById(R.id.vdifiitem);
-        TextView recipeTimeTextView = v.findViewById(R.id.tvtimerecipeitem);
-        ImageView recipeImageView = v.findViewById(R.id.recipe_image);
+        TextView recipeNameTextView = (TextView) v.findViewById(R.id.tvnamerecipeitem);
+        TextView recipeDifficultyTextView = (TextView) v.findViewById(R.id.vdifiitem);
+        TextView recipeTimeTextView = (TextView) v.findViewById(R.id.tvtimerecipeitem);
+        ImageView recipeImageView = (ImageView) v.findViewById(R.id.recipe_image);
 
-        recipeNameTextView.setText(mRecipeList.get(position).getNameOfrecipe());
-        recipeTimeTextView.setText(String.valueOf(mRecipeList.get(position).getTime()));
-        recipeDifficultTextView.setText(mRecipeList.get(position).getDifficulty());
-        Bitmap recipeBitmap = mRecipeList.get(position).getNameBitmap();
+        Recipe recipe = (Recipe) getItem(position);
+        recipeNameTextView.setText(recipe.getNameOfrecipe());
+        recipeTimeTextView.setText(TextFormatter.formatRecipeTime(recipe.getTime()));
+        recipeDifficultyTextView.setText(recipe.getDifficulty());
+        Bitmap recipeBitmap = recipe.getNameBitmap();
 
         if (recipeBitmap != null)
             recipeImageView.setImageBitmap(recipeBitmap);
 
-        v.setTag(mRecipeList.get(position).gettID());
+        v.setTag(recipe.gettID());
+
         return v;
     }
 
