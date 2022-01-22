@@ -1,11 +1,9 @@
-package com.example.shanir.cookingappofshanir.classs;
+package com.example.shanir.cookingappofshanir.utils;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.security.cert.CRL;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Shanir on 24/03/2018.

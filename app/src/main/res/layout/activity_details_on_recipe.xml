@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context="com.example.shanir.cookingappofshanir.DetailsOnRecipe">
+    tools:context="com.example.shanir.cookingappofshanir.DetailsOnRecipeActivity">
 
     <ImageView
         android:id="@+id/ivdetailsrecipe"

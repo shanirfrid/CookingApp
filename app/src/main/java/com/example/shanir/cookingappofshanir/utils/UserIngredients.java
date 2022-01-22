@@ -1,4 +1,4 @@
-package com.example.shanir.cookingappofshanir.classs;
+package com.example.shanir.cookingappofshanir.utils;
 
 import java.util.ArrayList;
 
@@ -11,10 +11,6 @@ public class UserIngredients {
 
     public UserIngredients() {
         this.ingredients = new ArrayList<>();
-    }
-
-    public UserIngredients(ArrayList<String> ingredients){
-        this.ingredients = ingredients;
     }
 
     public void add(ArrayList<String> list) {

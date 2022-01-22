@@ -20,11 +20,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.shanir.cookingappofshanir.Admin.General;
-import com.example.shanir.cookingappofshanir.classs.Adapter;
-import com.example.shanir.cookingappofshanir.classs.Ingredients;
-import com.example.shanir.cookingappofshanir.classs.Recipe;
-import com.example.shanir.cookingappofshanir.classs.TextFormatter;
+import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.Adapter;
+import com.example.shanir.cookingappofshanir.utils.Ingredients;
+import com.example.shanir.cookingappofshanir.utils.Recipe;
+import com.example.shanir.cookingappofshanir.utils.TextFormatter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickListener {
+public class DetailsOnRecipeActivity extends AppCompatActivity implements View.OnClickListener {
     TextView tvname, tvdifficulty, tvtime;
     Button btsaverecipe, btmakenow;
     ImageView imageView;
@@ -94,7 +94,7 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
         if (i.getExtras() != null) {
             stname = i.getExtras().getString("detailsrecipe", "");
             if (stname.equals("")) {
-                stname = i.getExtras().getString("detailslistofsaverecipe");
+                stname = i.getExtras().getString("nameOfSelectedRecipe");
                 btsaverecipe.setEnabled(false);
                 btsaverecipe.setVisibility(View.GONE);
 
@@ -205,8 +205,8 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         Intent intent = null;
         if (v == btmakenow) {
-            intent = new Intent(this, Timerrun.class);
-            intent.putExtra("timerrun", Integer.parseInt(time));
+            intent = new Intent(this, TimerActivity.class);
+            intent.putExtra("totalTimeInMinutes", Integer.parseInt(time));
             startActivity(intent);
         } else if (v == btsaverecipe) {
             addRecipeToSaveRecipes();
@@ -227,7 +227,7 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
                 ArrayList<String> recipesFavoriteNames = (ArrayList<String>) snapshot.getValue();
                 if (recipesFavoriteNames != null) {
                     if (recipesFavoriteNames.contains(stname)) {
-                        Toast.makeText(DetailsOnRecipe.this,
+                        Toast.makeText(DetailsOnRecipeActivity.this,
                                 "You already added this recipe to your favorite recipes",
                                 Toast.LENGTH_SHORT).show();
                         return;
@@ -238,7 +238,7 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
                 mReferenceToUserSavedRecipes.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Intent intent = new Intent(DetailsOnRecipe.this, FavoriteRecipesActivity.class);
+                        Intent intent = new Intent(DetailsOnRecipeActivity.this, UserFavoriteRecipesActivity.class);
                         intent.putExtra("nameofrecipedetails", stname);
                         startActivity(intent);
                     }
@@ -263,7 +263,7 @@ public class DetailsOnRecipe extends AppCompatActivity implements View.OnClickLi
         switch (item.getItemId()) {
             case R.id.item_back:
 
-                Intent intent = new Intent(getApplicationContext(), ListOfRecipe.class);
+                Intent intent = new Intent(getApplicationContext(), UserSuitableRecipesActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

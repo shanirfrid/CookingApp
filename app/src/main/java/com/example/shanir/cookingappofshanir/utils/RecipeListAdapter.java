@@ -1,27 +1,16 @@
-package com.example.shanir.cookingappofshanir.classs;
+package com.example.shanir.cookingappofshanir.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import com.example.shanir.cookingappofshanir.Profile;
 import com.example.shanir.cookingappofshanir.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.annotations.Nullable;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,15 +38,18 @@ public class RecipeListAdapter extends BaseAdapter {
         this.recipeList = recipeList;
     }
 
-    public void addRecipe(Recipe recipe) {
+    public void add(Recipe recipe) {
         if (this.recipeList.contains(recipe))
             return;
 
         this.recipeList.add(recipe);
+        notifyDataSetChanged();
+
     }
 
     public void deleteRecipe(int position) {
         this.recipeList.remove(position);
+        notifyDataSetChanged();
     }
 
     @Override

@@ -1,16 +1,8 @@
 package com.example.shanir.cookingappofshanir.Admin;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -25,44 +17,31 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
 
+import com.example.shanir.cookingappofshanir.ImagePromptActivity;
 import com.example.shanir.cookingappofshanir.R;
-import com.example.shanir.cookingappofshanir.classs.Adapter;
-import com.example.shanir.cookingappofshanir.classs.FileHelper;
-import com.example.shanir.cookingappofshanir.classs.Ingredients;
-import com.example.shanir.cookingappofshanir.classs.Permission;
-import com.example.shanir.cookingappofshanir.classs.Recipe;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
+import com.example.shanir.cookingappofshanir.utils.Adapter;
+import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.Ingredients;
+import com.example.shanir.cookingappofshanir.utils.Permission;
+import com.example.shanir.cookingappofshanir.utils.Recipe;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import org.w3c.dom.Text;
-
-import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
+public class AdminAddRecipeActivity extends ImagePromptActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     TextView tvheaddialog;
     Button btsaverecipe;
     EditText ettime;
-    ImageView ivrecipe;
     RadioGroup rg1;
-    String namebitmap;
     String difficult = "";
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
@@ -82,7 +61,6 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
     String units, nameingredient;
     private int GALLERY = 1, CAMERA = 2;
     boolean recipeInDB;
-    Uri imageUri;
     final String PIC_FILE_NAME = "userpic";
     boolean imageHasChanged = false;
 
@@ -91,9 +69,9 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_details_on_recipe_admin);
         ettime = (EditText) findViewById(R.id.ettimeadddetailsadmin);
-        ivrecipe = (ImageView) findViewById(R.id.ivadmindetails);
+        mImageView = (ImageView) findViewById(R.id.ivadmindetails);
         etnamerecipe = (EditText) findViewById(R.id.etnameofrecipeadddetails);
-        ivrecipe.setOnClickListener(this);
+        mImageView.setOnClickListener(this);
         btsaverecipe = (Button) findViewById(R.id.btsaverecipeee);
         rg1 = (RadioGroup) findViewById(R.id.rgDiff);
         recipe = new Recipe();
@@ -113,6 +91,7 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
 
         liststring = new ArrayList<Ingredients>();
         adapter = new IngredientsListAdapter(this, liststring);
+        mImageFileNameCamera = General.ADD_RECIPE_IMAGE_FILE_NAME_CAMERA;
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -203,8 +182,7 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
             mIngredientUnitsEditText.setText("");
 
 
-
-        } else if (view == ivrecipe) {
+        } else if (view == mImageView) {
             Permission permission = new Permission(this, getApplicationContext());
             permission.requestMultiplePermissions();
             showPictureDialog();
@@ -263,11 +241,8 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
         recipe.setDifficulty(difficult);
         recipe.setTime(time);
 
-        if (imageUri != null) {
-            namebitmap = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
-            uploadImage(imageUri);
-        }
-        recipe.setBitmap(namebitmap);
+        uploadImage(General.ADD_RECIPE_IMAGE_URL);
+        recipe.setBitmap(mBitmapName);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
 
@@ -281,10 +256,10 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
                     postRef.setValue(recipe).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            Toast.makeText(AddDetailsOnRecipeAdmin.this, "Recipe has been saved successfully",
+                            Toast.makeText(AdminAddRecipeActivity.this, "Recipe has been saved successfully",
                                     Toast.LENGTH_SHORT).show();
 
-                            Intent intent = new Intent(AddDetailsOnRecipeAdmin.this, AdminListOfRecipes.class);
+                            Intent intent = new Intent(AdminAddRecipeActivity.this, AdminRecipesActivity.class);
                             startActivity(intent);
                         }
                     });
@@ -296,97 +271,25 @@ public class AddDetailsOnRecipeAdmin extends AppCompatActivity implements View.O
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(AddDetailsOnRecipeAdmin.this,
+                Toast.makeText(AdminAddRecipeActivity.this,
                         "Error occurs - recipe didn't save", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-
-    private void showPictureDialog() {
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
-        pictureDialog.setTitle("Add Photo!");
-        String[] pictureDialogItems = {
-                "Select photo from gallery",
-                "Take Photo"};
-        pictureDialog.setItems(pictureDialogItems,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                choosePhotoFromGallary();
-                                break;
-                            case 1:
-                                takePhotoFromCamera();
-                                break;
-                        }
-                    }
-                });
-        pictureDialog.show();
-    }
-
-
-    public void choosePhotoFromGallary() {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, GALLERY);
-    }
-
-    private void takePhotoFromCamera() {
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, CAMERA);
+    @Override
+    protected void onGalleryResult(@Nullable Intent data)
+            throws IOException, NullPointerException {
+        super.onGalleryResult(data);
+        imageHasChanged = true;
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == this.RESULT_CANCELED) {
-            return;
-        }
-        if (requestCode == GALLERY) {
-            if (data != null) {
-                imageUri = data.getData();
-                try {
-                    Bitmap bitmapGallery = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                    ivrecipe.setImageBitmap(bitmapGallery);
-                    imageHasChanged = true;
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(AddDetailsOnRecipeAdmin.this, "Failed!", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        } else if (requestCode == CAMERA) {
-
-            Bitmap bitmapCamera = (Bitmap) data.getExtras().get("data");
-            ivrecipe.setImageBitmap(bitmapCamera);
-            imageHasChanged = true;
-            FileHelper.saveBitmapToFile(bitmapCamera, AddDetailsOnRecipeAdmin.this, PIC_FILE_NAME);
-            File tmpFile = new File(getFilesDir() + "/" + PIC_FILE_NAME);
-            imageUri = Uri.fromFile(tmpFile);
-            Log.d("dd", "onActivityResult: " + imageUri);
-            Toast.makeText(AddDetailsOnRecipeAdmin.this, "Image Saved!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void uploadImage(Uri imageUri) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReference().child("images/").child(namebitmap);
-        storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(AddDetailsOnRecipeAdmin.this, " Failed", Toast.LENGTH_SHORT).show();
-
-            }
-        })
-        ;
+    protected void onCameraResult(@Nullable Intent data)
+            throws NullPointerException {
+        super.onCameraResult(data);
+        imageHasChanged = true;
     }
 
     private class IngredientsListAdapter extends BaseAdapter {

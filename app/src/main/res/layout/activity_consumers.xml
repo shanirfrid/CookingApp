@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="#FAFAFA"
     android:orientation="vertical"
-    tools:context="com.example.shanir.cookingappofshanir.MyIngredientsActivity">
+    tools:context="com.example.shanir.cookingappofshanir.UserIngredientsActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -85,26 +85,11 @@
             android:divider="#ddd"
             android:dividerHeight="1dp"
             android:padding="20dp"
-            app:layout_constraintBottom_toTopOf="@id/btsaveconsumers"
+            app:layout_constraintBottom_toTopOf="@id/btmovetorecipelist"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/enter_ingredients_layout"
             tools:listitem="@layout/product_item_list" />
-
-        <Button
-            android:id="@+id/btsaveconsumers"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="20dp"
-            android:background="@drawable/button_design"
-            android:text="Save products"
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toTopOf="@id/btmovetorecipelist"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/btmovetorecipelist"
@@ -113,7 +98,7 @@
             android:layout_gravity="center"
             android:layout_margin="20dp"
             android:background="@drawable/button_design"
-            android:text="find recipes"
+            android:text="Find"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:textSize="15sp"

@@ -12,7 +12,7 @@
         android:title="My Profile" />
     <item
         android:id="@+id/mnItemConsumers"
-        android:title="My Products" />
+        android:title="My Ingredients" />
 
     <item
         android:id="@+id/mnItemListOfRecipes"

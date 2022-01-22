@@ -1,4 +1,4 @@
-package com.example.shanir.cookingappofshanir.classs;
+package com.example.shanir.cookingappofshanir.utils;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,11 +7,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.shanir.cookingappofshanir.MyIngredientsActivity;
-import com.example.shanir.cookingappofshanir.ListOfRecipe;
-import com.example.shanir.cookingappofshanir.FavoriteRecipesActivity;
-import com.example.shanir.cookingappofshanir.MainActivity;
-import com.example.shanir.cookingappofshanir.Profile;
+import com.example.shanir.cookingappofshanir.UserIngredientsActivity;
+import com.example.shanir.cookingappofshanir.UserSuitableRecipesActivity;
+import com.example.shanir.cookingappofshanir.UserFavoriteRecipesActivity;
+import com.example.shanir.cookingappofshanir.SignInActivity;
+import com.example.shanir.cookingappofshanir.UserProfileActivity;
 import com.example.shanir.cookingappofshanir.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,25 +29,25 @@ public class Navigation implements NavigationView.OnNavigationItemSelectedListen
         switch (item.getItemId()) {
             case R.id.menuLogout:
                 FirebaseAuth.getInstance().signOut();
-                intent = new Intent(activity.getApplicationContext(), MainActivity.class);
+                intent = new Intent(activity.getApplicationContext(), SignInActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                 break;
 
             case R.id.mnItemListOfRecipes:
-                intent = new Intent(activity.getBaseContext(), ListOfRecipe.class);
+                intent = new Intent(activity.getBaseContext(), UserSuitableRecipesActivity.class);
                 break;
 
             case R.id.mnItemListofsaverecipes:
-                intent = new Intent(activity.getBaseContext(), FavoriteRecipesActivity.class);
+                intent = new Intent(activity.getBaseContext(), UserFavoriteRecipesActivity.class);
                 break;
 
             case R.id.mnItemProfile:
-                intent = new Intent(activity.getBaseContext(), Profile.class);
+                intent = new Intent(activity.getBaseContext(), UserProfileActivity.class);
                 break;
 
             case R.id.mnItemConsumers:
-                intent = new Intent(activity.getBaseContext(), MyIngredientsActivity.class);
+                intent = new Intent(activity.getBaseContext(), UserIngredientsActivity.class);
                 break;
             default:
                 return false;
