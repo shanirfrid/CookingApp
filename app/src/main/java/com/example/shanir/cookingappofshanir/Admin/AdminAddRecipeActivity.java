@@ -19,7 +19,7 @@ import androidx.annotation.Nullable;
 import com.example.shanir.cookingappofshanir.ImagePromptActivity;
 import com.example.shanir.cookingappofshanir.R;
 import com.example.shanir.cookingappofshanir.utils.Adapter;
-import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.DbConstants;
 import com.example.shanir.cookingappofshanir.utils.Ingredients;
 import com.example.shanir.cookingappofshanir.utils.Permission;
 import com.example.shanir.cookingappofshanir.utils.Recipe;
@@ -86,7 +86,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
         listView = (ListView) findViewById(R.id.listviewconsumersa);
         tv = (TextView) findViewById(R.id.tvheadingredients);
 
-        mImageFileNameCamera = General.ADD_RECIPE_IMAGE_FILE_NAME_CAMERA;
+        mImageFileNameCamera = DbConstants.ADD_RECIPE_IMAGE_FILE_NAME_CAMERA;
         liststring = new ArrayList<String>();
         adapter = new Adapter(this, 0, liststring);
         listView.setAdapter(adapter);
@@ -145,7 +145,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
             }
 
 
-            if (!adapter.getlist().contains(etadd.getText().toString().toLowerCase())) {
+            if (!adapter.getList().contains(etadd.getText().toString().toLowerCase())) {
                 adapter.add(ingredientUnits + " - " + st);
                 adapter.notifyDataSetChanged();
             } else {
@@ -200,7 +200,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
             return;
         }
 
-        if (adapter.getlist().isEmpty()) {
+        if (adapter.getList().isEmpty()) {
             Toast.makeText(getApplicationContext(), "You need to insert an ingredient", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -216,12 +216,12 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
         recipe.setDifficulty(difficult);
         recipe.setTime(time);
 
-        uploadImage(General.RECIPE_IMAGES_URL);
+        uploadImage(DbConstants.RECIPE_IMAGES_URL);
         recipe.setBitmap(mBitmapName);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
 
-        String tableIdR = General.RECIPE_TABLE_NAME + "/" + recipe.getNameOfrecipe();
+        String tableIdR = DbConstants.RECIPE_TABLE_NAME + "/" + recipe.getNameOfrecipe();
         postRef = FirebaseDatabase.getInstance().getReference(tableIdR);
 
         postRef.addValueEventListener(new ValueEventListener() {

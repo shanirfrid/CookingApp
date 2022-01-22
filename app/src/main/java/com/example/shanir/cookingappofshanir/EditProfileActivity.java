@@ -2,7 +2,6 @@ package com.example.shanir.cookingappofshanir;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.shanir.cookingappofshanir.utils.DbReference;
-import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.DbConstants;
 import com.example.shanir.cookingappofshanir.utils.ImageUtilities;
 import com.example.shanir.cookingappofshanir.utils.Permission;
 import com.example.shanir.cookingappofshanir.utils.User;
@@ -101,7 +100,7 @@ public class EditProfileActivity extends ImagePromptActivity {
                 userDetailsMap.put("lastname", lastname);
                 userDetailsMap.put("id", id);
                 userDetailsMap.put("phone", phone);
-                uploadImage(General.PROFILE_IMAGES_URL);
+                uploadImage(DbConstants.PROFILE_IMAGES_URL);
                 userDetailsMap.put("bitmap", mBitmapName);
                 DbReference.getDbRefToUser(
                         mFireBaseAuth.getUid()).updateChildren(userDetailsMap);
@@ -131,7 +130,7 @@ public class EditProfileActivity extends ImagePromptActivity {
 
                 if (!userprofile.getBitmap().equals("none") && !mImageHasChanged)
                     ImageUtilities.loadImage(
-                            General.APP_PROFILE_IMAGES_FULL_URL +
+                            DbConstants.APP_PROFILE_IMAGES_FULL_URL +
                                         userprofile.getBitmap(),
                                         mImageView, mProgressBar);
             }

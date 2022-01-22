@@ -8,33 +8,33 @@ import com.google.firebase.storage.StorageReference;
 public class DbReference {
 
     public static DatabaseReference getDbRefToUserIngredients(String userID) {
-        String userIngredientsTablePath = General.USER_INGREDIENTS_TABLE_NAME +
-                "/" + userID + "/" + General.USER_INGREDIENTS_SUB_TABLE_NAME;
+        String userIngredientsTablePath = DbConstants.USER_INGREDIENTS_TABLE_NAME +
+                "/" + userID + "/" + DbConstants.USER_INGREDIENTS_SUB_TABLE_NAME;
         return FirebaseDatabase.getInstance()
                 .getReference(userIngredientsTablePath);
     }
 
     public static DatabaseReference getDbRefToRecipes() {
         return FirebaseDatabase.getInstance()
-                .getReference(General.RECIPE_TABLE_NAME);
+                .getReference(DbConstants.RECIPE_TABLE_NAME);
     }
 
     public static DatabaseReference getDbRefToRecipe(String recipeName) {
-        String recipePath = General.RECIPE_TABLE_NAME + "/" + recipeName;
+        String recipePath = DbConstants.RECIPE_TABLE_NAME + "/" + recipeName;
         return FirebaseDatabase.getInstance().getReference(recipePath);
     }
 
     public static DatabaseReference getDbRefToUserFavoriteRecipes(String userID) {
-        String userFavoriteRecipesTablePath = General.FAVORITE_RECIPES +
-                "/" + userID + "/" + General.RECIPE_FAVORITE_NAMES;
+        String userFavoriteRecipesTablePath = DbConstants.FAVORITE_RECIPES +
+                "/" + userID + "/" + DbConstants.RECIPE_FAVORITE_NAMES;
         return FirebaseDatabase.getInstance()
                 .getReference(userFavoriteRecipesTablePath);
     }
 
     public static StorageReference getDbRefToRecipeBitmap(String bitmap) {
         return FirebaseStorage.getInstance().
-                getReferenceFromUrl(General.APP_PROFILE_IMAGES_FULL_URL +
-                        General.RECIPE_IMAGES_URL).child(bitmap);
+                getReferenceFromUrl(DbConstants.APP_RECIPE_IMAGES_FULL_URL)
+                .child(bitmap);
     }
 
     public static StorageReference getDbRefToImageBitmap(String directory, String bitmap) {
@@ -48,6 +48,6 @@ public class DbReference {
 
     public static DatabaseReference getDbRefToUser(String userID) {
         return FirebaseDatabase.getInstance()
-                .getReference(General.USER_TABLE_NAME).child(userID);
+                .getReference(DbConstants.USER_TABLE_NAME).child(userID);
     }
 }

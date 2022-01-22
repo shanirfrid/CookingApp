@@ -14,7 +14,7 @@ public class ImageUtilities {
                                  @Nullable ProgressBar progressBar) {
         progressBar.setVisibility(View.VISIBLE);
         DbReference.getDbFullRefToImageBitmap(pathToBitmap)
-                .getBytes(General.ONE_MEGABYTE).addOnSuccessListener(bytes -> {
+                .getBytes(DbConstants.ONE_MEGABYTE).addOnSuccessListener(bytes -> {
             progressBar.setVisibility(View.GONE);
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             loadToImageView.setImageBitmap(bitmap);

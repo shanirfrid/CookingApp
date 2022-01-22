@@ -9,17 +9,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.shanir.cookingappofshanir.utils.DbReference;
-import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.DbConstants;
 import com.example.shanir.cookingappofshanir.utils.ImageUtilities;
 import com.example.shanir.cookingappofshanir.utils.NavigationMenu;
 import com.example.shanir.cookingappofshanir.utils.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -130,7 +127,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
                 if (!mUser.getBitmap().equals("none"))
                     ImageUtilities.loadImage
-                            (General.APP_PROFILE_IMAGES_FULL_URL +
+                            (DbConstants.APP_PROFILE_IMAGES_FULL_URL +
                                             mUser.getBitmap(),
                                     mProfileImageView, mProgressBar);
             }

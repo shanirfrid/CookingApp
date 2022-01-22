@@ -7,59 +7,47 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.shanir.cookingappofshanir.R;
 import com.google.firebase.database.annotations.Nullable;
-
 import java.util.List;
 
-/**
- * Created by Shanir on 02/04/2018.
- */
-
 public class RecipeListAdapter extends BaseAdapter {
-    private Context context;
-    private List<Recipe> recipeList;
+    private Context mContext;
+    private List<Recipe> mRecipeList;
 
     public RecipeListAdapter() {
     }
 
-
     public RecipeListAdapter(Context context, List<Recipe> recipeList) {
-        this.context = context;
-        this.recipeList = recipeList;
+        mContext = context;
+        mRecipeList = recipeList;
     }
 
     public List<Recipe> getRecipeList(){
-        return this.recipeList;
-    }
-
-    public void setRecipeList(List<Recipe> recipeList){
-        this.recipeList = recipeList;
+        return this.mRecipeList;
     }
 
     public void add(Recipe recipe) {
-        if (this.recipeList.contains(recipe))
+        if (mRecipeList.contains(recipe))
             return;
 
-        this.recipeList.add(recipe);
+        mRecipeList.add(recipe);
         notifyDataSetChanged();
-
     }
 
     public void deleteRecipe(int position) {
-        this.recipeList.remove(position);
+        mRecipeList.remove(position);
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return recipeList.size();
+        return mRecipeList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return recipeList.get(position);
+        return mRecipeList.get(position);
     }
 
     @Override
@@ -67,23 +55,23 @@ public class RecipeListAdapter extends BaseAdapter {
         return position;
     }
 
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v = View.inflate(context, R.layout.recipe_item_list, null);
-        TextView tvname = (TextView) v.findViewById(R.id.tvnamerecipeitem);
-        TextView tvdifficult = (TextView) v.findViewById(R.id.vdifiitem);
-        TextView tvtime = (TextView) v.findViewById(R.id.tvtimerecipeitem);
-        ImageView ivRecipeImage = (ImageView) v.findViewById(R.id.recipe_image);
+        View v = View.inflate(mContext, R.layout.recipe_item_list, null);
+        TextView recipeNameTextView = v.findViewById(R.id.tvnamerecipeitem);
+        TextView recipeDifficultTextView = v.findViewById(R.id.vdifiitem);
+        TextView recipeTimeTextView = v.findViewById(R.id.tvtimerecipeitem);
+        ImageView recipeImageView = v.findViewById(R.id.recipe_image);
 
-        tvname.setText(recipeList.get(position).getNameOfrecipe());
-        tvtime.setText(String.valueOf(recipeList.get(position).getTime()));
-        tvdifficult.setText(recipeList.get(position).getDifficulty());
-        Bitmap recipeBitmap = recipeList.get(position).getNameBitmap();
+        recipeNameTextView.setText(mRecipeList.get(position).getNameOfrecipe());
+        recipeTimeTextView.setText(String.valueOf(mRecipeList.get(position).getTime()));
+        recipeDifficultTextView.setText(mRecipeList.get(position).getDifficulty());
+        Bitmap recipeBitmap = mRecipeList.get(position).getNameBitmap();
+
         if (recipeBitmap != null)
-            ivRecipeImage.setImageBitmap(recipeBitmap);
+            recipeImageView.setImageBitmap(recipeBitmap);
 
-        v.setTag(recipeList.get(position).gettID());
+        v.setTag(mRecipeList.get(position).gettID());
         return v;
     }
 
