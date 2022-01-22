@@ -1,15 +1,19 @@
 package com.example.shanir.cookingappofshanir;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -38,6 +42,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -60,7 +65,7 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
     DatabaseReference postRef;
     String units;
     ArrayList<Ingredients> ingredientsArrayList;
-    Adapter adapter;
+    IngredientsListAdapter adapter;
     ArrayList<String> liststring;
 
     @Override
@@ -78,7 +83,7 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
         btmakenow.setOnClickListener(this);
         firebaseAuth = FirebaseAuth.getInstance();
         btsaverecipe.setOnClickListener(this);
-
+        listView.setAdapter(new IngredientsListAdapter(this, new ArrayList<>()));
         Intent i = getIntent();
         if (i.getExtras() != null) {
             stname = i.getExtras().getString("detailsrecipe");
@@ -86,7 +91,27 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
         tvname.setText(tvname.getText().toString() + stname);
 
         retrieveDataR();
+        setListViewHeightBasedOnChildren(listView);
+    }
 
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        BaseAdapter listAdapter = (BaseAdapter) listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 50;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 
     public void retrieveDataR() {
@@ -118,7 +143,7 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
                         tvdifficulty.setText(difficulty);
                         time = Integer.toString(r.getTime());
                         tvtime.setText(TextFormatter.formatRecipeTime(Integer.parseInt(time)));
-                        liststring = r.getListNameIngredientOnRecipe();
+                        liststring = new ArrayList<String>();
                         ingredientsArrayList = r.getList();
                         recipe = r;
                         if (!recipe.getBitmap().equals("none"))
@@ -129,8 +154,6 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
                 setlist(liststring, ingredientsArrayList);
 
                 Log.d("dd", "Num of recipes : " + recipes.size());
-
-
             }
 
             @Override
@@ -161,22 +184,22 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
     }
 
     public void setlist(ArrayList<String> listingredientname, ArrayList<Ingredients> ingredientsArrayList1) {
-        liststring = listingredientname;
-        ingredientsArrayList = ingredientsArrayList1;
-        adapter = new Adapter(this, 0, liststring);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                lastSelected = (String) adapter.getItem(position);
-                for (int n = 0; n < ingredientsArrayList.size(); n++) {
-                    if (ingredientsArrayList.get(n).getName().equals(lastSelected)) {
-                        units = ingredientsArrayList.get(n).getUnits();
-                    }
-                }
-                createDialog();
-            }
-        });
+//        liststring = listingredientname;
+//        ingredientsArrayList = ingredientsArrayList1;
+//        adapter = new IngredientsListAdapter(this, liststring);
+//        listView.setAdapter(adapter);
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                lastSelected = (String) adapter.getItem(position);
+//                for (int n = 0; n < ingredientsArrayList.size(); n++) {
+//                    if (ingredientsArrayList.get(n).getName().equals(lastSelected)) {
+//                        units = ingredientsArrayList.get(n).getUnits();
+//                    }
+//                }
+//                createDialog();
+//            }
+//        });
 
     }
 
@@ -215,7 +238,7 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
 
     public void addRecipeToSaveRecipes() {
         String uid = firebaseAuth.getCurrentUser().getUid();
-        String mPathToUserSavedRecipes = General.FAVORITE_RECIPES + "/" + uid +"/"+ General.RECIPE_FAVORITE_NAMES;
+        String mPathToUserSavedRecipes = General.FAVORITE_RECIPES + "/" + uid + "/" + General.RECIPE_FAVORITE_NAMES;
         DatabaseReference mReferenceToUserSavedRecipes
                 = FirebaseDatabase.getInstance().getReference(mPathToUserSavedRecipes);
         HashMap<String, Object> map = new HashMap<>();
@@ -272,5 +295,55 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
         return true;
     }
 
+    private class IngredientsListAdapter extends BaseAdapter {
+        ArrayList<Ingredients> mIngredientList;
+        Context mContext;
 
+        public IngredientsListAdapter(Context context,
+                                      ArrayList<Ingredients> ingredientList) {
+            mIngredientList = ingredientList;
+            mContext = context;
+        }
+
+        public void add(Ingredients ingredient) {
+            mIngredientList.add(ingredient);
+            setListViewHeightBasedOnChildren(listView);
+        }
+
+        public List<Ingredients> getlist() {
+            return mIngredientList;
+        }
+
+        @Override
+        public int getCount() {
+            return mIngredientList.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return mIngredientList.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            view = LayoutInflater
+                    .from(mContext)
+                    .inflate(R.layout.ingredient_and_unit_item_layout, null);
+
+            Ingredients ingredient = mIngredientList.get(i);
+            ((TextView) view.findViewById(R.id.ingredient_unit_textview))
+                    .setText(ingredient.getUnits());
+            ((TextView) view.findViewById(R.id.ingredient_name_textview))
+                    .setText(ingredient.getName());
+            view.findViewById(R.id.delete_ingredient_with_unit_image_view)
+                    .setVisibility(View.GONE);
+
+            return view;
+        }
+    }
 }
