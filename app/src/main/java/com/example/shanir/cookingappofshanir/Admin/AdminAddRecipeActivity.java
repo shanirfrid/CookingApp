@@ -99,7 +99,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                lastSelected = (String) adapter.getItem(position);
+                lastSelected = ((Ingredients) adapter.getItem(position)).getName();
                 createDialogIngredients();
             }
         });
