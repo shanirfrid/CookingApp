@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shanir.cookingappofshanir.utils.General;
 import com.example.shanir.cookingappofshanir.utils.Adapter;
+import com.example.shanir.cookingappofshanir.utils.ImageUtilities;
 import com.example.shanir.cookingappofshanir.utils.Ingredients;
 import com.example.shanir.cookingappofshanir.utils.Recipe;
 import com.example.shanir.cookingappofshanir.utils.TextFormatter;
@@ -122,8 +124,9 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
                         ingredientsArrayList = r.getList();
                         recipe = r;
                         if (!recipe.getBitmap().equals("none"))
-                            loadImage(recipe.getBitmap());
-
+                            ImageUtilities.loadImage(
+                                    General.APP_RECIPE_IMAGES_FULL_URL +
+                                            recipe.getBitmap(), imageView, progressBar);
                     }
                 }
                 setlist(liststring, ingredientsArrayList);
@@ -138,26 +141,6 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
 
             }
         });
-    }
-
-    private void loadImage(String name) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://cookingappofshanir.appspot.com/images/").child(name);
-        final long ONE_MEGABYTE = 1024 * 1024 * 5;
-        //download file as a byte array
-        progressBar.setVisibility(View.VISIBLE);
-
-        storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-
-            @Override
-            public void onSuccess(byte[] bytes) {
-                progressBar.setVisibility(View.GONE);
-
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                imageView.setImageBitmap(bitmap);
-            }
-        });
-
     }
 
     public void setlist(ArrayList<String> listingredientname, ArrayList<Ingredients> ingredientsArrayList1) {

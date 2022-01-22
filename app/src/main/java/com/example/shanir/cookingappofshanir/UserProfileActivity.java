@@ -19,6 +19,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.shanir.cookingappofshanir.utils.General;
+import com.example.shanir.cookingappofshanir.utils.ImageUtilities;
 import com.example.shanir.cookingappofshanir.utils.Navigation;
 import com.example.shanir.cookingappofshanir.utils.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -135,7 +136,9 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                     textViewdetails.setText(userprofil.toString());
 
                     if (!userprofil.getBitmap().equals("none"))
-                        loadImage(userprofil.getBitmap());
+                        ImageUtilities.loadImage
+                                (General.APP_PROFILE_IMAGES_FULL_URL + userprofil.getBitmap(),
+                                 ivAccountProfile, pb);
                     else {
                         Toast.makeText(getApplicationContext(),
                                 "You dont have a profile image", Toast.LENGTH_SHORT).show();
@@ -154,31 +157,6 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         String uid = mAuth.getCurrentUser().getUid();
         tableusers = General.USER_TABLE_NAME + "/" + uid;
         postRef = FirebaseDatabase.getInstance().getReference(tableusers);
-    }
-
-    private void loadImage(String name) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://cookingappofshanir.appspot.com/imagesprofil/").child(name);
-        final long ONE_MEGABYTE = 1024 * 1024 * 5;
-
-        //download file as a byte array
-        pb.setVisibility(View.VISIBLE);
-        storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                pb.setVisibility(View.GONE);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                ivAccountProfile.setImageBitmap(bitmap);
-            }
-
-        });
-        storageRef.getBytes(ONE_MEGABYTE).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-
     }
 
     @Override

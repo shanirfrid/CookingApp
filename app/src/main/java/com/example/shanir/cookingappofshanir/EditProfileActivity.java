@@ -1,8 +1,6 @@
 package com.example.shanir.cookingappofshanir;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,8 +21,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -52,7 +48,6 @@ public class EditProfileActivity extends ImagePromptActivity {
         mImageView = findViewById(R.id.iv_update_profile_image);
         mProgressBar = findViewById(R.id.pb_update_profile);
         mFireBaseAuth = FirebaseAuth.getInstance();
-
         Intent i = getIntent();
         if (i.getExtras() != null) {
             mBitmapName = i.getExtras().getString("bitmap");
@@ -135,8 +130,10 @@ public class EditProfileActivity extends ImagePromptActivity {
                 mPhoneEditText.setText(userprofile.getPhone());
 
                 if (!userprofile.getBitmap().equals("none") && !mImageHasChanged)
-                    ImageUtilities.loadImage(General.APP_IMAGES_FULL_URL + General.PROFILE_IMAGES_URL,
-                            userprofile.getBitmap(),mImageView,mProgressBar);
+                    ImageUtilities.loadImage(
+                            General.APP_PROFILE_IMAGES_FULL_URL +
+                                        userprofile.getBitmap(),
+                                        mImageView, mProgressBar);
             }
 
             @Override

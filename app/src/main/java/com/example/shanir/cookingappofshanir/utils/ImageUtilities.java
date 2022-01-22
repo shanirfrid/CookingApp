@@ -10,9 +10,10 @@ import androidx.annotation.Nullable;
 
 public class ImageUtilities {
 
-    public static void loadImage(String directory, String bitmapId, ImageView loadToImageView,
+    public static void loadImage(String pathToBitmap, ImageView loadToImageView,
                                  @Nullable ProgressBar progressBar) {
-        DbReference.getDbFullRefToImageBitmap(directory, bitmapId)
+        progressBar.setVisibility(View.VISIBLE);
+        DbReference.getDbFullRefToImageBitmap(pathToBitmap)
                 .getBytes(General.ONE_MEGABYTE).addOnSuccessListener(bytes -> {
             progressBar.setVisibility(View.GONE);
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
