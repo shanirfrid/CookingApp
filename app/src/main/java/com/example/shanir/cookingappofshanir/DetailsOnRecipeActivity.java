@@ -137,7 +137,7 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
                         time = Integer.toString(r.getTime());
                         tvtime.setText(TextFormatter.formatRecipeTime(Integer.parseInt(time)));
                         liststring = new ArrayList<String>();
-                        ingredientList = r.getList();
+                        ingredientList = r.getIngredientList();
                         recipe = r;
                         if (!recipe.getBitmap().equals("none"))
                             ImageUtilities.loadImage(

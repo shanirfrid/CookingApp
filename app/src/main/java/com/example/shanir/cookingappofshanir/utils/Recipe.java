@@ -30,17 +30,6 @@ public class Recipe {
         this.list = new ArrayList<>();
     }
 
-
-    public ArrayList<String> getIngredients() {
-        ArrayList<String> namelist = new ArrayList<String>();
-        String nameIngredient;
-        for (int i = 0; i < this.list.size(); i++) {
-            nameIngredient = this.list.get(i).getName().trim();
-            namelist.add(nameIngredient);
-        }
-        return namelist;
-    }
-
     public void setNameBitmap(Bitmap nameBitmap) {
         this.nameBitmap = nameBitmap;
     }
@@ -49,11 +38,11 @@ public class Recipe {
         return this.nameBitmap;
     }
 
-    public ArrayList<Ingredient> getList() {
+    public ArrayList<Ingredient> getIngredientList() {
         return list;
     }
 
-    public void setList(ArrayList<Ingredient> list) {
+    public void setIngredientList(ArrayList<Ingredient> list) {
         this.list = list;
     }
 

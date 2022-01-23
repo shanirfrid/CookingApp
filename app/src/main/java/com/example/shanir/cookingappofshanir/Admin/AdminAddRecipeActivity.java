@@ -252,7 +252,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
         String tableIdR = DbConstants.RECIPE_TABLE_NAME + "/" + recipe.getNameOfrecipe();
         postRef = FirebaseDatabase.getInstance().getReference(tableIdR);
 
-        postRef.addValueEventListener(new ValueEventListener() {
+        postRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!snapshot.exists()) {

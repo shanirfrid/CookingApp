@@ -3,12 +3,14 @@ package com.example.shanir.cookingappofshanir;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -99,6 +101,7 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
 
     private void getSuitableRecipes(Collection<String> userIngredients) {
         DbReference.getDbRefToRecipes().addListenerForSingleValueEvent(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
@@ -107,8 +110,13 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
                     if (recipe == null)
                         continue;
 
-                    if (!userIngredients.containsAll(
-                            recipe.getIngredients()))
+                    ArrayList<String> recipeIngredients = new ArrayList<>();
+
+                    recipe.getIngredientList().forEach(ingredient ->
+                            recipeIngredients.add(ingredient.getName())
+                    );
+
+                    if (!userIngredients.containsAll(recipeIngredients))
                         continue;
 
                     fetchRecipeDetails(recipe);

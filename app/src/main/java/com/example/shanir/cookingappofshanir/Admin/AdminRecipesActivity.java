@@ -31,7 +31,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class AdminRecipesActivity extends AppCompatActivity {
-
     private FirebaseAuth mFireBaseAuth;
     private ProgressBar mProgressBar;
     private ImageView mLogoutImageView;
@@ -107,6 +106,7 @@ public class AdminRecipesActivity extends AppCompatActivity {
 
                 DbReference.getDbRefToRecipe(recipeName).removeValue();
                 mRecipeListAdapter.deleteRecipe(mPosition);
+                mNumberOfRecipesTextView.setText(TextFormatter.foundRecipesNumber(mRecipeListAdapter.getCount()));
             }
         }
     }
