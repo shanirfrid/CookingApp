@@ -31,7 +31,7 @@ public class Recipe {
     }
 
 
-    public ArrayList<String> getListNameIngredientOnRecipe() {
+    public ArrayList<String> getIngredients() {
         ArrayList<String> namelist = new ArrayList<String>();
         String nameIngredient;
         for (int i = 0; i < this.list.size(); i++) {

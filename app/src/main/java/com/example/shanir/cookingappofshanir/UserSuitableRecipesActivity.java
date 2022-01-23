@@ -108,7 +108,7 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
                         continue;
 
                     if (!userIngredients.containsAll(
-                            recipe.getListNameIngredientOnRecipe()))
+                            recipe.getIngredients()))
                         continue;
 
                     fetchRecipeDetails(recipe);
