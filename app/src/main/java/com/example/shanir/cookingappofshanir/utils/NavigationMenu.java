@@ -73,9 +73,10 @@ public class NavigationMenu
             Toast.makeText(mActivity.getApplicationContext(),
                     "You are already in this page",
                     Toast.LENGTH_SHORT).show();
-        else
+        else {
             mActivity.startActivity(intent);
-
+            mActivity.finish();
+        }
         return true;
     }
 }
