@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shanir.cookingappofshanir.SignInActivity;
@@ -24,9 +27,9 @@ import com.example.shanir.cookingappofshanir.R;
 import com.example.shanir.cookingappofshanir.utils.Recipe;
 import com.example.shanir.cookingappofshanir.utils.TextFormatter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -50,7 +53,7 @@ public class AdminRecipesActivity extends AppCompatActivity {
         initRecipeListView();
         initRecipeAddButton();
         initLogoutImageView();
-        retrieveRecipeList();
+        setDbRecipesEventListener();
     }
 
     private void initLogoutImageView() {
@@ -105,31 +108,14 @@ public class AdminRecipesActivity extends AppCompatActivity {
                         .get(mPosition).getNameOfrecipe();
 
                 DbReference.getDbRefToRecipe(recipeName).removeValue();
-                mRecipeListAdapter.deleteRecipe(mPosition);
-                mNumberOfRecipesTextView.setText(TextFormatter.foundRecipesNumber(mRecipeListAdapter.getCount()));
             }
         }
     }
 
-    private void retrieveRecipeList() {
-        DbReference.getDbRefToRecipes().addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    Recipe recipe = postSnapshot.getValue(Recipe.class);
+    private void updateRecipesAmount() {
+        mNumberOfRecipesTextView.setText(
+                TextFormatter.foundRecipesNumber(mRecipeListAdapter.getCount()));
 
-                    if (recipe == null)
-                        continue;
-
-                    fetchRecipeDetails(recipe);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
     private void fetchRecipeDetails(Recipe recipe){
@@ -140,7 +126,44 @@ public class AdminRecipesActivity extends AppCompatActivity {
         }).addOnCompleteListener(task -> {
             mRecipeListAdapter.add(recipe);
             mProgressBar.setVisibility(View.GONE);
-            mNumberOfRecipesTextView.setText(TextFormatter.foundRecipesNumber(mRecipeListAdapter.getCount()));
+            updateRecipesAmount();
         });
+    }
+
+    private void setDbRecipesEventListener() {
+        DbReference.getDbRefToRecipes()
+                .addChildEventListener(new ChildEventListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot,
+                                             @Nullable String previousChildName) {
+                        fetchRecipeDetails(snapshot.getValue(Recipe.class));
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot,
+                                               @Nullable String previousChildName) {
+
+                    }
+
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                        mRecipeListAdapter
+                                .deleteRecipe(snapshot.getValue(Recipe.class));
+                        updateRecipesAmount();
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot,
+                                             @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 }

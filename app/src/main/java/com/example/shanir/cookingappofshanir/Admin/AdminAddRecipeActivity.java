@@ -259,11 +259,10 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
                     postRef.setValue(recipe).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            Toast.makeText(AdminAddRecipeActivity.this, "Recipe has been saved successfully",
+                            Toast.makeText(AdminAddRecipeActivity.this,
+                                    "Recipe has been saved successfully",
                                     Toast.LENGTH_SHORT).show();
-
-                            Intent intent = new Intent(AdminAddRecipeActivity.this, AdminRecipesActivity.class);
-                            startActivity(intent);
+                            finish();
                         }
                     });
                 } else {
