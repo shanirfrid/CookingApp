@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -85,9 +86,14 @@ public class UserIngredientsActivity extends AppCompatActivity {
                 return;
             }
 
-            DbReference.getDbRefToUserIngredients(mFirebaseAuth.getUid())
-                    .child(ingredientToAdd)
-                    .setValue(ingredientToAdd);
+            if (!mIngredientsListAdapter.isIngredientInList(ingredientToAdd)){
+                DbReference.getDbRefToUserIngredients(mFirebaseAuth.getUid())
+                        .child(ingredientToAdd)
+                        .setValue(ingredientToAdd);
+            }
+            else{
+                Toast.makeText(this, "This ingreident is already added",Toast.LENGTH_SHORT).show();
+            }
             mAddIngredientEditText.setText("");
         });
     }
@@ -174,6 +180,10 @@ public class UserIngredientsActivity extends AppCompatActivity {
             mIngredientList.remove(ingredient);
             mIngredientList.sort(Comparator.comparing(String::toString));
             notifyDataSetChanged();
+        }
+
+        public boolean isIngredientInList(String ingredientName){
+            return mIngredientList.contains(ingredientName);
         }
 
         @Override
