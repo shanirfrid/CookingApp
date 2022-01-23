@@ -83,6 +83,9 @@ public class Recipe {
     }
 
     public void addingredienttolist(Ingredient ingredient) {
+        if (this.list.contains(ingredient))
+            return;
+
         this.list.add(ingredient);
     }
 
