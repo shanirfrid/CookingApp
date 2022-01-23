@@ -61,13 +61,13 @@ public class UserFavoriteRecipesActivity extends AppCompatActivity {
 
     private void initSavedRecipeListView() {
         mSavedRecipesListView = findViewById(R.id.lvsaverecipes);
-        mRecipeListAdapter = new RecipeListAdapter(this, new ArrayList<Recipe>());
+        mRecipeListAdapter = new RecipeListAdapter(this, new ArrayList<>());
         mSavedRecipesListView.setAdapter(mRecipeListAdapter);
 
         mSavedRecipesListView.setOnItemClickListener((parent, view, position, id) -> {
             Intent i = new Intent(getApplicationContext(), DetailsOnRecipeActivity.class);
             mSelectedRecipe = (Recipe) mRecipeListAdapter.getItem(position);
-            i.putExtra("nameOfSelectedRecipe", mSelectedRecipe.getNameOfrecipe());
+            i.putExtra("comeFromFavoriteRecipes", mSelectedRecipe.getNameOfrecipe());
             startActivity(i);
         });
     }

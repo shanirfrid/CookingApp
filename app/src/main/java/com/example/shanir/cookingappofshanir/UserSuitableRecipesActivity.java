@@ -73,7 +73,7 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
         mRecipeListView.setOnItemClickListener((parent, view, position, id) -> {
             Recipe selectedRecipe = (Recipe) mRecipeListAdapter.getItem(position);
             Intent i = new Intent(getApplicationContext(), DetailsOnRecipeActivity.class);
-            i.putExtra("detailsrecipe", selectedRecipe.getNameOfrecipe());
+            i.putExtra("comeFromSuitableRecipes", selectedRecipe.getNameOfrecipe());
             startActivity(i);
         });
     }
