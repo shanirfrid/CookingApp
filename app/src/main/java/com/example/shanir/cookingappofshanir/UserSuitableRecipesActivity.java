@@ -17,6 +17,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.shanir.cookingappofshanir.utils.DbReference;
 import com.example.shanir.cookingappofshanir.utils.DbConstants;
 import com.example.shanir.cookingappofshanir.utils.NavigationMenu;
+import com.example.shanir.cookingappofshanir.utils.ProgressBarManager;
 import com.example.shanir.cookingappofshanir.utils.Recipe;
 import com.example.shanir.cookingappofshanir.utils.RecipeListAdapter;
 import com.example.shanir.cookingappofshanir.utils.TextFormatter;
@@ -32,9 +33,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserSuitableRecipesActivity extends AppCompatActivity {
-
     private TextView mRecipesNumberTextView;
     private FirebaseAuth mFirebaseAuth;
+    private ProgressBarManager mProgressBarManager;
     private ListView mRecipeListView;
     private RecipeListAdapter mRecipeListAdapter;
     private NavigationView mNavigationView;
@@ -46,6 +47,8 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_recipe);
         mRecipesNumberTextView = findViewById(R.id.tvnumrecipe);
+        mProgressBarManager = new ProgressBarManager(
+                findViewById(R.id.user_recipes_progress_bar));
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         this.initRecipeList();
@@ -104,6 +107,7 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int recipesAmount = 0;
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Recipe recipe = postSnapshot.getValue(Recipe.class);
 
@@ -120,6 +124,8 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
                         continue;
 
                     fetchRecipeDetails(recipe);
+                    mRecipesNumberTextView.setText(
+                            TextFormatter.foundRecipesNumber(++recipesAmount));
                 }
             }
 
@@ -131,6 +137,7 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
     }
 
     private void fetchRecipeDetails(Recipe recipe) {
+        mProgressBarManager.requestVisible();
         DbReference.getDbRefToRecipeBitmap(recipe.getBitmap())
                 .getBytes(DbConstants.ONE_MEGABYTE)
                 .addOnSuccessListener(bytes -> {
@@ -139,8 +146,7 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
                 })
                 .addOnCompleteListener(task -> {
                     mRecipeListAdapter.add(recipe);
-                    mRecipesNumberTextView.setText(
-                            TextFormatter.foundRecipesNumber(mRecipeListAdapter.getCount()));
+                    mProgressBarManager.requestGone();
                 });
     }
 
