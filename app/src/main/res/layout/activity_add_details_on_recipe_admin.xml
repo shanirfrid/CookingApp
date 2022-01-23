@@ -31,7 +31,8 @@
             android:padding="20dp"
             android:textColor="#000"
             android:textColorHint="@color/colorHintText"
-            android:textSize="32sp"
+            android:textSize="26sp"
+            android:fontFamily="sans-serif-medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivadmindetails" />
 
@@ -141,7 +142,8 @@
             android:layout_marginEnd="10dp"
             android:divider="#ccc"
             android:dividerHeight="1px"
-            app:layout_constraintTop_toBottomOf="@id/tvheadingredients" />
+            app:layout_constraintTop_toBottomOf="@id/tvheadingredients"
+            tools:listitem="@layout/ingredient_and_unit_item_layout"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/add_recipe_add_ingredients_layout"

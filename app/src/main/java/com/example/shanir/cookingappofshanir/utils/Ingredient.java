@@ -1,15 +1,15 @@
 package com.example.shanir.cookingappofshanir.utils;
 
-public class Ingredients {
+public class Ingredient {
     private String name;
     private String units;
 
-    public Ingredients( String name, String units) {
+    public Ingredient(String name, String units) {
         this.name = name;
         this.units = units;
     }
 
-    public Ingredients() {
+    public Ingredient() {
     }
 
     public String getName() {

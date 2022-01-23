@@ -23,7 +23,7 @@ import androidx.annotation.Nullable;
 import com.example.shanir.cookingappofshanir.ImagePromptActivity;
 import com.example.shanir.cookingappofshanir.R;
 import com.example.shanir.cookingappofshanir.utils.DbConstants;
-import com.example.shanir.cookingappofshanir.utils.Ingredients;
+import com.example.shanir.cookingappofshanir.utils.Ingredient;
 import com.example.shanir.cookingappofshanir.utils.Permission;
 import com.example.shanir.cookingappofshanir.utils.Recipe;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,15 +47,15 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference postRef;
-    ArrayList<Ingredients> list;
+    ArrayList<Ingredient> list;
     ImageView imageViewadd;
     EditText etadd, etnamerecipe;
     ListView listView;
     TextView tv;
     IngredientsListAdapter adapter;
     Recipe recipe;
-    ArrayList<Ingredients> liststring;
-    String lastSelected;
+    ArrayList<Ingredient> liststring;
+    String mSelectedIngredientName;
     Dialog dialogdetaileOnIngredients;
     EditText etunits, mIngredientUnitsEditText;
     Button btsaveingredient;
@@ -90,14 +90,14 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
         listView = (ListView) findViewById(R.id.listviewconsumersa);
         tv = (TextView) findViewById(R.id.tvheadingredients);
 
-        liststring = new ArrayList<Ingredients>();
+        liststring = new ArrayList<Ingredient>();
         adapter = new IngredientsListAdapter(this, liststring);
         mImageFileNameCamera = DbConstants.ADD_RECIPE_IMAGE_FILE_NAME_CAMERA;
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                lastSelected = ((Ingredients) adapter.getItem(position)).getName();
+                mSelectedIngredientName = ((Ingredient) adapter.getItem(position)).getName();
                 createDialogIngredients();
             }
         });
@@ -108,10 +108,10 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
     private void createDialogIngredients() {
         dialogdetaileOnIngredients = new Dialog(this);
         dialogdetaileOnIngredients.setContentView(R.layout.cdialogdetailsoningredients);
-        dialogdetaileOnIngredients.setTitle("Ingredient" + lastSelected + "dialog screen");
+        dialogdetaileOnIngredients.setTitle("Ingredient" + mSelectedIngredientName + "dialog screen");
         dialogdetaileOnIngredients.setCancelable(true);
         tvheaddialog = (TextView) dialogdetaileOnIngredients.findViewById(R.id.tvheadadmindetailsoningredient);
-        tvheaddialog.setText(tvheaddialog.getText() + lastSelected);
+        tvheaddialog.setText(tvheaddialog.getText() + mSelectedIngredientName);
         btsaveingredient = (Button) dialogdetaileOnIngredients.findViewById(R.id.btdetailsoningredient);
         btsaveingredient.setOnClickListener(this);
         dialogdetaileOnIngredients.show();
@@ -172,7 +172,9 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
             }
 
             if (!adapter.getList().contains(etadd.getText().toString().toLowerCase())) {
-                adapter.add(new Ingredients(st, ingredientUnits));
+                Ingredient ingredient = new Ingredient(st, ingredientUnits);
+                adapter.add(ingredient);
+                recipe.addingredienttolist(ingredient);
                 adapter.notifyDataSetChanged();
             } else {
                 Toast.makeText(getApplicationContext(),
@@ -191,7 +193,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
         } else if (view == btsaveingredient) {
 
             etunits = (EditText) dialogdetaileOnIngredients.findViewById(R.id.etunits);
-            nameingredient = lastSelected;
+            nameingredient = mSelectedIngredientName;
             units = etunits.getText().toString();
 
             if (units.trim().isEmpty()) {
@@ -199,16 +201,16 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
                 etunits.requestFocus();
                 return;
             }
-            Ingredients ingredients = new Ingredients(lastSelected, units);
+            Ingredient ingredient = new Ingredient(mSelectedIngredientName, units);
 
-            recipe.addingredienttolist(ingredients);
+            recipe.addingredienttolist(ingredient);
             Toast.makeText(getApplicationContext(), "Ingredient has been saved successfully", Toast.LENGTH_SHORT).show();
             dialogdetaileOnIngredients.dismiss();
 
         }
     }
 
-    private void Addrecipe(ArrayList<Ingredients> list) {
+    private void Addrecipe(ArrayList<Ingredient> list) {
 
         if (ettime.getText().toString().trim().isEmpty()) {
             ettime.setError("צריך זמן");
@@ -294,21 +296,21 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
     }
 
     private class IngredientsListAdapter extends BaseAdapter {
-        List<Ingredients> mIngredientList;
+        List<Ingredient> mIngredientList;
         Context mContext;
 
         public IngredientsListAdapter(Context context,
-                                      List<Ingredients> ingredientList) {
+                                      List<Ingredient> ingredientList) {
             mIngredientList = ingredientList;
             mContext = context;
         }
 
-        public void add(Ingredients ingredient) {
+        public void add(Ingredient ingredient) {
             mIngredientList.add(ingredient);
             setListViewHeightBasedOnChildren(listView);
         }
 
-        public List<Ingredients> getList() {
+        public List<Ingredient> getList() {
             return mIngredientList;
         }
 
@@ -333,7 +335,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity implements View.
                     .from(mContext)
                     .inflate(R.layout.ingredient_and_unit_item_layout, null);
 
-            Ingredients ingredient = mIngredientList.get(i);
+            Ingredient ingredient = mIngredientList.get(i);
             ((TextView) view.findViewById(R.id.ingredient_unit_textview))
                     .setText(ingredient.getUnits());
             ((TextView) view.findViewById(R.id.ingredient_name_textview))
