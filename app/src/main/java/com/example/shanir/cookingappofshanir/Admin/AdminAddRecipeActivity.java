@@ -193,9 +193,6 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
                             setValue(recipe).addOnSuccessListener(unused -> {
                         Toast.makeText(AdminAddRecipeActivity.this, "Recipe has been saved successfully",
                                 Toast.LENGTH_SHORT).show();
-
-                        Intent intent = new Intent(AdminAddRecipeActivity.this, AdminRecipesActivity.class);
-                        startActivity(intent);
                         finish();
                     });
                 } else {

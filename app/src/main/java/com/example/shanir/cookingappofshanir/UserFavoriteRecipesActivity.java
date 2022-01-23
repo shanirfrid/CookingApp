@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.shanir.cookingappofshanir.utils.DbReference;
 import com.example.shanir.cookingappofshanir.utils.DbConstants;
 import com.example.shanir.cookingappofshanir.utils.NavigationMenu;
+import com.example.shanir.cookingappofshanir.utils.ProgressBarManager;
 import com.example.shanir.cookingappofshanir.utils.Recipe;
 import com.example.shanir.cookingappofshanir.utils.RecipeListAdapter;
 import com.google.android.material.navigation.NavigationView;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 public class UserFavoriteRecipesActivity extends AppCompatActivity {
     private ListView mSavedRecipesListView;
     private FirebaseAuth mFirebaseAuth;
+    private ProgressBarManager mProgressBarManager;
     private RecipeListAdapter mRecipeListAdapter;
     private Recipe mSelectedRecipe;
     private NavigationView mNavigationView;
@@ -38,7 +40,8 @@ public class UserFavoriteRecipesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_save_recipes);
-
+        mProgressBarManager = new ProgressBarManager(
+                findViewById(R.id.user_fav_recipes_progress_bar));
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         if (mFirebaseAuth.getCurrentUser() == null) {
@@ -113,12 +116,14 @@ public class UserFavoriteRecipesActivity extends AppCompatActivity {
     }
 
     private void fetchRecipeDetails(Recipe recipe) {
+        mProgressBarManager.requestVisible();
         DbReference.getDbRefToRecipeBitmap(recipe.getBitmap())
                 .getBytes(DbConstants.ONE_MEGABYTE).addOnSuccessListener(bytes -> {
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             recipe.setNameBitmap(bitmap);
         }).addOnCompleteListener(task -> {
             mRecipeListAdapter.add(recipe);
+            mProgressBarManager.requestGone();
         });
     }
 }

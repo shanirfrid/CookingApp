@@ -40,6 +40,11 @@ public class RecipeListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void deleteRecipe(Recipe recipe) {
+        mRecipeList.remove(recipe);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return mRecipeList.size();

@@ -5,7 +5,7 @@
     android:id="@+id/mainLayoutlistofrecipe"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
+    android:background="@color/colorBackground"
     tools:context="com.example.shanir.cookingappofshanir.UserSuitableRecipesActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,13 +55,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/found_recipe_header" />
 
+        <ProgressBar
+            android:id="@+id/user_recipes_progress_bar"
+            app:layout_constraintTop_toBottomOf="@id/tvnumrecipe"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            />
+
         <ListView
             android:id="@+id/listviewOfRecipes"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:divider="#ccc"
             android:dividerHeight="1px"
-            app:layout_constraintTop_toBottomOf="@id/tvnumrecipe"
+            app:layout_constraintTop_toBottomOf="@id/user_recipes_progress_bar"
             tools:listitem="@layout/recipe_item_list"
             app:layout_constraintBottom_toBottomOf="parent">
 
