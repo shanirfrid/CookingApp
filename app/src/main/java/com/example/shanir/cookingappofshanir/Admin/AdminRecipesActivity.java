@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.shanir.cookingappofshanir.SignInActivity;
 import com.example.shanir.cookingappofshanir.utils.DbReference;
 import com.example.shanir.cookingappofshanir.utils.DbConstants;
+import com.example.shanir.cookingappofshanir.utils.ProgressBarManager;
 import com.example.shanir.cookingappofshanir.utils.RecipeListAdapter;
 import com.example.shanir.cookingappofshanir.R;
 import com.example.shanir.cookingappofshanir.utils.Recipe;
@@ -35,20 +35,23 @@ import java.util.ArrayList;
 
 public class AdminRecipesActivity extends AppCompatActivity {
     private FirebaseAuth mFireBaseAuth;
-    private ProgressBar mProgressBar;
+    private ProgressBarManager mProgressBarManager;
     private ImageView mLogoutImageView;
     private ListView mRecipesListView;
     private RecipeListAdapter mRecipeListAdapter;
     private TextView mNumberOfRecipesTextView;
     private Button mAddRecipeButton;
+    private int mRecipesAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_list_of_recipes);
-        mProgressBar = findViewById(R.id.pbadminlistofrecipes);
+        mProgressBarManager = new ProgressBarManager(
+                findViewById(R.id.pbadminlistofrecipes));
         mNumberOfRecipesTextView = findViewById(R.id.tvheadaminnumrecipe);
         mFireBaseAuth = FirebaseAuth.getInstance();
+        mRecipesAmount = 0;
 
         initRecipeListView();
         initRecipeAddButton();
@@ -112,21 +115,15 @@ public class AdminRecipesActivity extends AppCompatActivity {
         }
     }
 
-    private void updateRecipesAmount() {
-        mNumberOfRecipesTextView.setText(
-                TextFormatter.foundRecipesNumber(mRecipeListAdapter.getCount()));
-
-    }
-
-    private void fetchRecipeDetails(Recipe recipe){
+    private void fetchRecipeDetails(Recipe recipe) {
+        mProgressBarManager.requestVisible();
         DbReference.getDbRefToRecipeBitmap(recipe.getBitmap())
                 .getBytes(DbConstants.ONE_MEGABYTE).addOnSuccessListener(bytes -> {
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             recipe.setNameBitmap(bitmap);
         }).addOnCompleteListener(task -> {
             mRecipeListAdapter.add(recipe);
-            mProgressBar.setVisibility(View.GONE);
-            updateRecipesAmount();
+            mProgressBarManager.requestGone();
         });
     }
 
@@ -138,6 +135,8 @@ public class AdminRecipesActivity extends AppCompatActivity {
                     public void onChildAdded(@NonNull DataSnapshot snapshot,
                                              @Nullable String previousChildName) {
                         fetchRecipeDetails(snapshot.getValue(Recipe.class));
+                        mNumberOfRecipesTextView.setText(
+                                TextFormatter.foundRecipesNumber(++mRecipesAmount));
                     }
 
                     @Override
@@ -151,7 +150,8 @@ public class AdminRecipesActivity extends AppCompatActivity {
                     public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                         mRecipeListAdapter
                                 .deleteRecipe(snapshot.getValue(Recipe.class));
-                        updateRecipesAmount();
+                        mNumberOfRecipesTextView.setText(
+                                TextFormatter.foundRecipesNumber(--mRecipesAmount));
                     }
 
                     @Override

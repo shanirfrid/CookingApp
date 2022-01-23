@@ -51,13 +51,9 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
                 findViewById(R.id.user_recipes_progress_bar));
         mFirebaseAuth = FirebaseAuth.getInstance();
 
-        this.initRecipeList();
-        this.initMenu();
+        initRecipeList();
+        initMenu();
         retrieveUserIngredients();
-
-        mRecipesNumberTextView.setText(
-                TextFormatter.foundRecipesNumber(mRecipeListAdapter.getCount()));
-
     }
 
     private void initMenu() {
