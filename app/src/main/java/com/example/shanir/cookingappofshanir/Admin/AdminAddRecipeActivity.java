@@ -125,6 +125,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
 
             mIngredientEditText.setText("");
             mIngredientUnitsEditText.setText("");
+            mIngredientUnitsEditText.requestFocus();
         });
     }
 
