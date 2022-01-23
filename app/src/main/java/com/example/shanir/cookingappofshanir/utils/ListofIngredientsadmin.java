@@ -5,22 +5,22 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 public class ListofIngredientsadmin implements Parcelable {
-    ArrayList<Ingredients> ingredients;
+    ArrayList<Ingredient> ingredients;
 
     public ListofIngredientsadmin() {
-        this.ingredients = new ArrayList<Ingredients>();
+        this.ingredients = new ArrayList<Ingredient>();
     }
 
-    public void addIngredient(Ingredients ingredient) {
+    public void addIngredient(Ingredient ingredient) {
         ingredients.add(ingredient);
     }
 
-    public ArrayList<Ingredients> getlist() {
+    public ArrayList<Ingredient> getlist() {
         return this.ingredients;
     }
 
     public void showIngredients() {
-        for (Ingredients ingredientI : ingredients) {
+        for (Ingredient ingredientI : ingredients) {
             System.out.println(ingredientI.getName() + " ");
         }
     }

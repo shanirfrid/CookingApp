@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import java.util.ArrayList;
 
 public class Recipe {
-    private ArrayList<Ingredients> list;
+    private ArrayList<Ingredient> list;
     private String bitmap;
     private Bitmap nameBitmap;
     private String nameOfrecipe;
@@ -19,7 +19,7 @@ public class Recipe {
         bitmap = "none";
     }
 
-    public Recipe(ArrayList<Ingredients> list,
+    public Recipe(ArrayList<Ingredient> list,
                   String bitmap, String nameOfrecipe, String difficulty, int time) {
 
         this.list = list;
@@ -49,12 +49,11 @@ public class Recipe {
         return this.nameBitmap;
     }
 
-
-    public ArrayList<Ingredients> getList() {
+    public ArrayList<Ingredient> getList() {
         return list;
     }
 
-    public void setList(ArrayList<Ingredients> list) {
+    public void setList(ArrayList<Ingredient> list) {
         this.list = list;
     }
 
@@ -94,8 +93,8 @@ public class Recipe {
         this.time = time;
     }
 
-    public void addingredienttolist(Ingredients ingredients) {
-        this.list.add(ingredients);
+    public void addingredienttolist(Ingredient ingredient) {
+        this.list.add(ingredient);
     }
 
     @Override

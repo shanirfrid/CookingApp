@@ -55,7 +55,7 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:background="@drawable/edit_text_design"
-                android:hint=" Add an ingredient"
+                android:hint=" Add ingredient"
                 android:inputType="text"
                 android:paddingStart="10dp"
                 android:textColor="#000000"

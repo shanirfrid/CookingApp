@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,9 +22,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shanir.cookingappofshanir.utils.DbConstants;
-import com.example.shanir.cookingappofshanir.utils.Adapter;
 import com.example.shanir.cookingappofshanir.utils.ImageUtilities;
-import com.example.shanir.cookingappofshanir.utils.Ingredients;
+import com.example.shanir.cookingappofshanir.utils.Ingredient;
 import com.example.shanir.cookingappofshanir.utils.Recipe;
 import com.example.shanir.cookingappofshanir.utils.TextFormatter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,7 +36,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -60,7 +57,7 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
     FirebaseDatabase firebaseDatabase;
     DatabaseReference postRef;
     String units;
-    ArrayList<Ingredients> ingredientsArrayList;
+    ArrayList<Ingredient> ingredientList;
     IngredientsListAdapter adapter;
     ArrayList<String> liststring;
 
@@ -140,7 +137,7 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
                         time = Integer.toString(r.getTime());
                         tvtime.setText(TextFormatter.formatRecipeTime(Integer.parseInt(time)));
                         liststring = new ArrayList<String>();
-                        ingredientsArrayList = r.getList();
+                        ingredientList = r.getList();
                         recipe = r;
                         if (!recipe.getBitmap().equals("none"))
                             ImageUtilities.loadImage(
@@ -148,7 +145,7 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
                                             recipe.getBitmap(), imageView, progressBar);
                     }
                 }
-                setlist(liststring, ingredientsArrayList);
+                setlist(ingredientList);
 
                 Log.d("dd", "Num of recipes : " + recipes.size());
             }
@@ -160,46 +157,14 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
         });
     }
 
-    public void setlist(ArrayList<String> listingredientname, ArrayList<Ingredients> ingredientsArrayList1) {
-//        liststring = listingredientname;
-//        ingredientsArrayList = ingredientsArrayList1;
-//        adapter = new IngredientsListAdapter(this, liststring);
-//        listView.setAdapter(adapter);
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                lastSelected = (String) adapter.getItem(position);
-//                for (int n = 0; n < ingredientsArrayList.size(); n++) {
-//                    if (ingredientsArrayList.get(n).getName().equals(lastSelected)) {
-//                        units = ingredientsArrayList.get(n).getUnits();
-//                    }
-//                }
-//                createDialog();
-//            }
-//        });
+    public void setlist(ArrayList<Ingredient> ingredientList) {
+        this.ingredientList = ingredientList;
+        adapter = new IngredientsListAdapter(this, new ArrayList<>());
+        listView.setAdapter(adapter);
 
+        for (Ingredient ingredient : ingredientList)
+            adapter.add(ingredient);
     }
-
-    public void createDialog() {
-        dialogdetaileOnIngredientinrecipe = new Dialog(this);
-        dialogdetaileOnIngredientinrecipe.setContentView(R.layout.dialogdetailsoningredientsinrecipe);
-        dialogdetaileOnIngredientinrecipe.setTitle("Ingredient" + lastSelected + "dialog screen");
-        dialogdetaileOnIngredientinrecipe.setCancelable(true);
-        tvheaddialog = (TextView) dialogdetaileOnIngredientinrecipe.findViewById(R.id.tvheaddetailsoningredientt);
-        tvheaddialog.setText(tvheaddialog.getText().toString() + lastSelected);
-        tvunits = (TextView) dialogdetaileOnIngredientinrecipe.findViewById(R.id.tvunits);
-        tvunits.setText(tvunits.getText().toString() + units);
-        btback = (Button) dialogdetaileOnIngredientinrecipe.findViewById(R.id.btbackdetailsoningredient);
-        btback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogdetaileOnIngredientinrecipe.dismiss();
-
-            }
-        });
-        dialogdetaileOnIngredientinrecipe.show();
-    }
-
 
     @Override
     public void onClick(View v) {
@@ -273,29 +238,23 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
     }
 
     private class IngredientsListAdapter extends BaseAdapter {
-        ArrayList<Ingredients> mIngredientList;
+        ArrayList<Ingredient> mIngredientList;
         Context mContext;
 
         public IngredientsListAdapter(Context context,
-                                      ArrayList<Ingredients> ingredientList) {
+                                      ArrayList<Ingredient> ingredientList) {
             mIngredientList = ingredientList;
             mContext = context;
-
-            mIngredientList.add(new Ingredients("cauliflower", "1head"));
-            mIngredientList.add(new Ingredients("olive oil", "1/4cup"));
-            mIngredientList.add(new Ingredients("garlic", "5cloves"));
-            mIngredientList.add(new Ingredients("salt", "2tsp"));
-            mIngredientList.add(new Ingredients("red pepper", "1/4tsp"));
-            mIngredientList.add(new Ingredients("thyme leaves", "2tsp"));
-            notifyDataSetChanged();
-        }
-
-        public void add(Ingredients ingredient) {
-            mIngredientList.add(ingredient);
             setListViewHeightBasedOnChildren(listView);
         }
 
-        public List<Ingredients> getlist() {
+        public void add(Ingredient ingredient) {
+            mIngredientList.add(ingredient);
+            adapter.notifyDataSetChanged();
+            setListViewHeightBasedOnChildren(listView);
+        }
+
+        public List<Ingredient> getlist() {
             return mIngredientList;
         }
 
@@ -320,7 +279,7 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
                     .from(mContext)
                     .inflate(R.layout.ingredient_and_unit_item_layout, null);
 
-            Ingredients ingredient = mIngredientList.get(i);
+            Ingredient ingredient = mIngredientList.get(i);
             ((TextView) view.findViewById(R.id.ingredient_unit_textview))
                     .setText(ingredient.getUnits());
             ((TextView) view.findViewById(R.id.ingredient_name_textview))
