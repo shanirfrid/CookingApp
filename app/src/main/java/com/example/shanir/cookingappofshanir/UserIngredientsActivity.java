@@ -77,33 +77,27 @@ public class UserIngredientsActivity extends AppCompatActivity {
 
     private void initAddIngredientButton() {
         mAddIngredientImageView = findViewById(R.id.ivconsumersadd);
-        mAddIngredientImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String ingredientToAdd = mAddIngredientEditText.getText().toString().toLowerCase();
+        mAddIngredientImageView.setOnClickListener(v -> {
+            String ingredientToAdd = mAddIngredientEditText.getText().toString().toLowerCase();
 
-                if (ingredientToAdd.trim().isEmpty()) {
-                    mAddIngredientEditText.setError("You don't have any ingredients!");
-                    return;
-                }
-
-                DbReference.getDbRefToUserIngredients(mFirebaseAuth.getUid())
-                        .child(ingredientToAdd)
-                        .setValue(ingredientToAdd);
-                mAddIngredientEditText.setText("");
+            if (ingredientToAdd.trim().isEmpty()) {
+                mAddIngredientEditText.setError("You don't have any ingredients!");
+                return;
             }
+
+            DbReference.getDbRefToUserIngredients(mFirebaseAuth.getUid())
+                    .child(ingredientToAdd)
+                    .setValue(ingredientToAdd);
+            mAddIngredientEditText.setText("");
         });
     }
 
     private void initFindRecipesButton() {
         mFindRecipesButton = findViewById(R.id.btmovetorecipelist);
-        mFindRecipesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(UserIngredientsActivity.this,
-                        UserSuitableRecipesActivity.class);
-                startActivity(intent);
-            }
+        mFindRecipesButton.setOnClickListener(v -> {
+            Intent intent = new Intent(UserIngredientsActivity.this,
+                    UserSuitableRecipesActivity.class);
+            startActivity(intent);
         });
 
     }
