@@ -68,9 +68,9 @@ public class RegisterActivity extends ImagePromptActivity {
     private void initBackTextView() {
         mBackTextView = findViewById(R.id.tv_back);
         mBackTextView.setOnClickListener(v -> {
-            finish();
             Intent intent = new Intent(RegisterActivity.this, SignInActivity.class);
             startActivity(intent);
+            finish();
         });
     }
 

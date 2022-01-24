@@ -103,6 +103,7 @@ public class UserIngredientsActivity extends AppCompatActivity {
         mFindRecipesButton.setOnClickListener(v -> {
             Intent intent = new Intent(UserIngredientsActivity.this,
                     UserSuitableRecipesActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         });
 
