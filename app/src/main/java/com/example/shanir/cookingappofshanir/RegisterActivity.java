@@ -7,6 +7,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.example.shanir.cookingappofshanir.utils.DbReference;
 import com.example.shanir.cookingappofshanir.utils.DbConstants;
 import com.example.shanir.cookingappofshanir.utils.Permission;
+import com.example.shanir.cookingappofshanir.utils.ProgressBarManager;
 import com.example.shanir.cookingappofshanir.utils.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -26,8 +28,9 @@ public class RegisterActivity extends ImagePromptActivity {
     private TextView mBackTextView;
     private Button mSaveButton;
     private ScrollView mScrollView;
-    private ProgressBar mProgressBar;
     private FirebaseAuth mFireBaseAuth;
+    private ProgressBarManager mProgressBarManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,9 @@ public class RegisterActivity extends ImagePromptActivity {
         mIdEditText = findViewById(R.id.etid);
         mPhoneEditText = findViewById(R.id.etPhone);
         mLastNameEmail = findViewById(R.id.etlastname);
-        mProgressBar = findViewById(R.id.progressbarregister);
+        mProgressBarManager = new ProgressBarManager(
+                findViewById(R.id.progressbarregister));
+
 
         mFireBaseAuth = FirebaseAuth.getInstance();
         initSaveButton();
@@ -114,10 +119,10 @@ public class RegisterActivity extends ImagePromptActivity {
             return;
         }
 
-        mProgressBar.setVisibility(View.VISIBLE);
+        mProgressBarManager.requestVisible();
+
         mFireBaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
-                    mProgressBar.setVisibility(View.GONE);
                     if (task.isSuccessful()) {
                         uploadImage(DbConstants.PROFILE_IMAGES_URL);
                         adduser();
@@ -149,6 +154,7 @@ public class RegisterActivity extends ImagePromptActivity {
 
         DbReference.getDbRefToUser(mFireBaseAuth.getUid()).setValue(user, (databaseError, databaseReferfinence) -> {
             if (databaseError == null) {
+                mProgressBarManager.requestGone();
                 Toast.makeText(RegisterActivity.this, "data successfully saved", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), UserIngredientsActivity.class);
                 startActivity(intent);

@@ -32,6 +32,11 @@ public class TimerActivity extends AppCompatActivity {
 
     private void initTimerTextView(){
         mTimerTextView = findViewById(R.id.timer_textview);
+
+        Intent intent = getIntent();
+        if (intent.getExtras() != null)
+            mTotalTimeInMinutes = intent.getExtras().getInt("totalTimeInMinutes");
+
         TimerUtilities timerUtilities = new TimerUtilities(mTotalTimeInMinutes);
         Time timertext = new Time(timerUtilities.getHour(),
                 timerUtilities.getMinutes(), 0);
@@ -39,10 +44,6 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void initProgressBar(){
-        Intent intent = getIntent();
-        if (intent.getExtras() != null)
-            mTotalTimeInMinutes = intent.getExtras().getInt("totalTimeInMinutes");
-
         mTimerProgressBar = findViewById(R.id.timer_progressbar);
         mTimerProgressBar.setMax(mTotalTimeInMinutes * 60);
         mTimerProgressBar.setProgress(mTotalTimeInMinutes * 60);

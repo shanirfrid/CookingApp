@@ -1,13 +1,11 @@
 package com.example.shanir.cookingappofshanir;
 
-import android.app.Dialog;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -22,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shanir.cookingappofshanir.utils.DbConstants;
+import com.example.shanir.cookingappofshanir.utils.DbReference;
 import com.example.shanir.cookingappofshanir.utils.ImageUtilities;
 import com.example.shanir.cookingappofshanir.utils.Ingredient;
 import com.example.shanir.cookingappofshanir.utils.Recipe;
@@ -37,60 +36,57 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-public class DetailsOnRecipeActivity extends AppCompatActivity implements View.OnClickListener {
-    TextView tvname, tvdifficulty, tvtime;
-    Button btsaverecipe, btmakenow;
-    ImageView imageView;
-    Recipe recipe;
-    ListView listView;
-    ProgressBar progressBar;
-    String lastSelected;
-    String stname = "";
-    TextView tvheaddialog, tvamount, tvcalories, tvunits, tvkindingredient;
-    Button btback;
-    String kind, time, difficulty;
-    List<Recipe> recipes;
-    FirebaseAuth firebaseAuth;
-    Dialog dialogdetaileOnIngredientinrecipe;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference postRef;
-    String units;
-    ArrayList<Ingredient> ingredientList;
-    IngredientsListAdapter adapter;
-    ArrayList<String> liststring;
+public class DetailsOnRecipeActivity extends AppCompatActivity {
+    private TextView mRecipeNameTextView, mRecipeDifficultyTextView, mRecipeTimeTextView;
+    private Button mFavoriteRecipeButton, mMakeRecipeButton;
+    private ImageView mRecipeImageView;
+    private ListView mIngredientsListView;
+    private ProgressBar mProgressBar;
+    private String mRecipeTime, mRecipeName = "";
+    private FirebaseAuth mFireBaseAuth;
+    private IngredientsListAdapter mIngredientsListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_on_recipe);
-        listView = (ListView) findViewById(R.id.lvdetailsonrecipe);
-        progressBar = (ProgressBar) findViewById(R.id.progressbardetailss);
-        tvname = (TextView) findViewById(R.id.tvheadnameOfrecipe);
-        tvdifficulty = (TextView) findViewById(R.id.tvheaddificultyOfrecipe);
-        tvtime = (TextView) findViewById(R.id.tvheadtimefrecipe);
-        imageView = (ImageView) findViewById(R.id.ivdetailsrecipe);
-        btsaverecipe = (Button) findViewById(R.id.btsaverecipedeails);
-        btmakenow = (Button) findViewById(R.id.btmadenow);
-        btmakenow.setOnClickListener(this);
-        firebaseAuth = FirebaseAuth.getInstance();
-        btsaverecipe.setOnClickListener(this);
-        listView.setAdapter(new IngredientsListAdapter(this, new ArrayList<>()));
-        Intent i = getIntent();
-        if (i.getExtras() != null) {
-            stname = i.getExtras().getString("detailsrecipe");
-        }
-        tvname.setText(tvname.getText().toString() + stname);
+        mProgressBar = findViewById(R.id.progressbardetailss);
+        mRecipeNameTextView = findViewById(R.id.tvheadnameOfrecipe);
+        mRecipeDifficultyTextView = findViewById(R.id.tvheaddificultyOfrecipe);
+        mRecipeTimeTextView = findViewById(R.id.tvheadtimefrecipe);
+        mRecipeImageView = findViewById(R.id.ivdetailsrecipe);
 
-        retrieveDataR();
-        setListViewHeightBasedOnChildren(listView);
+        mFireBaseAuth = FirebaseAuth.getInstance();
+
+        initFavoriteRecipeButton();
+        initIngredientsListView();
+        retrieveRecipeDetails();
+        initMakeRecipeButton();
+
+        mRecipeNameTextView.setText(mRecipeName);
+        setListViewHeightBasedOnChildren(mIngredientsListView);
+    }
+
+    private void initMakeRecipeButton() {
+        mMakeRecipeButton = findViewById(R.id.btmadenow);
+        mMakeRecipeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(
+                    DetailsOnRecipeActivity.this, TimerActivity.class);
+            intent.putExtra("totalTimeInMinutes", Integer.parseInt(mRecipeTime));
+            startActivity(intent);
+        });
+    }
+
+    private void initIngredientsListView() {
+        mIngredientsListView = findViewById(R.id.lvdetailsonrecipe);
+        mIngredientsListAdapter = new IngredientsListAdapter(this, new ArrayList<>());
+        mIngredientsListView.setAdapter(mIngredientsListAdapter);
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         BaseAdapter listAdapter = (BaseAdapter) listView.getAdapter();
         if (listAdapter == null) {
-            // pre-condition
             return;
         }
 
@@ -107,91 +103,60 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
         listView.requestLayout();
     }
 
-    public void retrieveDataR() {
+    private void initFavoriteRecipeButton() {
+        mFavoriteRecipeButton = findViewById(R.id.btsaverecipedeails);
         Intent i = getIntent();
         if (i.getExtras() != null) {
-            stname = i.getExtras().getString("detailsrecipe", "");
-            if (stname.equals("")) {
-                stname = i.getExtras().getString("nameOfSelectedRecipe");
-                btsaverecipe.setEnabled(false);
-                btsaverecipe.setVisibility(View.GONE);
-
+            mRecipeName = i.getExtras().getString("comeFromSuitableRecipes",
+                    "");
+            if (mRecipeName.equals("")) {
+                mRecipeName = i.getExtras().getString("comeFromFavoriteRecipes");
+                mFavoriteRecipeButton.setEnabled(false);
+                mFavoriteRecipeButton.setVisibility(View.GONE);
             }
         }
-        recipes = new ArrayList<>();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        String tableIdR = DbConstants.RECIPE_TABLE_NAME;
-        postRef = FirebaseDatabase.getInstance().getReference(tableIdR);
-        postRef.addValueEventListener(new ValueEventListener() {
-            Recipe r;
+        mFavoriteRecipeButton.setOnClickListener(v -> addRecipeToFavoriteRecipes());
+    }
 
+    private void fetchRecipeDetails(Recipe recipe) {
+        mRecipeNameTextView.setText(mRecipeName);
+        mRecipeDifficultyTextView.setText(recipe.getDifficulty());
+        mRecipeTime = Integer.toString(recipe.getTime());
+        mRecipeTimeTextView.setText(TextFormatter.formatRecipeTime(Integer.parseInt(mRecipeTime)));
+        if (!recipe.getBitmap().equals("none"))
+            ImageUtilities.loadImage(
+                    DbConstants.APP_RECIPE_IMAGES_FULL_URL +
+                            recipe.getBitmap(), mRecipeImageView, mProgressBar);
+    }
+
+    private void retrieveRecipeDetails() {
+        DbReference.getDbRefToRecipe(mRecipeName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    r = postSnapshot.getValue(Recipe.class);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Recipe recipe = snapshot.getValue(Recipe.class);
+                if (recipe == null)
+                    return;
 
-                    if (r.getNameOfrecipe().equals(stname)) {
-                        tvname.setText(stname);
-                        difficulty = r.getDifficulty();
-                        tvdifficulty.setText(difficulty);
-                        time = Integer.toString(r.getTime());
-                        tvtime.setText(TextFormatter.formatRecipeTime(Integer.parseInt(time)));
-                        liststring = new ArrayList<String>();
-                        ingredientList = r.getIngredientList();
-                        recipe = r;
-                        if (!recipe.getBitmap().equals("none"))
-                            ImageUtilities.loadImage(
-                                    DbConstants.APP_RECIPE_IMAGES_FULL_URL +
-                                            recipe.getBitmap(), imageView, progressBar);
-                    }
-                }
-                setlist(ingredientList);
-
-                Log.d("dd", "Num of recipes : " + recipes.size());
+                fetchRecipeDetails(recipe);
+                mIngredientsListAdapter.setIngredientList(recipe.getIngredientList());
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }
 
-    public void setlist(ArrayList<Ingredient> ingredientList) {
-        this.ingredientList = ingredientList;
-        adapter = new IngredientsListAdapter(this, new ArrayList<>());
-        listView.setAdapter(adapter);
-
-        for (Ingredient ingredient : ingredientList)
-            adapter.add(ingredient);
-    }
-
-    @Override
-    public void onClick(View v) {
-        Intent intent = null;
-        if (v == btmakenow) {
-            intent = new Intent(this, TimerActivity.class);
-            intent.putExtra("totalTimeInMinutes", Integer.parseInt(time));
-            startActivity(intent);
-        } else if (v == btsaverecipe) {
-            addRecipeToSaveRecipes();
-        }
-    }
-
-    public void addRecipeToSaveRecipes() {
-        String uid = firebaseAuth.getCurrentUser().getUid();
-        String mPathToUserSavedRecipes = DbConstants.FAVORITE_RECIPES + "/" + uid +"/"+ DbConstants.RECIPE_FAVORITE_NAMES;
-        DatabaseReference mReferenceToUserSavedRecipes
-                = FirebaseDatabase.getInstance().getReference(mPathToUserSavedRecipes);
-        HashMap<String, Object> map = new HashMap<>();
-        mReferenceToUserSavedRecipes.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void addRecipeToFavoriteRecipes() {
+        HashMap<String, Object> recipeFavoriteNamesMap = new HashMap<>();
+        DbReference.getDbRefToUserFavoriteRecipes(mFireBaseAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                 long count = snapshot.getChildrenCount();
                 ArrayList<String> recipesFavoriteNames = (ArrayList<String>) snapshot.getValue();
+
                 if (recipesFavoriteNames != null) {
-                    if (recipesFavoriteNames.contains(stname)) {
+                    if (recipesFavoriteNames.contains(mRecipeName)) {
                         Toast.makeText(DetailsOnRecipeActivity.this,
                                 "You already added this recipe to your favorite recipes",
                                 Toast.LENGTH_SHORT).show();
@@ -199,42 +164,21 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
                     }
                 }
 
-                map.put(String.valueOf(count + 1), stname);
-                mReferenceToUserSavedRecipes.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Intent intent = new Intent(DetailsOnRecipeActivity.this, UserFavoriteRecipesActivity.class);
-                        intent.putExtra("nameofrecipedetails", stname);
-                        startActivity(intent);
-                    }
-                });
-
+                recipeFavoriteNamesMap.put(String.valueOf(count + 1), mRecipeName);
+                DbReference.getDbRefToUserFavoriteRecipes(mFireBaseAuth.getUid())
+                        .updateChildren(recipeFavoriteNamesMap).addOnCompleteListener(
+                        task -> {
+                            Intent intent = new Intent(
+                                    DetailsOnRecipeActivity.this,
+                                    UserFavoriteRecipesActivity.class);
+                            startActivity(intent);
+                            finish();
+                        });
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_back, menu);
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_back:
-
-                Intent intent = new Intent(getApplicationContext(), UserSuitableRecipesActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                break;
-
-        }
-        return true;
     }
 
     private class IngredientsListAdapter extends BaseAdapter {
@@ -245,17 +189,19 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
                                       ArrayList<Ingredient> ingredientList) {
             mIngredientList = ingredientList;
             mContext = context;
-            setListViewHeightBasedOnChildren(listView);
+            setListViewHeightBasedOnChildren(mIngredientsListView);
         }
 
         public void add(Ingredient ingredient) {
             mIngredientList.add(ingredient);
-            adapter.notifyDataSetChanged();
-            setListViewHeightBasedOnChildren(listView);
+            mIngredientsListAdapter.notifyDataSetChanged();
+            setListViewHeightBasedOnChildren(mIngredientsListView);
         }
 
-        public List<Ingredient> getlist() {
-            return mIngredientList;
+        public void setIngredientList(ArrayList<Ingredient> ingredientList) {
+            mIngredientList = ingredientList;
+            notifyDataSetChanged();
+            setListViewHeightBasedOnChildren(mIngredientsListView);
         }
 
         @Override
@@ -273,6 +219,7 @@ public class DetailsOnRecipeActivity extends AppCompatActivity implements View.O
             return i;
         }
 
+        @SuppressLint("ViewHolder")
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             view = LayoutInflater
