@@ -83,10 +83,13 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Map<String, String> userIngredientsMap =
-                                (HashMap<String, String>) dataSnapshot.getValue();
+                                    (HashMap<String, String>) dataSnapshot.getValue();
 
-                        if (userIngredientsMap == null)
+                        if (userIngredientsMap == null) {
+                            mRecipesNumberTextView.setText(
+                                    TextFormatter.foundRecipesNumber(0));
                             return;
+                        }
 
                         getSuitableRecipes(userIngredientsMap.values());
                     }

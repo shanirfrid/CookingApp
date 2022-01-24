@@ -86,6 +86,14 @@ public class UserIngredientsActivity extends AppCompatActivity {
                 return;
             }
 
+            try {
+                Integer.parseInt(ingredientToAdd);
+                mAddIngredientEditText.setError("Ingredient cannot be a number!");
+                return;
+            } catch (Exception e) {
+
+            }
+
             if (!mIngredientsListAdapter.isIngredientInList(ingredientToAdd)){
                 DbReference.getDbRefToUserIngredients(mFirebaseAuth.getUid())
                         .child(ingredientToAdd)
