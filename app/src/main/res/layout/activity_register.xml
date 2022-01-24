@@ -15,7 +15,7 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:src="@drawable/profile_icon"
+        android:src="@drawable/profile_transperent"
         android:textColor="#F9AC36" />
 
     <TextView
