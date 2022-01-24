@@ -111,6 +111,7 @@ public class UserIngredientsActivity extends AppCompatActivity {
         mFindRecipesButton.setOnClickListener(v -> {
             Intent intent = new Intent(UserIngredientsActivity.this,
                     UserSuitableRecipesActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         });
 
@@ -214,11 +215,13 @@ public class UserIngredientsActivity extends AppCompatActivity {
             View v = View.inflate(mContext, R.layout.product_item_list, null);
             ((TextView) v.findViewById(R.id.product_name)).setText(getItem(i));
             ImageView imageView = v.findViewById(R.id.delete_product_image_view);
+            String ingredientName = mIngredientsListAdapter.getItem(i);
             imageView.setTag(new Integer(i));
             imageView.setOnClickListener(view1 -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(UserIngredientsActivity.this);
                 builder.setTitle("Delete ingredient")
-                        .setMessage("Do you approve to delete this item?" + "\n" + "Choose here your answer")
+                        .setMessage("Do you approve to delete " +
+                                ingredientName + " ?" + "\n" + "Choose here your answer")
                         .setCancelable(true)
                         .setNegativeButton("No", new DialogListener((int) view1.getTag()))
                         .setPositiveButton("Yes", new DialogListener((int) view1.getTag()));

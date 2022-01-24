@@ -172,7 +172,6 @@ public class DetailsOnRecipeActivity extends AppCompatActivity {
                                     DetailsOnRecipeActivity.this,
                                     UserFavoriteRecipesActivity.class);
                             startActivity(intent);
-                            finish();
                         });
             }
             @Override

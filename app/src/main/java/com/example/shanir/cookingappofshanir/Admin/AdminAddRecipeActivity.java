@@ -129,7 +129,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
         });
     }
 
-    private int convertTextToTime(String text){
+    private int convertTextToTime(String text) {
         return text.isEmpty() ? 0 : Integer.parseInt(text);
     }
 
@@ -281,11 +281,12 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
                     .setText(ingredient.getName());
             ImageView imageView = view.findViewById(R.id.delete_ingredient_with_unit_image_view);
             imageView.setTag(i);
-
+            String ingredientName = mIngredientsListAdapter.getItem(i).getName();
             imageView.setOnClickListener(view1 -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(AdminAddRecipeActivity.this);
                 builder.setTitle("Delete ingredient")
-                        .setMessage("Do you approve to delete this item?" + "\n" + "Choose here your answer")
+                        .setMessage("Do you approve to delete " +
+                                ingredientName + "?" + "\n" + "Choose here your answer")
                         .setCancelable(true)
                         .setNegativeButton("No", new DialogListener((int) view1.getTag()))
                         .setPositiveButton("Yes", new DialogListener((int) view1.getTag()));
