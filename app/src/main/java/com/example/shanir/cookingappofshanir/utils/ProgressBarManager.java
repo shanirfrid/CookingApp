@@ -23,7 +23,7 @@ public class ProgressBarManager {
         updateVisibility();
     }
 
-    public void updateVisibility() {
+    private void updateVisibility() {
         mProgressBar.setVisibility(mVisibleRequests > 0 ? View.VISIBLE :
                 View.GONE);
     }
