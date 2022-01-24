@@ -40,7 +40,6 @@ public class NavigationMenu
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Intent intent;
-
         switch (item.getItemId()) {
             case R.id.menuLogout:
                 FirebaseAuth.getInstance().signOut();
@@ -68,14 +67,16 @@ public class NavigationMenu
                 return false;
         }
 
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         if (intent.getComponent().getClassName()
                 .equals(mActivity.getComponentName().getClassName()))
             Toast.makeText(mActivity.getApplicationContext(),
                     "You are already in this page",
                     Toast.LENGTH_SHORT).show();
         else {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
             mActivity.startActivity(intent);
-            mActivity.finish();
         }
         return true;
     }
