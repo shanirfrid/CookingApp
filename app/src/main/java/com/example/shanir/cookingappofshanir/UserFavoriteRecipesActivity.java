@@ -96,7 +96,7 @@ public class UserFavoriteRecipesActivity extends AppCompatActivity {
 
     private void getFavoriteRecipes(ArrayList<String> favoriteRecipesNameList) {
         for (String favoriteRecipeName : favoriteRecipesNameList) {
-            DbReference.getDbRefToRecipe(favoriteRecipeName).addValueEventListener(new ValueEventListener() {
+            DbReference.getDbRefToRecipe(favoriteRecipeName).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     Recipe recipe = snapshot.getValue(Recipe.class);
@@ -109,7 +109,8 @@ public class UserFavoriteRecipesActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(UserFavoriteRecipesActivity.this, "There isn't such recipe " + favoriteRecipeName, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserFavoriteRecipesActivity.this,
+                            "There isn't such recipe " + favoriteRecipeName, Toast.LENGTH_SHORT).show();
                 }
             });
         }

@@ -10,6 +10,7 @@ public class ProgressBarManager {
     public ProgressBarManager(ProgressBar progressBar) {
         mProgressBar = progressBar;
         mVisibleRequests = 0;
+        updateVisibility();
     }
 
     public void requestVisible() {
