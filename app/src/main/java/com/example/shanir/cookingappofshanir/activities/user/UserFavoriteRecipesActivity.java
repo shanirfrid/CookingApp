@@ -57,7 +57,7 @@ public class UserFavoriteRecipesActivity extends AppCompatActivity {
 
     private void initMenu() {
         mMenuImageView = findViewById(R.id.favorite_recipes_menu_image_view);
-        mDrawerLayout = findViewById(R.id.favorite_recipes_layout);
+        mDrawerLayout = findViewById(R.id.favorite_recipes_drawer_layout);
         mNavigationView = findViewById(R.id.favorite_recipes_navigation_menu);
         mNavigationView.setNavigationItemSelectedListener
                 (new NavigationMenu(this, mMenuImageView, mDrawerLayout));
