@@ -46,8 +46,8 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_of_recipe);
-        mRecipesNumberTextView = findViewById(R.id.tvnumrecipe);
+        setContentView(R.layout.activity_user_suitable_recipes);
+        mRecipesNumberTextView = findViewById(R.id.suitable_recipes_amount_text_view);
         mProgressBarManager = new ProgressBarManager(
                 findViewById(R.id.user_recipes_progress_bar));
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -58,15 +58,15 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
     }
 
     private void initMenu() {
-        mMenuImageView = findViewById(R.id.right_arrow_image_view);
-        mDrawerLayout = findViewById(R.id.mainLayoutlistofrecipe);
-        mNavigationView = findViewById(R.id.navigation_menu);
+        mMenuImageView = findViewById(R.id.suitable_recipes_menu_image_view);
+        mDrawerLayout = findViewById(R.id.suitable_recipes_drawer_layout);
+        mNavigationView = findViewById(R.id.suitable_recipes_navigation_menu);
         mNavigationView.setNavigationItemSelectedListener
                 (new NavigationMenu(this, mMenuImageView, mDrawerLayout));
     }
 
     private void initRecipeList() {
-        mRecipeListView = findViewById(R.id.listviewOfRecipes);
+        mRecipeListView = findViewById(R.id.suitable_recipes_list_view);
         mRecipeListAdapter = new RecipeListAdapter(getApplicationContext(), new ArrayList<>());
         mRecipeListView.setAdapter(mRecipeListAdapter);
 
