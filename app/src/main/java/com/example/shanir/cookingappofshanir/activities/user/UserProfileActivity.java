@@ -41,13 +41,13 @@ public class UserProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
-        mUserDetailsTextView = findViewById(R.id.tvdetailsprofil);
-        mHeaderVerificationEmailTextView = findViewById(R.id.tv_header_verify_email);
-        mVerificationEmailTextView = findViewById(R.id.tv_verigy_email);
-        mEmailIconTextView = findViewById(R.id.tv_icon_email);
-        mProgressBar = findViewById(R.id.pbprofile);
-        mProfileImageView = findViewById(R.id.profile_iv_account_profile);
+        setContentView(R.layout.activity_user_profile);
+        mUserDetailsTextView = findViewById(R.id.user_profile_details_text_view);
+        mHeaderVerificationEmailTextView = findViewById(R.id.user_profile_verification_header_text_view);
+        mVerificationEmailTextView = findViewById(R.id.user_profile_verification_body_text_view);
+        mEmailIconTextView = findViewById(R.id.user_profile_email_text_view);
+        mProgressBar = findViewById(R.id.user_profile_progress_bar);
+        mProfileImageView = findViewById(R.id.user_profile_image_view);
 
         mFireBaseAuth = FirebaseAuth.getInstance();
 
@@ -68,7 +68,7 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void initEditProfileButton() {
-        mEditProfileButton = findViewById(R.id.btsaveprofile);
+        mEditProfileButton = findViewById(R.id.user_profile_edit_button);
         mEditProfileButton.setOnClickListener(v -> {
             Intent intent = new Intent(UserProfileActivity.this,
                     EditProfileActivity.class);
@@ -78,16 +78,16 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void initMenu() {
-        mMenuImageView = findViewById(R.id.right_arrow_image_view);
-        mDrawerLayout = findViewById(R.id.mainLayoutProfile);
-        mNavigationView = findViewById(R.id.navigation_menu);
+        mMenuImageView = findViewById(R.id.user_profile_menu_image_view);
+        mDrawerLayout = findViewById(R.id.user_profile_drawer_layout);
+        mNavigationView = findViewById(R.id.user_profile_navigation_menu);
         mNavigationView.setNavigationItemSelectedListener(
                 new NavigationMenu(this, mMenuImageView, mDrawerLayout));
     }
 
     private void initVerifyEmailTextView() {
         final FirebaseUser user = mFireBaseAuth.getCurrentUser();
-        mVerifyEmailTextView = findViewById(R.id.tvvreified);
+        mVerifyEmailTextView = findViewById(R.id.user_profile_verify_button);
 
         if (user == null)
             return;
@@ -97,7 +97,6 @@ public class UserProfileActivity extends AppCompatActivity {
                 changeEmailToVerified();
             else
                 mVerifyEmailTextView.setText("Verify Email");
-
         });
 
         mVerifyEmailTextView.setOnClickListener(v ->
