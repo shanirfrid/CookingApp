@@ -19,12 +19,10 @@ import com.example.shanir.cookingappofshanir.utils.ImageUtilities;
 import com.example.shanir.cookingappofshanir.utils.Permission;
 import com.example.shanir.cookingappofshanir.utils.ProgressBarManager;
 import com.example.shanir.cookingappofshanir.utils.User;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -36,7 +34,7 @@ public class EditProfileActivity extends ImagePromptActivity {
 
     private EditText mFirstNameEditText, mLastNameEditText, mIdEditText,
             mPhoneEditText;
-    private Button mUpdateProfileButton;
+    private Button mSaveButton;
     private TextView mEditProfileImageTextView;
     private FirebaseAuth mFireBaseAuth;
     private ImageView mExitImageView;
@@ -65,16 +63,16 @@ public class EditProfileActivity extends ImagePromptActivity {
             mBitmapName = i.getExtras().getString("bitmap");
         }
 
-        initUpdateProfileButton();
+        initSaveButton();
         initEditProfileImageTextView();
         initExitImageView();
     }
 
-    private void initUpdateProfileButton() {
-        mUpdateProfileButton = findViewById(R.id.edit_profile_save_image_view);
-        mUpdateProfileButton.setOnClickListener(v -> {
+    private void initSaveButton() {
+        mSaveButton = findViewById(R.id.edit_profile_save_image_view);
+        mSaveButton.setOnClickListener(v -> {
             mSaveProgressBarManager.requestVisible();
-            editProfile();
+            saveUserDetails();
         });
     }
 
@@ -97,12 +95,11 @@ public class EditProfileActivity extends ImagePromptActivity {
         });
     }
 
-    private void editProfile() {
+    private void saveUserDetails() {
         String firstname = mFirstNameEditText.getText().toString();
         String lastname = mLastNameEditText.getText().toString();
         String phone = mPhoneEditText.getText().toString();
         String id = mIdEditText.getText().toString();
-
 
         DbReference.getDbRefToUser(mFireBaseAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -111,14 +108,31 @@ public class EditProfileActivity extends ImagePromptActivity {
                 userDetailsMap.put("lastname", lastname);
                 userDetailsMap.put("id", id);
                 userDetailsMap.put("phone", phone);
-                uploadImage(DbConstants.PROFILE_IMAGES_URL);
-            }
 
+                if (mImageUri != null)
+                    uploadImage(DbConstants.PROFILE_IMAGES_URL);
+                else
+                    uploadUserDetails();
+            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+    }
+
+    private void uploadUserDetails() {
+        DbReference.getDbRefToUser(
+                mFireBaseAuth.getUid()).updateChildren(userDetailsMap)
+                .addOnFailureListener(e -> {
+                    Toast.makeText(EditProfileActivity.this,
+                            "Error occurred trying to save update profile...",
+                            Toast.LENGTH_SHORT);
+                })
+                .addOnCompleteListener(task -> {
+                    mSaveProgressBarManager.requestGone();
+                    finish();
+                });
     }
 
     @Override
@@ -129,26 +143,15 @@ public class EditProfileActivity extends ImagePromptActivity {
         mBitmapName = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
         DbReference.getDbRefToImageBitmap(directoryImage, mBitmapName)
                 .putFile(mImageUri)
-                .addOnSuccessListener(
-                        ((OnSuccessListener<UploadTask.TaskSnapshot>) taskSnapshot -> {
-                            Toast.makeText(EditProfileActivity.this,
-                                    "Image Uploaded",
-                                    Toast.LENGTH_SHORT).show();
-
-                            userDetailsMap.put("bitmap", mBitmapName);
-                            DbReference.getDbRefToUser(
-                                    mFireBaseAuth.getUid()).updateChildren(userDetailsMap)
-                                    .addOnSuccessListener(unused -> {
-                                        mSaveProgressBarManager.requestGone();
-                                        finish();
-                                    });
-                        }))
+                .addOnSuccessListener(taskSnapshot -> {
+                    userDetailsMap.put("bitmap", mBitmapName);
+                    uploadUserDetails();
+                })
                 .addOnFailureListener(e ->
-                        Toast.makeText(this,
-                                "Failed to upload image",
-                                Toast.LENGTH_SHORT).show());
+                        Toast.makeText(this, "Failed to upload image",
+                                Toast.LENGTH_SHORT).show()
+                );
     }
-
 
     @Override
     protected void onStart() {
@@ -169,8 +172,8 @@ public class EditProfileActivity extends ImagePromptActivity {
                 if (!userprofile.getBitmap().equals("none") && !mImageHasChanged)
                     ImageUtilities.loadImage(
                             DbConstants.APP_PROFILE_IMAGES_FULL_URL +
-                                        userprofile.getBitmap(),
-                                        mImageView, mProfilePictureProgressBar);
+                                    userprofile.getBitmap(),
+                            mImageView, mProfilePictureProgressBar);
             }
 
             @Override
