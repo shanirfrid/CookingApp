@@ -40,9 +40,9 @@ public class UserFavoriteRecipesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_of_save_recipes);
+        setContentView(R.layout.activity_user_favorite_recipes);
         mProgressBarManager = new ProgressBarManager(
-                findViewById(R.id.user_fav_recipes_progress_bar));
+                findViewById(R.id.favorite_recipes_progress_bar));
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         if (mFirebaseAuth.getCurrentUser() == null) {
@@ -56,15 +56,15 @@ public class UserFavoriteRecipesActivity extends AppCompatActivity {
     }
 
     private void initMenu() {
-        mMenuImageView = findViewById(R.id.right_arrow_image_view);
-        mDrawerLayout = findViewById(R.id.mainlayoutsaverecipe);
-        mNavigationView = findViewById(R.id.navigation_menu);
+        mMenuImageView = findViewById(R.id.favorite_recipes_menu_image_view);
+        mDrawerLayout = findViewById(R.id.favorite_recipes_layout);
+        mNavigationView = findViewById(R.id.favorite_recipes_navigation_menu);
         mNavigationView.setNavigationItemSelectedListener
                 (new NavigationMenu(this, mMenuImageView, mDrawerLayout));
     }
 
     private void initSavedRecipeListView() {
-        mSavedRecipesListView = findViewById(R.id.lvsaverecipes);
+        mSavedRecipesListView = findViewById(R.id.favorite_recipes_list_view);
         mRecipeListAdapter = new RecipeListAdapter(this, new ArrayList<>());
         mSavedRecipesListView.setAdapter(mRecipeListAdapter);
 

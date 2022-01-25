@@ -2,11 +2,10 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainlayoutsaverecipe"
+    android:id="@+id/favorite_recipes_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    android:orientation="vertical"
     tools:context="com.example.shanir.cookingappofshanir.activities.user.UserFavoriteRecipesActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,7 +13,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/found_favorite_recipe_header"
+            android:id="@+id/favorite_recipes_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -23,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/right_arrow_image_view"
+                android:id="@+id/favorite_recipes_menu_image_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -31,46 +30,45 @@
                 android:src="@drawable/ic_menu" />
 
             <TextView
-                android:id="@+id/tvheadfavoriterecipelist"
+                android:id="@+id/favorite_recipes_header_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="20dp"
                 android:text="Favorite Recipes"
-                android:textColor="#F9AC36"
+                android:textColor="@color/colorPrimary"
                 android:textSize="32sp" />
 
         </LinearLayout>
 
         <ProgressBar
-            android:id="@+id/user_fav_recipes_progress_bar"
+            android:id="@+id/favorite_recipes_progress_bar"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/found_favorite_recipe_header" />
+            app:layout_constraintTop_toBottomOf="@id/favorite_recipes_header" />
 
         <ListView
-            android:id="@+id/lvsaverecipes"
+            android:id="@+id/favorite_recipes_list_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:divider="#ccc"
             android:dividerHeight="1px"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/user_fav_recipes_progress_bar"
-            tools:listitem="@layout/recipe_item_list">
-
-        </ListView>
+            app:layout_constraintTop_toBottomOf="@id/favorite_recipes_progress_bar"
+            tools:listitem="@layout/recipe_item_list" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigation_menu"
+        android:id="@+id/favorite_recipes_navigation_menu"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:menu="@menu/menu">
 
     </com.google.android.material.navigation.NavigationView>
+
 </androidx.drawerlayout.widget.DrawerLayout>
