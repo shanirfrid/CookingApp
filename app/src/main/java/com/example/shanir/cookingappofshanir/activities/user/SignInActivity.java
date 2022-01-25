@@ -25,11 +25,11 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_sign_in);
 
-        mEmailEditText = findViewById(R.id.etemaillogin);
-        mPasswordEditText = findViewById(R.id.etPasswordlogin);
-        mProgressBar = findViewById(R.id.progressbarlogin);
+        mEmailEditText = findViewById(R.id.sign_in_email_edit_text);
+        mPasswordEditText = findViewById(R.id.sign_in_password_edit_text);
+        mProgressBar = findViewById(R.id.sign_in_progress_bar);
 
         mFireBaseAuth = FirebaseAuth.getInstance();
         initSignInButton();
@@ -58,7 +58,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void initSignUpTextView() {
-        mSignUpTextView = findViewById(R.id.tvSignUp);
+        mSignUpTextView = findViewById(R.id.sign_up_text_view);
         mSignUpTextView.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
             startActivity(intent);
@@ -67,7 +67,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void initSignInButton() {
-        mSignInButton = findViewById(R.id.btSignIn);
+        mSignInButton = findViewById(R.id.sign_in_button);
         mSignInButton.setOnClickListener(v -> userLogin());
     }
 
