@@ -40,24 +40,24 @@ public class EditProfileActivity extends ImagePromptActivity {
     private TextView mEditProfileImageTextView;
     private FirebaseAuth mFireBaseAuth;
     private ImageView mExitImageView;
-    private ProgressBar mProgressBar;
+    private ProgressBar mProfilePictureProgressBar;
     private boolean mImageHasChanged = false;
     private HashMap<String, Object> userDetailsMap;
-    private ProgressBarManager progressBarManager;
+    private ProgressBarManager mSaveProgressBarManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_profile);
-        mFirstNameEditText = findViewById(R.id.et_firstname_update_profile);
-        mLastNameEditText = findViewById(R.id.et_lastname_update_profile);
-        mPhoneEditText = findViewById(R.id.et_phone_update_profile);
-        mIdEditText = findViewById(R.id.et_id_update_profile);
-        mImageView = findViewById(R.id.iv_update_profile_image);
-        mProgressBar = findViewById(R.id.pb_update_profile);
+        mFirstNameEditText = findViewById(R.id.edit_profile_first_name_edit_text);
+        mLastNameEditText = findViewById(R.id.edit_profile_last_name_edit_text);
+        mPhoneEditText = findViewById(R.id.edit_profile_phone_edit_text);
+        mIdEditText = findViewById(R.id.edit_profile_id_edit_text);
+        mImageView = findViewById(R.id.edit_profile_picture_image_view);
+        mProfilePictureProgressBar = findViewById(R.id.edit_profile_photo_progress_bar);
 
         mFireBaseAuth = FirebaseAuth.getInstance();
-        progressBarManager = new ProgressBarManager(findViewById(R.id.edit_profile_progressbar));
+        mSaveProgressBarManager = new ProgressBarManager(findViewById(R.id.edit_profile_save_progress_bar));
         userDetailsMap = new HashMap<>();
 
         Intent i = getIntent();
@@ -71,15 +71,15 @@ public class EditProfileActivity extends ImagePromptActivity {
     }
 
     private void initUpdateProfileButton() {
-        mUpdateProfileButton = findViewById(R.id.bt_update_profile);
+        mUpdateProfileButton = findViewById(R.id.edit_profile_save_image_view);
         mUpdateProfileButton.setOnClickListener(v -> {
-            progressBarManager.requestVisible();
+            mSaveProgressBarManager.requestVisible();
             editProfile();
         });
     }
 
     private void initEditProfileImageTextView() {
-        mEditProfileImageTextView = findViewById(R.id.tv_edit_profile_image);
+        mEditProfileImageTextView = findViewById(R.id.edit_profile_change_picture_text_view);
         mEditProfileImageTextView.setOnClickListener(v -> {
             Permission permission = new Permission(
                     EditProfileActivity.this, getApplicationContext());
@@ -89,7 +89,7 @@ public class EditProfileActivity extends ImagePromptActivity {
     }
 
     private void initExitImageView() {
-        mExitImageView = findViewById(R.id.close_image_view);
+        mExitImageView = findViewById(R.id.edit_profile_discard_image_view);
         mExitImageView.setOnClickListener(v -> {
             Intent intent = new Intent(EditProfileActivity.this,
                     UserProfileActivity.class);
@@ -139,7 +139,7 @@ public class EditProfileActivity extends ImagePromptActivity {
                             DbReference.getDbRefToUser(
                                     mFireBaseAuth.getUid()).updateChildren(userDetailsMap)
                                     .addOnSuccessListener(unused -> {
-                                        progressBarManager.requestGone();
+                                        mSaveProgressBarManager.requestGone();
                                         finish();
                                     });
                         }))
@@ -170,7 +170,7 @@ public class EditProfileActivity extends ImagePromptActivity {
                     ImageUtilities.loadImage(
                             DbConstants.APP_PROFILE_IMAGES_FULL_URL +
                                         userprofile.getBitmap(),
-                                        mImageView, mProgressBar);
+                                        mImageView, mProfilePictureProgressBar);
             }
 
             @Override
