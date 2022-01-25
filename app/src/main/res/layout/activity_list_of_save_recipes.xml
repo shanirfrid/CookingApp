@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorBackground"
-    tools:context="com.example.shanir.cookingappofshanir.UserFavoriteRecipesActivity">
+    tools:context="com.example.shanir.cookingappofshanir.activities.user.UserFavoriteRecipesActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"

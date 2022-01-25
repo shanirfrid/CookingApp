@@ -1,4 +1,4 @@
-package com.example.shanir.cookingappofshanir;
+package com.example.shanir.cookingappofshanir.activities.user;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.shanir.cookingappofshanir.Admin.AdminRecipesActivity;
+import com.example.shanir.cookingappofshanir.activities.admin.AdminRecipesActivity;
+import com.example.shanir.cookingappofshanir.R;
 import com.example.shanir.cookingappofshanir.utils.DbConstants;
 import com.google.firebase.auth.FirebaseAuth;
 

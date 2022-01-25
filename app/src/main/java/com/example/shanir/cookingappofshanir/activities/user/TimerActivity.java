@@ -1,4 +1,4 @@
-package com.example.shanir.cookingappofshanir;
+package com.example.shanir.cookingappofshanir.activities.user;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.shanir.cookingappofshanir.R;
 import com.example.shanir.cookingappofshanir.utils.TimerAsyncTask;
 import com.example.shanir.cookingappofshanir.utils.TimerUtilities;
 import java.sql.Time;

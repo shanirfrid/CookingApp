@@ -9,11 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.shanir.cookingappofshanir.R;
-import com.example.shanir.cookingappofshanir.SignInActivity;
-import com.example.shanir.cookingappofshanir.UserFavoriteRecipesActivity;
-import com.example.shanir.cookingappofshanir.UserIngredientsActivity;
-import com.example.shanir.cookingappofshanir.UserProfileActivity;
-import com.example.shanir.cookingappofshanir.UserSuitableRecipesActivity;
+import com.example.shanir.cookingappofshanir.activities.user.SignInActivity;
+import com.example.shanir.cookingappofshanir.activities.user.UserFavoriteRecipesActivity;
+import com.example.shanir.cookingappofshanir.activities.user.UserIngredientsActivity;
+import com.example.shanir.cookingappofshanir.activities.user.UserProfileActivity;
+import com.example.shanir.cookingappofshanir.activities.user.UserSuitableRecipesActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 

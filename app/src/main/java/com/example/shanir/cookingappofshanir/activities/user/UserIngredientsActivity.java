@@ -1,4 +1,4 @@
-package com.example.shanir.cookingappofshanir;
+package com.example.shanir.cookingappofshanir.activities.user;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -22,6 +22,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.shanir.cookingappofshanir.R;
 import com.example.shanir.cookingappofshanir.utils.DbReference;
 import com.example.shanir.cookingappofshanir.utils.NavigationMenu;
 import com.google.android.material.navigation.NavigationView;

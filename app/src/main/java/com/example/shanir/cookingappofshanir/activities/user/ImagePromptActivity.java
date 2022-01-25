@@ -1,4 +1,4 @@
-package com.example.shanir.cookingappofshanir;
+package com.example.shanir.cookingappofshanir.activities.user;
 
 import android.app.AlertDialog;
 import android.content.Intent;

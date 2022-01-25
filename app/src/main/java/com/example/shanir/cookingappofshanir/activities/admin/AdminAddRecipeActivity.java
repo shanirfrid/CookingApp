@@ -1,10 +1,9 @@
-package com.example.shanir.cookingappofshanir.Admin;
+package com.example.shanir.cookingappofshanir.activities.admin;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.example.shanir.cookingappofshanir.ImagePromptActivity;
+import com.example.shanir.cookingappofshanir.activities.user.ImagePromptActivity;
 import com.example.shanir.cookingappofshanir.R;
 import com.example.shanir.cookingappofshanir.utils.DbConstants;
 import com.example.shanir.cookingappofshanir.utils.DbReference;
@@ -32,9 +30,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class AdminAddRecipeActivity extends ImagePromptActivity {
     private Button mAddRecipeButton;
