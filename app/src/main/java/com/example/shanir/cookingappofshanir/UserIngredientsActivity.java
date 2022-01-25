@@ -47,8 +47,8 @@ public class UserIngredientsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_consumers);
-        mAddIngredientEditText = findViewById(R.id.etwriteconsumers);
+        setContentView(R.layout.activity_user_ingredients);
+        mAddIngredientEditText = findViewById(R.id.user_add_ingredient_edit_text);
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         if (mFirebaseAuth.getCurrentUser() == null) {
@@ -71,13 +71,13 @@ public class UserIngredientsActivity extends AppCompatActivity {
     }
 
     private void initIngredientList() {
-        mIngredientsListView = findViewById(R.id.listviewconsumers);
+        mIngredientsListView = findViewById(R.id.user_ingredients_list_view);
         mIngredientsListAdapter = new IngredientListAdapter(getApplicationContext(), new ArrayList<>());
         mIngredientsListView.setAdapter(mIngredientsListAdapter);
     }
 
     private void initAddIngredientButton() {
-        mAddIngredientImageView = findViewById(R.id.ivconsumersadd);
+        mAddIngredientImageView = findViewById(R.id.user_add_ingredient_image_view);
         mAddIngredientImageView.setOnClickListener(v -> {
             String ingredientToAdd = mAddIngredientEditText.getText().toString().toLowerCase();
 
@@ -90,24 +90,23 @@ public class UserIngredientsActivity extends AppCompatActivity {
                 Integer.parseInt(ingredientToAdd);
                 mAddIngredientEditText.setError("Ingredient cannot be a number!");
                 return;
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
 
-            if (!mIngredientsListAdapter.isIngredientInList(ingredientToAdd)){
+            if (!mIngredientsListAdapter.isIngredientInList(ingredientToAdd)) {
                 DbReference.getDbRefToUserIngredients(mFirebaseAuth.getUid())
                         .child(ingredientToAdd)
                         .setValue(ingredientToAdd);
-            }
-            else{
-                Toast.makeText(this, "This ingreident is already added",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "This ingredient is already added",Toast.LENGTH_SHORT).show();
             }
             mAddIngredientEditText.setText("");
         });
     }
 
     private void initFindRecipesButton() {
-        mFindRecipesButton = findViewById(R.id.btmovetorecipelist);
+        mFindRecipesButton = findViewById(R.id.user_find_recipes_button);
         mFindRecipesButton.setOnClickListener(v -> {
             Intent intent = new Intent(UserIngredientsActivity.this,
                     UserSuitableRecipesActivity.class);
