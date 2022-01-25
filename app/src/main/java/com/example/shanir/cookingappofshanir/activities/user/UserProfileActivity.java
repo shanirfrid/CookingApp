@@ -19,6 +19,7 @@ import com.example.shanir.cookingappofshanir.utils.DbConstants;
 import com.example.shanir.cookingappofshanir.utils.ImageUtilities;
 import com.example.shanir.cookingappofshanir.utils.NavigationMenu;
 import com.example.shanir.cookingappofshanir.utils.User;
+import com.example.shanir.cookingappofshanir.utils.async.EmailVerificationRunnableThread;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,7 +31,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private ImageView mProfileImageView, mMenuImageView;
     private Button mEditProfileButton;
     private TextView mVerifyEmailTextView, mUserDetailsTextView,
-            mHeaderVerificationEmailTextView, mVerificationEmailTextView,
+            mVerificationHeaderTextView, mVerificationBodyTextView,
             mEmailIconTextView;
     private ProgressBar mProgressBar;
     private User mUser;
@@ -43,9 +44,6 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         mUserDetailsTextView = findViewById(R.id.user_profile_details_text_view);
-        mHeaderVerificationEmailTextView = findViewById(R.id.user_profile_verification_header_text_view);
-        mVerificationEmailTextView = findViewById(R.id.user_profile_verification_body_text_view);
-        mEmailIconTextView = findViewById(R.id.user_profile_email_text_view);
         mProgressBar = findViewById(R.id.user_profile_progress_bar);
         mProfileImageView = findViewById(R.id.user_profile_image_view);
 
@@ -53,7 +51,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         initMenu();
         retrieveUserDetails();
-        initVerifyEmailTextView();
+        initVerificationViewsAndListeners();
         initEditProfileButton();
     }
 
@@ -85,32 +83,35 @@ public class UserProfileActivity extends AppCompatActivity {
                 new NavigationMenu(this, mMenuImageView, mDrawerLayout));
     }
 
-    private void initVerifyEmailTextView() {
-        final FirebaseUser user = mFireBaseAuth.getCurrentUser();
+    private void initVerificationViewsAndListeners() {
+        mVerificationHeaderTextView =
+                findViewById(R.id.user_profile_verification_header_text_view);
+        mVerificationBodyTextView =
+                findViewById(R.id.user_profile_verification_body_text_view);
+        mEmailIconTextView = findViewById(R.id.user_profile_email_text_view);
         mVerifyEmailTextView = findViewById(R.id.user_profile_verify_button);
+        final FirebaseUser user = mFireBaseAuth.getCurrentUser();
 
         if (user == null)
             return;
 
-        user.reload().addOnSuccessListener(task -> {
-            if (mFireBaseAuth.getCurrentUser().isEmailVerified())
-                changeEmailToVerified();
-            else
-                mVerifyEmailTextView.setText("Verify Email");
-        });
-
-        mVerifyEmailTextView.setOnClickListener(v ->
-                mFireBaseAuth.getCurrentUser().sendEmailVerification()
-                        .addOnCompleteListener(task ->
-                                Toast.makeText(UserProfileActivity.this,
-                                        "Email verification has been sent",
-                                        Toast.LENGTH_SHORT).show()));
+        if (user.isEmailVerified()) {
+            changeEmailToVerified();
+        } else {
+            mVerifyEmailTextView.setOnClickListener(v ->
+                    mFireBaseAuth.getCurrentUser().sendEmailVerification()
+                            .addOnCompleteListener(task ->
+                                    Toast.makeText(UserProfileActivity.this,
+                                            "Email verification has been sent",
+                                            Toast.LENGTH_SHORT).show()));
+            new EmailVerificationRunnableThread(this).start();
+        }
     }
 
-    private void changeEmailToVerified() {
+    public void changeEmailToVerified() {
         mVerifyEmailTextView.setVisibility(View.GONE);
-        mHeaderVerificationEmailTextView.setText("Verification Success");
-        mVerificationEmailTextView.setText("Thank you for your support, we have successfully verfied your email");
+        mVerificationHeaderTextView.setText("Verification Success");
+        mVerificationBodyTextView.setText("Thank you for your support, we have successfully verfied your email");
         mEmailIconTextView.setBackground(ContextCompat.getDrawable(getApplicationContext(),
                 R.drawable.email_verified_successfully));
     }
