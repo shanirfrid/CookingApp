@@ -62,11 +62,11 @@ public class RecipeListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v = View.inflate(mContext, R.layout.recipe_item_list, null);
-        TextView recipeNameTextView = (TextView) v.findViewById(R.id.tvnamerecipeitem);
-        TextView recipeDifficultyTextView = (TextView) v.findViewById(R.id.vdifiitem);
-        TextView recipeTimeTextView = (TextView) v.findViewById(R.id.tvtimerecipeitem);
-        ImageView recipeImageView = (ImageView) v.findViewById(R.id.recipe_image);
+        View v = View.inflate(mContext, R.layout.recipe_list_item, null);
+        TextView recipeNameTextView = (TextView) v.findViewById(R.id.recipe_name_text_view);
+        TextView recipeDifficultyTextView = (TextView) v.findViewById(R.id.recipe_difficulty_text_view);
+        TextView recipeTimeTextView = (TextView) v.findViewById(R.id.recipe_time_text_view);
+        ImageView recipeImageView = (ImageView) v.findViewById(R.id.recipe_image_view);
 
         Recipe recipe = (Recipe) getItem(position);
         recipeNameTextView.setText(recipe.getNameOfrecipe());

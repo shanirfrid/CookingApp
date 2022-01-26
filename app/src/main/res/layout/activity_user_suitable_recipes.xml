@@ -70,7 +70,7 @@
             android:dividerHeight="1px"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/suitable_recipes_progress_bar"
-            tools:listitem="@layout/recipe_item_list" />
+            tools:listitem="@layout/recipe_list_item" />
         
     </androidx.constraintlayout.widget.ConstraintLayout>
 

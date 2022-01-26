@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorBackground"
-    android:padding="10dp" >
+    android:padding="10dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/recipe_image"
+        android:id="@+id/recipe_image_view"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_alignParentStart="true"
@@ -21,39 +21,38 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/recipe_image"
+        android:layout_toEndOf="@id/recipe_image_view"
         android:orientation="vertical"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/recipe_image"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/recipe_list_item_time_layout">
+        app:layout_constraintEnd_toStartOf="@id/recipe_time_layout"
+        app:layout_constraintStart_toEndOf="@id/recipe_image_view"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tvnamerecipeitem"
+            android:id="@+id/recipe_name_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
-            android:text="recpie name"
-            android:textColor="#000"
-            android:textSize="20sp"
             android:lines="1"
-            android:ellipsize="end"/>
+            android:text="recpie name"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/vdifiitem"
+            android:id="@+id/recipe_difficulty_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
             android:text="difficulty"
-            android:textColor="#000" />
+            android:textColor="@android:color/black" />
 
     </LinearLayout>
 
-
     <LinearLayout
-        android:id="@+id/recipe_list_item_time_layout"
+        android:id="@+id/recipe_time_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -62,21 +61,19 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tvtimerecipeitem"
+            android:id="@+id/recipe_time_text_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="2dp"
             android:gravity="center"
             android:text="time"
-            android:textColor="#000" />
+            android:textColor="@android:color/black" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="10dp"
-            android:src="@drawable/ic_baseline_access_time_24"
-            android:textColor="#000" />
+            android:src="@drawable/ic_baseline_access_time_24" />
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
