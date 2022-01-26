@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shanir.cookingappofshanir.R;
-import com.example.shanir.cookingappofshanir.utils.TimerAsyncTask;
+import com.example.shanir.cookingappofshanir.utils.async.TimerAsyncTask;
 import com.example.shanir.cookingappofshanir.utils.TimerUtilities;
 import java.sql.Time;
 

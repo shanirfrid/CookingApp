@@ -1,4 +1,4 @@
-package com.example.shanir.cookingappofshanir.utils;
+package com.example.shanir.cookingappofshanir.utils.async;
 
 import android.content.Context;
 import android.os.Vibrator;
@@ -9,6 +9,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import com.example.shanir.cookingappofshanir.activities.user.TimerActivity;
+import com.example.shanir.cookingappofshanir.utils.TimerUtilities;
+
 import java.sql.Time;
 
 public class TimerAsyncTask extends AsyncTask<Integer, Integer, String> {
