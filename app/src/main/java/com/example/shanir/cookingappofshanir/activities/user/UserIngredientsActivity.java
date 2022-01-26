@@ -212,9 +212,9 @@ public class UserIngredientsActivity extends AppCompatActivity {
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
-            View v = View.inflate(mContext, R.layout.product_item_list, null);
-            ((TextView) v.findViewById(R.id.product_name)).setText(getItem(i));
-            ImageView imageView = v.findViewById(R.id.delete_product_image_view);
+            View v = View.inflate(mContext, R.layout.ingredient_list_item, null);
+            ((TextView) v.findViewById(R.id.ingredient_name_text_view)).setText(getItem(i));
+            ImageView imageView = v.findViewById(R.id.ingredient_delete_image_view);
             String ingredientName = mIngredientsListAdapter.getItem(i);
             imageView.setTag(new Integer(i));
             imageView.setOnClickListener(view1 -> {
