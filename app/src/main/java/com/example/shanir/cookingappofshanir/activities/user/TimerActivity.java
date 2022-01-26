@@ -17,13 +17,13 @@ public class TimerActivity extends AppCompatActivity {
     private int mTotalTimeInMinutes;
     private TextView mTimerTextView;
     private ProgressBar mTimerProgressBar;
-    private Button mStopButton, mStartButton;
+    private Button mPauseButton, mStartButton;
     private TimerAsyncTask mTimerAsyncTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.timer_activity);
+        setContentView(R.layout.activity_user_timer);
 
         this.initTimerTextView();
         this.initStopButton();
@@ -33,7 +33,7 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void initTimerTextView(){
-        mTimerTextView = findViewById(R.id.timer_textview);
+        mTimerTextView = findViewById(R.id.timer_text_view);
 
         Intent intent = getIntent();
         if (intent.getExtras() != null)
@@ -46,16 +46,16 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void initProgressBar(){
-        mTimerProgressBar = findViewById(R.id.timer_progressbar);
+        mTimerProgressBar = findViewById(R.id.timer_progress_bar);
         mTimerProgressBar.setMax(mTotalTimeInMinutes * 60);
         mTimerProgressBar.setProgress(mTotalTimeInMinutes * 60);
     }
 
     private void initStartButton() {
-        this.mStartButton = findViewById(R.id.start_button);
+        this.mStartButton = findViewById(R.id.timer_start_button);
 
         this.mStartButton.setOnClickListener(v -> {
-            mStopButton.setEnabled(true);
+            mPauseButton.setEnabled(true);
             mStartButton.setEnabled(false);
 
             if (mTimerAsyncTask == null) {
@@ -69,24 +69,24 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void initStopButton() {
-        this.mStopButton = findViewById(R.id.stop_button);
-        this.mStopButton.setEnabled(false);
+        this.mPauseButton = findViewById(R.id.timer_pause_button);
+        this.mPauseButton.setEnabled(false);
 
-        this.mStopButton.setOnClickListener(v -> {
-            mStopButton.setEnabled(false);
+        this.mPauseButton.setOnClickListener(v -> {
+            mPauseButton.setEnabled(false);
             mTimerAsyncTask.setIsRunning(false);
             mStartButton.setEnabled(true);
         });
     }
 
     private void initCancelButton() {
-        findViewById(R.id.cancel_timer_textview)
+        findViewById(R.id.timer_cancel_text_view)
                 .setOnClickListener(view -> finish());
     }
 
     public void letUserRestartTimer() {
         mTimerAsyncTask = null;
-        mStopButton.setEnabled(false);
+        mPauseButton.setEnabled(false);
         mStartButton.setEnabled(true);
     }
 }
