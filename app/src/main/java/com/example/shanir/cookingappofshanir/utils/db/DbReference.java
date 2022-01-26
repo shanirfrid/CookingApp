@@ -1,4 +1,4 @@
-package com.example.shanir.cookingappofshanir.utils;
+package com.example.shanir.cookingappofshanir.utils.db;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

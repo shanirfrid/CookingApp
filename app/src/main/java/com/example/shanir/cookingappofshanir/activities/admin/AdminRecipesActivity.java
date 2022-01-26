@@ -18,8 +18,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shanir.cookingappofshanir.activities.user.SignInActivity;
-import com.example.shanir.cookingappofshanir.utils.DbReference;
-import com.example.shanir.cookingappofshanir.utils.DbConstants;
+import com.example.shanir.cookingappofshanir.utils.db.DbReference;
+import com.example.shanir.cookingappofshanir.utils.db.DbConstants;
 import com.example.shanir.cookingappofshanir.utils.ProgressBarManager;
 import com.example.shanir.cookingappofshanir.utils.RecipeListAdapter;
 import com.example.shanir.cookingappofshanir.R;

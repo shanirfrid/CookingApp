@@ -13,8 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.shanir.cookingappofshanir.R;
-import com.example.shanir.cookingappofshanir.utils.DbReference;
-import com.example.shanir.cookingappofshanir.utils.DbConstants;
+import com.example.shanir.cookingappofshanir.utils.db.DbReference;
+import com.example.shanir.cookingappofshanir.utils.db.DbConstants;
 import com.example.shanir.cookingappofshanir.utils.ImageUtilities;
 import com.example.shanir.cookingappofshanir.utils.Permission;
 import com.example.shanir.cookingappofshanir.utils.ProgressBarManager;

@@ -1,4 +1,4 @@
-package com.example.shanir.cookingappofshanir.utils;
+package com.example.shanir.cookingappofshanir.utils.db;
 
 public class DbConstants {
     public static final String USER_TABLE_NAME = "Users";

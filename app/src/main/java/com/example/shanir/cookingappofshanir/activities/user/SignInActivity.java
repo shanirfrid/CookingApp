@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.shanir.cookingappofshanir.activities.admin.AdminRecipesActivity;
 import com.example.shanir.cookingappofshanir.R;
-import com.example.shanir.cookingappofshanir.utils.DbConstants;
+import com.example.shanir.cookingappofshanir.utils.db.DbConstants;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SignInActivity extends AppCompatActivity {

@@ -23,7 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.shanir.cookingappofshanir.R;
-import com.example.shanir.cookingappofshanir.utils.DbReference;
+import com.example.shanir.cookingappofshanir.utils.db.DbReference;
 import com.example.shanir.cookingappofshanir.utils.NavigationMenu;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;

@@ -14,8 +14,8 @@ import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.shanir.cookingappofshanir.R;
-import com.example.shanir.cookingappofshanir.utils.DbReference;
-import com.example.shanir.cookingappofshanir.utils.DbConstants;
+import com.example.shanir.cookingappofshanir.utils.db.DbReference;
+import com.example.shanir.cookingappofshanir.utils.db.DbConstants;
 import com.example.shanir.cookingappofshanir.utils.ImageUtilities;
 import com.example.shanir.cookingappofshanir.utils.NavigationMenu;
 import com.example.shanir.cookingappofshanir.utils.User;

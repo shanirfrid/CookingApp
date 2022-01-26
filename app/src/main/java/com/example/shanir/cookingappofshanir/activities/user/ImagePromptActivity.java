@@ -11,9 +11,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.shanir.cookingappofshanir.utils.DbReference;
+import com.example.shanir.cookingappofshanir.utils.db.DbReference;
 import com.example.shanir.cookingappofshanir.utils.FileHelper;
-import com.example.shanir.cookingappofshanir.utils.DbConstants;
+import com.example.shanir.cookingappofshanir.utils.db.DbConstants;
 
 import java.io.File;
 import java.io.IOException;
