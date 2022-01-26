@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -31,6 +33,7 @@ public class UserFavoriteRecipesActivity extends AppCompatActivity {
     private ListView mSavedRecipesListView;
     private FirebaseAuth mFirebaseAuth;
     private ProgressBarManager mProgressBarManager;
+    private LinearLayout mNoFavoriteRecipesLayout;
     private RecipeListAdapter mRecipeListAdapter;
     private Recipe mSelectedRecipe;
     private NavigationView mNavigationView;
@@ -43,6 +46,7 @@ public class UserFavoriteRecipesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_favorite_recipes);
         mProgressBarManager = new ProgressBarManager(
                 findViewById(R.id.favorite_recipes_progress_bar));
+        mNoFavoriteRecipesLayout = findViewById(R.id.favorite_recipe_0_results_layout);
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         if (mFirebaseAuth.getCurrentUser() == null) {
@@ -81,10 +85,13 @@ public class UserFavoriteRecipesActivity extends AppCompatActivity {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        ArrayList<String> userFavoriteRecipesNames = (ArrayList<String>) dataSnapshot.getValue();
+                        ArrayList<String> userFavoriteRecipesNames =
+                                (ArrayList<String>) dataSnapshot.getValue();
 
-                        if (userFavoriteRecipesNames == null)
+                        if (userFavoriteRecipesNames == null) {
+                            setUINoRecipesView(true);
                             return;
+                        }
 
                         getFavoriteRecipes(userFavoriteRecipesNames);
                     }
@@ -95,7 +102,16 @@ public class UserFavoriteRecipesActivity extends AppCompatActivity {
                 });
     }
 
+    private void setUINoRecipesView(boolean areNoRecipes) {
+         mNoFavoriteRecipesLayout.setVisibility(areNoRecipes ? View.VISIBLE :
+                 View.GONE);
+         mSavedRecipesListView.setVisibility(areNoRecipes ? View.GONE :
+                 View.VISIBLE);
+    }
+
     private void getFavoriteRecipes(ArrayList<String> favoriteRecipesNameList) {
+        setUINoRecipesView(false);
+
         for (String favoriteRecipeName : favoriteRecipesNameList) {
             DbReference.getDbRefToRecipe(favoriteRecipeName).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
