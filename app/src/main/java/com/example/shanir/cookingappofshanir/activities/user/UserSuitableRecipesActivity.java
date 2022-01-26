@@ -49,7 +49,7 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_suitable_recipes);
         mRecipesNumberTextView = findViewById(R.id.suitable_recipes_amount_text_view);
         mProgressBarManager = new ProgressBarManager(
-                findViewById(R.id.user_recipes_progress_bar));
+                findViewById(R.id.suitable_recipes_progress_bar));
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         initRecipeList();
