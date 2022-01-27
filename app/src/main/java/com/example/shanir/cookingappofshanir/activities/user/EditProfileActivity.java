@@ -46,7 +46,7 @@ public class EditProfileActivity extends ImagePromptActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_update_profile);
+        setContentView(R.layout.activity_user_edit_profile);
         mFirstNameEditText = findViewById(R.id.edit_profile_first_name_edit_text);
         mLastNameEditText = findViewById(R.id.edit_profile_last_name_edit_text);
         mPhoneEditText = findViewById(R.id.edit_profile_phone_edit_text);
