@@ -42,7 +42,7 @@ public class RegisterActivity extends ImagePromptActivity {
         mPhoneEditText = findViewById(R.id.etPhone);
         mLastNameEmail = findViewById(R.id.etlastname);
         mProgressBarManager = new ProgressBarManager(
-                findViewById(R.id.progressbarregister));
+                findViewById(R.id.register_progress_bar));
 
 
         mFireBaseAuth = FirebaseAuth.getInstance();
@@ -54,7 +54,7 @@ public class RegisterActivity extends ImagePromptActivity {
 
     @SuppressLint("ClickableViewAccessibility")
     private void initScrollView() {
-        mScrollView = findViewById(R.id.sv_signUp);
+        mScrollView = findViewById(R.id.register_profile_details_scroll_view);
         mScrollView.setOnTouchListener((view, motionEvent) -> {
             mEmailEditText.clearFocus();
             mConfirmPassEditText.clearFocus();
@@ -64,7 +64,7 @@ public class RegisterActivity extends ImagePromptActivity {
     }
 
     private void initBackTextView() {
-        mBackTextView = findViewById(R.id.tv_back);
+        mBackTextView = findViewById(R.id.register_back_text_view);
         mBackTextView.setOnClickListener(v -> {
             Intent intent = new Intent(RegisterActivity.this, SignInActivity.class);
             startActivity(intent);
@@ -73,12 +73,12 @@ public class RegisterActivity extends ImagePromptActivity {
     }
 
     private void initSaveButton() {
-        mSaveButton = findViewById(R.id.btSaveregister);
+        mSaveButton = findViewById(R.id.register_sign_up_button);
         mSaveButton.setOnClickListener(v -> registerUser());
     }
 
     private void initProfileImageView() {
-        mImageView = findViewById(R.id.iv_account_profile);
+        mImageView = findViewById(R.id.register_profile_image_view);
         mImageView.setOnClickListener(v -> {
             Permission permission = new Permission(RegisterActivity.this, getApplicationContext());
             permission.requestMultiplePermissions();
@@ -124,15 +124,17 @@ public class RegisterActivity extends ImagePromptActivity {
                     if (task.isSuccessful()) {
                         uploadImage(DbConstants.PROFILE_IMAGES_URL);
                         adduser();
-                    } else {
-                        if (task.getException() instanceof FirebaseAuthUserCollisionException)
-                            Toast.makeText(RegisterActivity.this, "OOPS! you are already signed in",
-                                    Toast.LENGTH_SHORT).show();
-                        else {
-                            Toast.makeText(RegisterActivity.this, task.getException().getMessage(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
+                        return;
                     }
+
+                    if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                        Toast.makeText(RegisterActivity.this, "OOPS! Email already in-use!",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(RegisterActivity.this, task.getException().getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    mProgressBarManager.requestGone();
                 });
     }
 
@@ -153,7 +155,6 @@ public class RegisterActivity extends ImagePromptActivity {
         DbReference.getDbRefToUser(mFireBaseAuth.getUid()).setValue(user, (databaseError, databaseReferfinence) -> {
             if (databaseError == null) {
                 mProgressBarManager.requestGone();
-                Toast.makeText(RegisterActivity.this, "data successfully saved", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), UserIngredientsActivity.class);
                 startActivity(intent);
                 finish();
