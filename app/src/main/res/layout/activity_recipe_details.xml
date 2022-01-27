@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/maindetaildonrecipeuser"
+        android:id="@+id/recipe_details_constraint_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/ivdetailsrecipe"
+            android:id="@+id/recipe_details_image_view"
             android:layout_width="match_parent"
             android:layout_height="270dp"
             android:adjustViewBounds="true"
@@ -20,26 +19,24 @@
             android:src="@drawable/ic_load_image"
             app:layout_constraintTop_toTopOf="parent" />
 
-
         <TextView
-            android:id="@+id/tvheadnameOfrecipe"
+            android:id="@+id/recipe_details_name_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="recipe name"
+            android:fontFamily="sans-serif-light"
             android:padding="20dp"
-            android:textColor="#000"
+            android:text="recipe name"
+            android:textColor="@android:color/black"
             android:textSize="26sp"
             android:textStyle="bold"
-            android:fontFamily="sans-serif-light"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivdetailsrecipe" />
+            app:layout_constraintTop_toBottomOf="@id/recipe_details_image_view" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/recipe_details_attributes_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/tvheadnameOfrecipe">
+            app:layout_constraintTop_toBottomOf="@id/recipe_details_name_text_view">
 
             <LinearLayout
                 android:id="@+id/recipe_details_time_layout"
@@ -47,17 +44,17 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tvheaddificultyOfrecipe"
+                app:layout_constraintEnd_toStartOf="@id/recipe_details_difficulty_text_view"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <EditText
-                    android:id="@+id/tvheadtimefrecipe"
+                    android:id="@+id/recipe_details_time_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="time"
                     android:inputType="number"
-                    android:paddingRight="2dp"
+                    android:paddingEnd="2dp"
                     android:textColor="#666"
                     android:textColorHint="@color/colorHintText"
                     android:textSize="15sp" />
@@ -71,32 +68,30 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tvheaddificultyOfrecipe"
+                android:id="@+id/recipe_details_difficulty_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="difficulty"
                 android:textColor="@color/colorHintText"
                 android:textSize="15sp"
-                app:layout_constraintStart_toEndOf="@id/recipe_details_time_layout"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintStart_toEndOf="@id/recipe_details_time_layout"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ProgressBar
-            android:id="@+id/progressbardetailss"
+            android:id="@+id/recipe_details_progress_bar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            app:layout_constraintTop_toBottomOf="@id/recipe_details_attributes_layout"
-            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            android:visibility="gone"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recipe_details_attributes_layout" />
 
         <TextView
-            android:id="@+id/recipe_details_list_header"
+            android:id="@+id/recipe_details_ingredients_header_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
@@ -110,13 +105,12 @@
             app:layout_constraintTop_toBottomOf="@id/recipe_details_attributes_layout" />
 
         <ListView
-            android:id="@+id/lvdetailsonrecipe"
+            android:id="@+id/recipe_details_ingredients_list_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="10dp"
             app:layout_constraintBottom_toTopOf="@id/recipe_details_buttons_layout"
-            app:layout_constraintTop_toBottomOf="@id/recipe_details_list_header" />
-
+            app:layout_constraintTop_toBottomOf="@id/recipe_details_ingredients_header_text_view" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/recipe_details_buttons_layout"
@@ -126,30 +120,30 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <Button
-                android:id="@+id/btmadenow"
+                android:id="@+id/recipe_details_make_now_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
-                android:text="make now"
-                android:padding="5dp"
                 android:fontFamily="sans-serif-medium"
+                android:padding="5dp"
+                android:text="make now"
                 android:textAllCaps="false"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btsaverecipedeails"
+                app:layout_constraintEnd_toStartOf="@id/recipe_details_add_to_favorite_button"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Button
-                android:id="@+id/btsaverecipedeails"
+                android:id="@+id/recipe_details_add_to_favorite_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
-                android:text="add to favorite"
-                android:padding="5dp"
                 android:fontFamily="sans-serif-medium"
+                android:padding="5dp"
+                android:text="add to favorite"
                 android:textAllCaps="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btmadenow" />
+                app:layout_constraintStart_toEndOf="@id/recipe_details_make_now_button" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

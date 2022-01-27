@@ -46,12 +46,12 @@ public class DetailsOnRecipeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details_on_recipe);
-        mProgressBar = findViewById(R.id.progressbardetailss);
-        mRecipeNameTextView = findViewById(R.id.tvheadnameOfrecipe);
-        mRecipeDifficultyTextView = findViewById(R.id.tvheaddificultyOfrecipe);
-        mRecipeTimeTextView = findViewById(R.id.tvheadtimefrecipe);
-        mRecipeImageView = findViewById(R.id.ivdetailsrecipe);
+        setContentView(R.layout.activity_recipe_details);
+        mProgressBar = findViewById(R.id.recipe_details_progress_bar);
+        mRecipeNameTextView = findViewById(R.id.recipe_details_name_text_view);
+        mRecipeDifficultyTextView = findViewById(R.id.recipe_details_difficulty_text_view);
+        mRecipeTimeTextView = findViewById(R.id.recipe_details_time_text_view);
+        mRecipeImageView = findViewById(R.id.recipe_details_image_view);
 
         mFireBaseAuth = FirebaseAuth.getInstance();
 
@@ -65,7 +65,7 @@ public class DetailsOnRecipeActivity extends AppCompatActivity {
     }
 
     private void initMakeRecipeButton() {
-        mMakeRecipeButton = findViewById(R.id.btmadenow);
+        mMakeRecipeButton = findViewById(R.id.recipe_details_make_now_button);
         mMakeRecipeButton.setOnClickListener(v -> {
             Intent intent = new Intent(
                     DetailsOnRecipeActivity.this, TimerActivity.class);
@@ -75,7 +75,7 @@ public class DetailsOnRecipeActivity extends AppCompatActivity {
     }
 
     private void initIngredientsListView() {
-        mIngredientsListView = findViewById(R.id.lvdetailsonrecipe);
+        mIngredientsListView = findViewById(R.id.recipe_details_ingredients_list_view);
         mIngredientsListAdapter = new IngredientsListAdapter(this, new ArrayList<>());
         mIngredientsListView.setAdapter(mIngredientsListAdapter);
     }
@@ -100,7 +100,7 @@ public class DetailsOnRecipeActivity extends AppCompatActivity {
     }
 
     private void initFavoriteRecipeButton() {
-        mFavoriteRecipeButton = findViewById(R.id.btsaverecipedeails);
+        mFavoriteRecipeButton = findViewById(R.id.recipe_details_add_to_favorite_button);
         Intent i = getIntent();
         if (i.getExtras() != null) {
             mRecipeName = i.getExtras().getString("comeFromSuitableRecipes",
