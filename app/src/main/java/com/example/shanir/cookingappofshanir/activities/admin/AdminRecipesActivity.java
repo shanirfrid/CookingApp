@@ -45,10 +45,10 @@ public class AdminRecipesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_list_of_recipes);
+        setContentView(R.layout.activity_admin_recipes);
         mProgressBarManager = new ProgressBarManager(
-                findViewById(R.id.pbadminlistofrecipes));
-        mNumberOfRecipesTextView = findViewById(R.id.tvheadaminnumrecipe);
+                findViewById(R.id.admin_recipes_progress_bar));
+        mNumberOfRecipesTextView = findViewById(R.id.admin_recipes_recipes_amount_text_view);
         mFireBaseAuth = FirebaseAuth.getInstance();
         mRecipesAmount = 0;
 
@@ -59,7 +59,7 @@ public class AdminRecipesActivity extends AppCompatActivity {
     }
 
     private void initLogoutImageView() {
-        mLogoutImageView = findViewById(R.id.admin_logout);
+        mLogoutImageView = findViewById(R.id.admin_recipes_sign_out_image_view);
         mLogoutImageView.setOnClickListener(v -> {
             mFireBaseAuth.signOut();
             Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
@@ -69,7 +69,7 @@ public class AdminRecipesActivity extends AppCompatActivity {
     }
 
     private void initRecipeAddButton() {
-        mAddRecipeButton = findViewById(R.id.add_recipe_btn);
+        mAddRecipeButton = findViewById(R.id.admin_recipes_add_recipe_button);
         mAddRecipeButton.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), AdminAddRecipeActivity.class);
             startActivity(intent);
@@ -77,7 +77,7 @@ public class AdminRecipesActivity extends AppCompatActivity {
     }
 
     private void initRecipeListView() {
-        mRecipesListView = findViewById(R.id.listviewlistofallrecipe);
+        mRecipesListView = findViewById(R.id.admin_recipes_list_view);
         mRecipeListAdapter = new RecipeListAdapter(this, new ArrayList<Recipe>());
         mRecipesListView.setAdapter(mRecipeListAdapter);
         mRecipesListView.setOnItemClickListener((parent, view, position, id) -> {
