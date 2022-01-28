@@ -129,6 +129,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/add_recipe_attributes_layout" />
 
+        <ProgressBar
+            android:id="@+id/add_recipe_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@id/add_recipe_ingredients_text_view"
+            app:layout_constraintTop_toBottomOf="@id/add_recipe_attributes_layout" />
 
         <ListView
             android:id="@+id/add_recipe_ingredients_list_view"

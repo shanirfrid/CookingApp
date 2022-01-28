@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +46,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
     private EditText mIngredientUnitsEditText;
     private String mDifficulty = "";
     private Recipe mRecipe;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
         mRecipeNameEditText = findViewById(R.id.add_recipe_name_text_view);
         mIngredientEditText = findViewById(R.id.add_recipe_ingredient_name_edit_text);
         mIngredientUnitsEditText = findViewById(R.id.add_recipe_ingredien_units_edit_text);
-
+        mProgressBar = findViewById(R.id.add_recipe_progress_bar);
         mImageFileNameCamera = DbConstants.ADD_RECIPE_IMAGE_FILE_NAME_CAMERA;
 
         initRecipeImageView();
@@ -160,10 +162,12 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
                     mRecipe.setBitmap(mBitmapName);
                     uploadRecipe();
                 })
-                .addOnFailureListener(e ->
+                .addOnFailureListener(e -> {
                         Toast.makeText(this,
                                 "Failed to upload image",
-                                Toast.LENGTH_SHORT).show());
+                                Toast.LENGTH_SHORT).show();
+                        mProgressBar.setVisibility(View.GONE);
+                });
     }
 
     private void uploadRecipe() {
@@ -174,7 +178,9 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
                             "Recipe has been saved successfully",
                             Toast.LENGTH_SHORT).show();
                     finish();
-                });
+                })
+                .addOnCompleteListener(task ->
+                        mProgressBar.setVisibility(View.GONE));
     }
 
     private void addRecipe() {
@@ -203,7 +209,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
                     "You need to insert an ingredient", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        mProgressBar.setVisibility(View.VISIBLE);
         mRecipe.setNameOfrecipe(mRecipeNameEditText.getText().toString());
         mRecipe.setDifficulty(mDifficulty);
         mRecipe.setTime(convertTextToTime(mTimeInMinutesEditText.getText().toString()));
@@ -215,11 +221,11 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
+                            mProgressBar.setVisibility(View.GONE);
                             Toast.makeText(AdminAddRecipeActivity.this, "This recipe is already exists",
                                     Toast.LENGTH_SHORT).show();
                             return;
                         }
-
                         if (mImageUri != null)
                             uploadImage(DbConstants.RECIPE_IMAGES_URL);
                         else
