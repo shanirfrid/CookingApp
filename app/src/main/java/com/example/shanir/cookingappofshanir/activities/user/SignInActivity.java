@@ -14,6 +14,8 @@ import com.example.shanir.cookingappofshanir.activities.admin.AdminRecipesActivi
 import com.example.shanir.cookingappofshanir.R;
 import com.example.shanir.cookingappofshanir.utils.db.DbConstants;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
 public class SignInActivity extends AppCompatActivity {
     Button mSignInButton;
@@ -106,7 +108,15 @@ public class SignInActivity extends AppCompatActivity {
                 passUserToSuitablePage();
             }
             else{
-                Toast.makeText(SignInActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                try {
+                    throw task.getException();
+                } catch (FirebaseAuthInvalidCredentialsException e) {
+                    Toast.makeText(SignInActivity.this, "Invalid password", Toast.LENGTH_SHORT).show();
+                } catch (FirebaseAuthInvalidUserException e) {
+                    Toast.makeText(SignInActivity.this, "Email is not registered",Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(SignInActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
