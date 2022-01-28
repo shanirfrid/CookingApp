@@ -166,7 +166,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
                         Toast.makeText(this,
                                 "Failed to upload image",
                                 Toast.LENGTH_SHORT).show();
-                        mProgressBar.setVisibility(View.GONE);
+                        updateIsUploadInProgress(false);
                 });
     }
 
@@ -180,7 +180,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
                     finish();
                 })
                 .addOnCompleteListener(task ->
-                        mProgressBar.setVisibility(View.GONE));
+                        updateIsUploadInProgress(false));
     }
 
     private void addRecipe() {
@@ -209,7 +209,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
                     "You need to insert an ingredient", Toast.LENGTH_SHORT).show();
             return;
         }
-        mProgressBar.setVisibility(View.VISIBLE);
+        updateIsUploadInProgress(true);
         mRecipe.setNameOfrecipe(mRecipeNameEditText.getText().toString());
         mRecipe.setDifficulty(mDifficulty);
         mRecipe.setTime(convertTextToTime(mTimeInMinutesEditText.getText().toString()));
@@ -221,7 +221,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            mProgressBar.setVisibility(View.GONE);
+                            updateIsUploadInProgress(false);
                             Toast.makeText(AdminAddRecipeActivity.this, "This recipe is already exists",
                                     Toast.LENGTH_SHORT).show();
                             return;
@@ -237,8 +237,14 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
                         Toast.makeText(AdminAddRecipeActivity.this,
                                 "Error occurred - Could not save recipe",
                                 Toast.LENGTH_SHORT).show();
+                        updateIsUploadInProgress(false);
                     }
                 });
+    }
+
+    private void updateIsUploadInProgress(boolean inProgress) {
+        mProgressBar.setVisibility(inProgress ? View.VISIBLE : View.GONE);
+        mAddRecipeButton.setEnabled(!inProgress);
     }
 
     private class DialogListener implements DialogInterface.OnClickListener {
