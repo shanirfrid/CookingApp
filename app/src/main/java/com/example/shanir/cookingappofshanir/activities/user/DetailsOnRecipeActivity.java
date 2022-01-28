@@ -119,10 +119,13 @@ public class DetailsOnRecipeActivity extends AppCompatActivity {
         mRecipeDifficultyTextView.setText(recipe.getDifficulty());
         mRecipeTime = Integer.toString(recipe.getTime());
         mRecipeTimeTextView.setText(TextFormatter.formatRecipeTime(Integer.parseInt(mRecipeTime)));
-        if (!recipe.getBitmap().equals("none"))
+        if (!recipe.getBitmap().equals("none")) {
             ImageUtilities.loadImage(
                     DbConstants.APP_RECIPE_IMAGES_FULL_URL +
                             recipe.getBitmap(), mRecipeImageView, mProgressBar);
+        } else {
+            mProgressBar.setVisibility(View.GONE);
+        }
     }
 
     private void retrieveRecipeDetails() {
