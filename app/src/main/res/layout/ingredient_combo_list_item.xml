@@ -6,7 +6,7 @@
     android:background="@color/colorBackground">
 
     <LinearLayout
-        android:id="@+id/product_layout"
+        android:id="@+id/ingredient_combo_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/ingredient_unit_textview"
+            android:id="@+id/ingredient_combo_unit_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorBackground"
@@ -26,17 +26,18 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/ingredient_name_textview"
+            android:id="@+id/ingredient_combo_name_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:text="sugar"
             android:textColor="@android:color/black"
             android:textSize="20sp" />
+
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/delete_ingredient_with_unit_image_view"
+        android:id="@+id/ingredient_combo_delete_image_view"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_margin="5dp"
@@ -44,7 +45,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -268,14 +268,14 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
         public View getView(int i, View view, ViewGroup viewGroup) {
             view = LayoutInflater
                     .from(mContext)
-                    .inflate(R.layout.ingredient_and_unit_item_layout, null);
+                    .inflate(R.layout.ingredient_combo_list_item, null);
 
             Ingredient ingredient = mIngredientList.get(i);
-            ((TextView) view.findViewById(R.id.ingredient_unit_textview))
+            ((TextView) view.findViewById(R.id.ingredient_combo_unit_text_view))
                     .setText(ingredient.getUnits());
-            ((TextView) view.findViewById(R.id.ingredient_name_textview))
+            ((TextView) view.findViewById(R.id.ingredient_combo_name_text_view))
                     .setText(ingredient.getName());
-            ImageView imageView = view.findViewById(R.id.delete_ingredient_with_unit_image_view);
+            ImageView imageView = view.findViewById(R.id.ingredient_combo_delete_image_view);
             imageView.setTag(i);
             String ingredientName = mIngredientsListAdapter.getItem(i).getName();
             imageView.setOnClickListener(view1 -> {
