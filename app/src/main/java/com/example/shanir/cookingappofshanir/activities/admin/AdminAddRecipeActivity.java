@@ -46,11 +46,11 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_details_on_recipe_admin);
-        mTimeInMinutesEditText = findViewById(R.id.ettimeadddetailsadmin);
-        mRecipeNameEditText = findViewById(R.id.etnameofrecipeadddetails);
-        mIngredientEditText = findViewById(R.id.etwriteconsumersa);
-        mIngredientUnitsEditText = findViewById(R.id.add_recipe_ingredients_units);
+        setContentView(R.layout.activity_admin_add_recipe);
+        mTimeInMinutesEditText = findViewById(R.id.add_recipe_time_edit_text);
+        mRecipeNameEditText = findViewById(R.id.add_recipe_name_text_view);
+        mIngredientEditText = findViewById(R.id.add_recipe_ingredient_name_edit_text);
+        mIngredientUnitsEditText = findViewById(R.id.add_recipe_ingredien_units_edit_text);
 
         mImageFileNameCamera = DbConstants.ADD_RECIPE_IMAGE_FILE_NAME_CAMERA;
 
@@ -63,14 +63,14 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
     }
 
     private void initIngredientsListView() {
-        mIngredientsListView = findViewById(R.id.listviewconsumersa);
+        mIngredientsListView = findViewById(R.id.add_recipe_ingredients_list_view);
         mIngredientsListAdapter = new IngredientsListAdapter(this,
                 new ArrayList<>());
         mIngredientsListView.setAdapter(mIngredientsListAdapter);
     }
 
     private void initRecipeImageView() {
-        mImageView = findViewById(R.id.ivadmindetails);
+        mImageView = findViewById(R.id.add_recipe_image_view);
         mImageView.setOnClickListener(v -> {
             Permission permission = new Permission(
                     AdminAddRecipeActivity.this, getApplicationContext());
@@ -80,27 +80,27 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
     }
 
     private void initAddRecipeButton() {
-        mAddRecipeButton = findViewById(R.id.btsaverecipeee);
+        mAddRecipeButton = findViewById(R.id.add_recipe_save_button);
         mAddRecipeButton.setOnClickListener(v -> {
             addRecipe();
         });
     }
 
     private void initDifficultyRadioGroupButton() {
-        mDifficultyRadioGroup = findViewById(R.id.rgDiff);
+        mDifficultyRadioGroup = findViewById(R.id.add_recipe_difficulty_radio_group);
         mDifficultyRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId == R.id.rbEasy) {
+            if (checkedId == R.id.add_recipe_easy_radio_button) {
                 mDifficulty = "Easy";
-            } else if (checkedId == R.id.rbMedium) {
+            } else if (checkedId == R.id.add_recipe_medium_radio_button) {
                 mDifficulty = "Medium";
-            } else if (checkedId == R.id.rbHard) {
+            } else if (checkedId == R.id.add_recipe_hard_radio_button) {
                 mDifficulty = "Hard";
             }
         });
     }
 
     private void initAddIngredientImageView() {
-        mAddIngredientImageView = findViewById(R.id.ivconsumersaddaa);
+        mAddIngredientImageView = findViewById(R.id.add_recipe_add_ingredient_button);
         mAddIngredientImageView.setOnClickListener(v -> {
 
             String ingredientName = mIngredientEditText.getText().toString(),
