@@ -30,7 +30,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AdminAddRecipeActivity extends ImagePromptActivity {
     private Button mAddRecipeButton;
@@ -42,6 +44,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
     private IngredientsListAdapter mIngredientsListAdapter;
     private EditText mIngredientUnitsEditText;
     private String mDifficulty = "";
+    private Recipe mRecipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,8 +151,34 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
         listView.requestLayout();
     }
 
+    @Override
+    protected void uploadImage(String directoryImage) {
+        mBitmapName = new SimpleDateFormat("yyMMdd_HHmmss").format(new Date());
+        DbReference.getDbRefToImageBitmap(directoryImage, mBitmapName)
+                .putFile(mImageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    mRecipe.setBitmap(mBitmapName);
+                    uploadRecipe();
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this,
+                                "Failed to upload image",
+                                Toast.LENGTH_SHORT).show());
+    }
+
+    private void uploadRecipe() {
+        DbReference.getDbRefToRecipe(mRecipe.getNameOfrecipe())
+                .setValue(mRecipe)
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(AdminAddRecipeActivity.this,
+                            "Recipe has been saved successfully",
+                            Toast.LENGTH_SHORT).show();
+                    finish();
+                });
+    }
+
     private void addRecipe() {
-        Recipe recipe = new Recipe();
+        mRecipe = new Recipe();
 
         if (mTimeInMinutesEditText.getText().toString().trim().isEmpty()) {
             mTimeInMinutesEditText.setError("Time is required");
@@ -162,6 +191,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
             mRecipeNameEditText.requestFocus();
             return;
         }
+
         if (mDifficulty.equals("")) {
             Toast.makeText(getApplicationContext(),
                     "You need to insert a difficult", Toast.LENGTH_SHORT).show();
@@ -173,36 +203,36 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
                     "You need to insert an ingredient", Toast.LENGTH_SHORT).show();
             return;
         }
-        recipe.setNameOfrecipe(mRecipeNameEditText.getText().toString());
-        recipe.setDifficulty(mDifficulty);
-        recipe.setTime(convertTextToTime(mTimeInMinutesEditText.getText().toString()));
-        recipe.setIngredientList(mIngredientsListAdapter.getList());
-        uploadImage(DbConstants.RECIPE_IMAGES_URL);
-        recipe.setBitmap(mBitmapName);
 
-        DbReference.getDbRefToRecipe(recipe.getNameOfrecipe()).addListenerForSingleValueEvent(new ValueEventListener() {
+        mRecipe.setNameOfrecipe(mRecipeNameEditText.getText().toString());
+        mRecipe.setDifficulty(mDifficulty);
+        mRecipe.setTime(convertTextToTime(mTimeInMinutesEditText.getText().toString()));
+        mRecipe.setIngredientList(mIngredientsListAdapter.getList());
 
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.exists()) {
-                    DbReference.getDbRefToRecipe(recipe.getNameOfrecipe()).
-                            setValue(recipe).addOnSuccessListener(unused -> {
-                        Toast.makeText(AdminAddRecipeActivity.this, "Recipe has been saved successfully",
+        DbReference.getDbRefToRecipe(mRecipe.getNameOfrecipe())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            Toast.makeText(AdminAddRecipeActivity.this, "This recipe is already exists",
+                                    Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        if (mImageUri != null)
+                            uploadImage(DbConstants.RECIPE_IMAGES_URL);
+                        else
+                            uploadRecipe();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(AdminAddRecipeActivity.this,
+                                "Error occurred - Could not save recipe",
                                 Toast.LENGTH_SHORT).show();
-                        finish();
-                    });
-                } else {
-                    Toast.makeText(AdminAddRecipeActivity.this, "This recipe is already exists",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(AdminAddRecipeActivity.this,
-                        "Error occurs - recipe didn't save", Toast.LENGTH_SHORT).show();
-            }
-        });
+                    }
+                });
     }
 
     private class DialogListener implements DialogInterface.OnClickListener {
