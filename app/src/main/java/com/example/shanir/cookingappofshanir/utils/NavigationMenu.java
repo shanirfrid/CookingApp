@@ -39,15 +39,14 @@ public class NavigationMenu
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menuLogout) {
+            handleLogOut();
+            return false;
+        }
+
         Intent intent;
+
         switch (item.getItemId()) {
-            case R.id.menuLogout:
-                FirebaseAuth.getInstance().signOut();
-                intent = new Intent(mActivity.getApplicationContext(), SignInActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-                break;
-
             case R.id.mnItemListOfRecipes:
                 intent = new Intent(mActivity.getBaseContext(), UserSuitableRecipesActivity.class);
                 break;
@@ -79,5 +78,13 @@ public class NavigationMenu
             mActivity.startActivity(intent);
         }
         return true;
+    }
+
+    private void handleLogOut() {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(mActivity.getApplicationContext(), SignInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        mActivity.startActivity(intent);
+        mActivity.finish();
     }
 }
