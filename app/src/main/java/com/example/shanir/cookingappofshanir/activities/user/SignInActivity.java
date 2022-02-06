@@ -64,7 +64,6 @@ public class SignInActivity extends AppCompatActivity {
         mSignUpTextView.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
             startActivity(intent);
-            finish();
         });
     }
 

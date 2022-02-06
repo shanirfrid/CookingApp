@@ -156,6 +156,7 @@ public class RegisterActivity extends ImagePromptActivity {
             if (databaseError == null) {
                 mProgressBarManager.requestGone();
                 Intent intent = new Intent(getApplicationContext(), UserIngredientsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
             } else
