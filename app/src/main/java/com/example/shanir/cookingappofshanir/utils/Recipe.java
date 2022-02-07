@@ -12,22 +12,10 @@ public class Recipe {
     private String difficulty;
     private int time;
     String tID;
-    String key;
 
     public Recipe() {
         list = new ArrayList<>();
         bitmap = "none";
-    }
-
-    public Recipe(ArrayList<Ingredient> list,
-                  String bitmap, String nameOfrecipe, String difficulty, int time) {
-
-        this.list = list;
-        this.bitmap = bitmap;
-        this.nameOfrecipe = nameOfrecipe;
-        this.difficulty = difficulty;
-        this.time = time;
-        this.list = new ArrayList<>();
     }
 
     public void setNameBitmap(Bitmap nameBitmap) {
@@ -80,13 +68,6 @@ public class Recipe {
 
     public void setTime(int time) {
         this.time = time;
-    }
-
-    public void addingredienttolist(Ingredient ingredient) {
-        if (this.list.contains(ingredient))
-            return;
-
-        this.list.add(ingredient);
     }
 
     @Override

@@ -104,7 +104,7 @@ public class AdminAddRecipeActivity extends ImagePromptActivity {
         });
     }
 
-    private void initAddIngredientImageView() {
+    private void    initAddIngredientImageView() {
         mAddIngredientImageView = findViewById(R.id.add_recipe_add_ingredient_button);
         mAddIngredientImageView.setOnClickListener(v -> {
 

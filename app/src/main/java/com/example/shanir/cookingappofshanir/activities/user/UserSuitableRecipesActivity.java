@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -90,14 +91,18 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
                             mRecipesNumberTextView.setText(
                                     TextFormatter.foundRecipesNumber(0));
                             return;
-                        }
+                         }
 
                         getSuitableRecipes(userIngredientsMap.values());
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        Toast.makeText(UserSuitableRecipesActivity.this,
+                                "OOPS! something went wrong...",
+                                Toast.LENGTH_SHORT).show();
+                        mRecipesNumberTextView.setText(
+                                TextFormatter.foundRecipesNumber(0));
                     }
                 });
     }

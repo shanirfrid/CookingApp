@@ -15,9 +15,6 @@ public class RecipeListAdapter extends BaseAdapter {
     private Context mContext;
     private List<Recipe> mRecipeList;
 
-    public RecipeListAdapter() {
-    }
-
     public RecipeListAdapter(Context context, List<Recipe> recipeList) {
         mContext = context;
         mRecipeList = recipeList;
@@ -32,11 +29,6 @@ public class RecipeListAdapter extends BaseAdapter {
             return;
 
         mRecipeList.add(recipe);
-        notifyDataSetChanged();
-    }
-
-    public void deleteRecipe(int position) {
-        mRecipeList.remove(position);
         notifyDataSetChanged();
     }
 
@@ -68,7 +60,7 @@ public class RecipeListAdapter extends BaseAdapter {
         TextView recipeTimeTextView = (TextView) v.findViewById(R.id.recipe_time_text_view);
         ImageView recipeImageView = (ImageView) v.findViewById(R.id.recipe_image_view);
 
-        Recipe recipe = (Recipe) getItem(position);
+        Recipe recipe = (Recipe) this.getItem(position);
         recipeNameTextView.setText(recipe.getNameOfrecipe());
         recipeTimeTextView.setText(TextFormatter.formatRecipeTime(recipe.getTime()));
         recipeDifficultyTextView.setText(recipe.getDifficulty());
@@ -80,11 +72,5 @@ public class RecipeListAdapter extends BaseAdapter {
         v.setTag(recipe.gettID());
 
         return v;
-    }
-
-    @Nullable
-    @Override
-    public CharSequence[] getAutofillOptions() {
-        return new CharSequence[0];
     }
 }
