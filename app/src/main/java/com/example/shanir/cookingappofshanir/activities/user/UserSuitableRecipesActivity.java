@@ -98,11 +98,7 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        Toast.makeText(UserSuitableRecipesActivity.this,
-                                "OOPS! something went wrong...",
-                                Toast.LENGTH_SHORT).show();
-                        mRecipesNumberTextView.setText(
-                                TextFormatter.foundRecipesNumber(0));
+                        indicateErrorToUser();
                     }
                 });
     }
@@ -136,7 +132,7 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                indicateErrorToUser();
             }
         });
     }
@@ -155,4 +151,10 @@ public class UserSuitableRecipesActivity extends AppCompatActivity {
                 });
     }
 
+    private void indicateErrorToUser() {
+        Toast.makeText(UserSuitableRecipesActivity.this,
+                "OOPS! something went wrong...",
+                Toast.LENGTH_SHORT).show();
+        mRecipesNumberTextView.setText(TextFormatter.foundRecipesNumber(0));
+    }
 }
